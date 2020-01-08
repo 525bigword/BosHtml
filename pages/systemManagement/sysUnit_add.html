@@ -17,22 +17,42 @@
 				<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 					<tbody>
 					<tr>
-						<td class="layui-bg-gray" width="30%">单位名称</td>
-						<td width="70%">
-							<input type="text" name="title" placeholder="请输入单位名称" autocomplete="off" class="layui-input">
+						<td class="layui-bg-gray"  width="30%">单位名称</td>
+						<td width="70%" >
+							<input type="text"  name="title" placeholder="请输入单位名称" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
 					<tr>
-						<td class="layui-bg-gray">备注</td>
-						<td colspan="3">
-							<input type="text" name="title" placeholder="请输入备注" autocomplete="off" class="layui-input">
+						<td class="layui-bg-gray">描述</td>
+						<td >
+							<input type="text" name="title" placeholder="请输入描述" autocomplete="off" class="layui-input">
+						</td>
+					</tr>
+					<tr>
+						<td class="layui-bg-gray">是否可用</td>
+						<td width="30%">
+							<select name="city" id="disa" lay-verify="">
+								<option value="1">可用</option>
+								<option value="0">不可用</option>
+							</select>
+						</td>
+						
+					</tr>
+					<tr>
+						<td class="layui-bg-gray">负责人</td>
+						<td width="30%" >
+							<select name="city" id="disa" lay-verify="">
+								<option value="0">请选择</option>
+								<option value="0">不可用</option>
+							</select>
 						</td>
 					</tr>
 					
 					<tr>
 						<td colspan="6">
 							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
+							<input type="button"  class="layui-btn layui-btn-primary" value="取消" name="close"/>
+							
 						</td>
 					</tr>
 					</tbody>
@@ -55,7 +75,10 @@
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 	layui.use('element', function(){
 		var element = layui.element;
-
+		$("input[name='close']").click(function(){
+			var index = parent.layer.getFrameIndex(window.name);
+			    parent.layer.close(index);
+		})
 		//…
 	});
 

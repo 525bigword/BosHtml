@@ -34,27 +34,33 @@
 						<form>
 							<div class="lg-username input-item clearfix">
 								<i class="iconfont">&#xe60d;</i>
-								<input type="text" placeholder="账号/邮箱">
+								<input type="text" name="username" placeholder="请输入账号">
 							</div>
 							<div class="lg-password input-item clearfix">
 								<i class="iconfont">&#xe634;</i>
-								<input type="password" placeholder="请输入密码">
+								<input type="password" name="pwd" placeholder="请输入密码">
 							</div>
 							<div class="lg-check clearfix">
-								<div class="input-item">
+								<div class="input-item" >
 									<i class="iconfont">&#xe633;</i>
-									<input type="text" placeholder="验证码">
+									<input type="text" name="acode" placeholder="验证码">
+									
 								</div>
 								<img class="check-code" id="imagecode" src="" />
+								
+								
 								<!-- <div class="check-code" id="imagecode"></div> -->
 							</div>
-							<div class="tips clearfix">
+							<a style="position: relative;left: 31px;top:-15px" href="#" onclick="getCode()">看不起？换一张</a><!-- </span><span > -->
+							
+							<div class="tips clearfix" style="position: relative;top: 5px;">
 								<label><input type="checkbox" checked="checked">记住用户名</label>
 								<a href="javascript:;" class="register">立即注册</a>
 								<a href="javascript:;" class="forget-pwd">忘记密码？</a>
 							</div>
-							<div class="enter">
-								<a href="javascript:;" class="supplier" onClick="javascript:window.location='main.html'">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+							<span id="ts"  style="color: red;position: relative;left: 30%;top:-10px">&nbsp;</span>
+							<div class="enter" style="position: relative;top:10px">
+								<a href="javascript:;" onclick="login()" class="supplier">登&nbsp;&nbsp;&nbsp;&nbsp;录</a><!--onClick="javascript:window.location='main.html'"  -->
 							</div>
 						</form>
 					</div>
@@ -79,20 +85,46 @@
 </html>
 <script src="js/bos.js"></script>
 <script type="text/javascript" src="../custom/jquery.min.js"></script>
-<script src="js/jquery.base64.js" type="text/javascript"></script>
+<script src="js/bos.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var code;
 		getCode()
 	})
+	function login(){
+		var user=$("#username").val();
+		var pwd=$("#pwd").val();
+		var acode=$("#acode").val();
+		if(acode!=code){
+			$("#ts").text("验证码错误");
+			
+		}
+		else if(user==""||pwd==""||acode==""){
+			$("#ts").text("请将登录信息填写完整");
+			
+		}
+		else{
+			$("#ts").html("&nbsp");
+			$.ajax({
+				data:{"empNo":user,"pwd":pwd},
+				url:url+"jurisdiction/login",
+				type:'post',
+				sync:false,
+				success:function(data){
+					console.log(data)
+				}
+			})
+		}
+		
+	}
 	function getCode(){
 		$.ajax({
 			url:url+"jurisdiction/getCode",
 			type:'get',
 			sync:false,
 			success:function(data){
-				alert(data);
 				$("#imagecode").attr("src",'http://localhost:8089/jurisdiction/ImageCode?code='+data);
-				
+				code=data;
 				//imageCode(data)
 			}
 		})
