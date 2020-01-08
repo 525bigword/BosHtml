@@ -98,45 +98,34 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="60">
-				    <col width="120">
-				    <col width="150">
-				    <col width="120">
-				    <col width="110">
-				    <col width="110">
-				    <col width="110">
-				    <col>
-			  	</colgroup>
+			<table class="layui-table" id="demo" ,lay-filter="test" >
 			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>物品编码</th>
-				      	<th>物品名称</th>
-				      	<th>计划价格</th>
+					 <tr>
+						<th><input type="checkbox" name="check" lay-skin="primary"></th>
+						<th>序号</th>
+					  	<th>物品编码</th>
+					  	<th>物品名称</th>
+					  	<th>计划价格</th>
 					  	<th>规格</th>
 					  	<th>类型</th>
 					  	<th>计量单位</th>
 					  	<th>状态</th>
-				    </tr>
+					</tr> 
+				   <!-- <tr>
+				    	<th><input type="checkbox" name="check" lay-skin="primary" id='demo'></th>
+				    	<th lay-data="{field:'id', width:90}">序号</th>
+				      	<th lay-data="{field:'itemCode', width:120}">物品编码</th>
+				      	<th lay-data="{field:'itemName', width:120}">物品名称</th>
+				      	<th lay-data="{field:'plannedPrice', width:150}">计划价格</th>
+					  	<th lay-data="{field:'specifications', width:120}">规格</th>
+					  	<th lay-data="{field:'type', width:110}">类型</th>
+					  	<th lay-data="{field:'measurementUnit', width:110}">计量单位</th>
+					  	<th lay-data="{field:'status', width:110}">状态</th>
+				    </tr> -->
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>WP1001</td>
-				      	<td>IPHONE7</td>
-						<td>5888</td>
-				      	<td>部</td>
-				      	<td>电子设备</td>
-				      	<td>支</td>
-				      	<td>正常</td>
-				    </tr>
-			  	</tbody>
+			  	<tbody></tbody>
 			</table>
+			<div id="demo7" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
@@ -146,13 +135,55 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
 //加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
 
-});
 
 //加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
+layui.use(['table','form','laypage'], function(){
+	 var table = layui.table,
+	 form=layui.form,
+	 laypage=layui.laypage;
+	$.ajax({
+				url:'http://localhost:8089/pacpackaging/queryAllpacpackaging',
+				type:'get',
+				dataType : 'json',
+				async : true,
+				success:function(res){
+					console.log(res);
+					var pacPack=eval(res.map.PacPackagingAll[0]);
+					console.log(pacPack);
+					for(var i=0;i<pacPack.length;i++){
+						$("#demo tbody").append("<tr><td><input type='checkbox' name='check' lay-skin='primary' /></td><td>"+pacPack[i].id+"</td><td>"+pacPack[i].itemCode+"</td><td>"+pacPack[i].itemName+"</td><td>"+pacPack[i].plannedPrice+"</td><td>"+pacPack[i].specifications+"</td><td>"+pacPack[i].type+"</td><td>"+pacPack[i].measurementUnit+"</td><td>"+(pacPack[i].status==1?'正常':'作废')+"</td></tr>")
+					}
+					 form.render("checkbox");
+				}
+		 });
+ //完整功能
+  laypage.render({
+    elem: 'demo7'
+    ,count: 7
+    ,layout: [ 'prev', 'page', 'next','count']
+    ,jump: function(obj){
+      console.log(obj)
+    }
+  });
+/*  table.render({ //其它参数在此省略
+   elem: '#demo'
+   ,url:'http://localhost:8089/pacpackaging/queryAllpacpackaging'
+    ,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+	,parseData: function(res){ 
+		console.log(res)
+		//res 即为原始返回的数据
+	    return {
+	     "code": res.status, //解析接口状态
+	           "msg": res.message, //解析提示文本
+	           "count": res.total, //解析数据长度
+	           "data": res.data.item 
+	    };
+	  },
+	      //where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+    //request: {} //如果无需自定义请求参数，可不加该参数
+    //response: {} //如果无需自定义数据响应名称，可不加该参数
+  }); */
 });
 
 //加载'laydate'时间组件
