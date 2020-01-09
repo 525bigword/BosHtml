@@ -35,12 +35,12 @@ $(function () {
             $(".layui-form-checkbox").click(function(event) {
                 if($(this).hasClass('layui-form-checked')){
                     $(this).removeClass('layui-form-checked');
-                    if($(this).hasClass('header')){
+                    if($(this).hasClass('tabs-header')){
                         $(".layui-form-checkbox").removeClass('layui-form-checked');
                     }
                 }else{
                     $(this).addClass('layui-form-checked');
-                    if($(this).hasClass('header')){
+                    if($(this).hasClass('tabs-header')){
                         $(".layui-form-checkbox").addClass('layui-form-checked');
                     }
                 }
