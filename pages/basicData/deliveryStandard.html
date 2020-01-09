@@ -48,8 +48,8 @@
 
 						<!-- 查询按钮组 -->
 						<div class="layui-inline">
-							<button type="button" class="layui-btn btnQuery">
-								<i class="layui-icon" id="chaxun">&#xe615;</i> 查询
+							<button id="chaxun" type="button" class="layui-btn btnQuery">
+								<i class="layui-icon" >&#xe615;</i> 查询
 							</button>
 
 							<button type="button" class="layui-btn btnOther">
@@ -83,7 +83,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">操作人:</label>
 							<div class="layui-input-block" style="width: 150px;">
-								<input type="text" id="syEmp.empName" name="title" placeholder="请输入操作人" autocomplete="off" class="layui-input">
+								<input type="text" id="empName" name="title" placeholder="请输入操作人" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 
@@ -232,6 +232,35 @@
 					$("#hQuery").toggle();
 				});
 				//查询
+				$("#chaxun").click(function(){
+					var name=$("#name").val();
+					var status=$("#status").val();
+					var maxWeight=$("#maxWeight").val();
+					var minWeight=$("#minWeight").val();
+					var empName=$("#empName").val();
+					var operationTime=$("#opTime").val();
+					console.log(name+" "+status+" "+maxWeight+" "+minWeight+" "+empName+" "+operationTime);
+					$.ajax({
+						url: url + 'basDeliveryStandard/findBasDeliveryStandards',
+						type: 'post',
+						async: false,
+						data:{
+							"name":name,
+							"status":status,
+							"maxWeight":maxWeight,
+							"minWeight":minWeight,
+							"syEmp.empName":empName,
+							"operationTime":operationTime
+						},
+						success: function(data) {
+							var da=data;
+							console.log(da);
+							fyy = da;
+							fyycount = da.length;
+							sxfy();
+						}
+					});
+				})
 				//新增
 				$('#opAdd').click(function() {
 					//页面层
