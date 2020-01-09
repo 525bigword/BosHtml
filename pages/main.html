@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+<!DOCTYPE html> 
 <html lang="en"> 
 <head> 
     <meta charset="utf-8"> 
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="pf-modify-pwd">
-                            <a href="http://www.uimaker.com">
+                            <a id="edit" href="javascript:;">
                                 <i class="iconfont">&#xe634;</i>
                                 <span class="pf-opt-name">修改密码</span>
                             </a>
@@ -186,6 +186,8 @@
     <script type="text/javascript" src="../custom/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="../layer/layer.js"></script>
+	<script type="text/javascript" src="../layui/layui.js"></script>
     <!--[if IE 7]>
       <script type="text/javascript">
         $(window).resize(function(){
@@ -248,6 +250,40 @@
     //    $('.tabs-panels').height($("#pf-page").height()-46);
     //    $('.panel-body').height($("#pf-page").height()-76)
     // }, 200)
+	//加载'form'模块，使checkbox、select、radio初始化
+	layui.use('form', function(){
+	
+	});
+	
+	//加载'table'组件
+	layui.use('table', function(){
+	  var table = layui.table;
+	});
+	
+	//加载'laydate'时间组件
+	layui.use('laydate', function(){
+	  var laydate = layui.laydate;
+	  //执行一个laydate实例
+	  laydate.render({
+	    elem: '#opTime' //指定元素
+	  });
+	});
+	
+	$(function(){
+	
+		//修改
+		$('#edit').click(function(){
+			//页面层
+			layer.open({
+				title: ['修改', 'color:#fff;background:#1da02b;'],
+				type: 2,
+				//skin: 'layui-layer-rim', //加上边框
+				area: ['690px', '500px'], //宽高
+				content: 'systemManagement/sysUpPassword.html'
+			});
+		});
+	
+	});
     </script>
 </body> 
 </html>
