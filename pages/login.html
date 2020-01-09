@@ -85,6 +85,7 @@
 </html>
 <script src="js/bos.js"></script>
 <script type="text/javascript" src="../custom/jquery.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
 <script src="js/bos.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -92,10 +93,10 @@
 		getCode()
 	})
 	function login(){
-		var user=$("#username").val();
-		var pwd=$("#pwd").val();
-		var acode=$("#acode").val();
-		if(acode!=code){
+		var user=$("input[name='username']").val();
+		var pwd=$("input[name='pwd']").val();
+		var acode=$("input[name='acode']").val();
+		if(acode.length != code.length && acode.toLowerCase()!=code.toLowerCase()){
 			$("#ts").text("验证码错误");
 			
 		}
@@ -106,12 +107,15 @@
 		else{
 			$("#ts").html("&nbsp");
 			$.ajax({
-				data:{"empNo":user,"pwd":pwd},
+				data:{
+					"empNo":user,"pwd":pwd,
+					},
 				url:url+"jurisdiction/login",
 				type:'post',
 				sync:false,
 				success:function(data){
-					console.log(data)
+					$.cookie("user", data.map);
+					console.log($.cookie("user"))
 				}
 			})
 		}
