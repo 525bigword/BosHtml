@@ -1,69 +1,138 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>收派标准</title> 
-    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-</head> 
-<body>
-	<form class="layui-form">
-	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-	  	<tbody>
-		    <tr>
-		    	<td class="layui-bg-gray" width="15%">标准名称</td>
-		      	<td width="35%">
-      				<input type="text" name="title" placeholder="请输入收派标准名称" autocomplete="off" class="layui-input" value="0-10公斤">
-		      	</td>
-		      	<td class="layui-bg-gray" width="15%">作废标志</td>
-		      	<td width="35%">
-					<input type="radio" name="del" value="1" title="是">
-					<input type="radio" name="del" value="0" title="否" checked>
-		      	</td>
-		    </tr>
-		    <tr>
-		      	<td class="layui-bg-gray">最小重量</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入最小重量" autocomplete="off" class="layui-input" value="0">
-		      	</td>
-		      	<td class="layui-bg-gray">最大重量</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入最大重量" autocomplete="off" class="layui-input" value="10">
-		      	</td>
-		    </tr>
-		    <tr>
-		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td>张三</td>
-		      	<td class="layui-bg-gray">操作单位</td>
-		      	<td>总公司</td>
-		    </tr>
-			<tr>
-		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td> 2017-10-23 16:17:10 </td>
-		      	<td class="layui-bg-gray"></td>
-		      	<td> </td>
-		    </tr>
-		    <tr>
-		      	<td colspan="4">
-					<button class="layui-btn " style="background: #1da02b;">确定</button>
-					<button type="button" id="quxiao" class="layui-btn layui-btn-primary">取消</button>
-		      	</td>
-		    </tr>
-		    
-	  	</tbody>
-	</table>
-	</form>
-	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript">
-        
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-           
-        });
-      
-    </script>
-</body> 
-</html>
-    
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>收派标准</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<form class="layui-form">
+			<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+				<tbody>
+					<tr>
+						<td class="layui-bg-gray" width="15%">标准名称</td>
+						<td width="35%" id="name" name="name">
+						</td>
+						<td class="layui-bg-gray">操作人员</td>
+						<td id="empName"></td>
+					</tr>
+					<tr>
+						<td class="layui-bg-gray">最小重量</td>
+						<td>
+							<input type="number" id="minWeight" maxlength="100000000000000" name="title" placeholder="请输入最小重量" autocomplete="off" class="layui-input"
+							 >
+						</td>
+						<td class="layui-bg-gray">最大重量</td>
+						<td>
+							<input type="number" maxlength="100000000000000" id="maxWeight" name="title" placeholder="请输入最大重量" autocomplete="off" class="layui-input"
+							 >
+						</td>
+					</tr>
+					<tr>
+						
+						<td class="layui-bg-gray">操作单位</td>
+						<td id="untis">总公司</td>
+						<td class="layui-bg-gray">操作时间</td>
+						<td id="time"> </td>
+					</tr>
+					
+					<tr>
+						<td colspan="4">
+							<button class="layui-btn " id="upda" style="background: #1da02b;" type="button">确定</button>
+							<button type="button" id="quxiao" name="quxiao" class="layui-btn layui-btn-primary">取消</button>
+						</td>
+					</tr>
 
+				</tbody>
+			</table>
+		</form>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript">
+			var basicFileNumber;
+			function child(d) {
+				basicFileNumber=d.basicFileNumber;
+				$("#name").text(d.minWeight + "-" + d.maxWeight + "公斤");
+				$("#minWeight").val(d.minWeight);
+				$("#maxWeight").val(d.maxWeight);
+				$("#empName").text(d.syEmp.empName);
+				$("#untis").text(d.syUnits.name);
+				$("#time").text(d.operationTime);
+			}
+			$(function() {
+				$('#minWeight').keyup(function() {
+					$("#name").text($("#minWeight").val() + "-" + $("#maxWeight").val() + "公斤");
+				});
+				$('#maxWeight').keyup(function() {
+					$("#name").text($("#minWeight").val() + "-" + $("#maxWeight").val() + "公斤");
+				});
+				$("#quxiao").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				})
+				$("#upda").click(function(){
+					var name=$("#name").text();
+					var minWeight=$("#minWeight").val();
+					var maxWeight=$("#maxWeight").val();
+					if(minWeight==null||minWeight==null||maxWeight==""||maxWeight==""){
+						layer.msg('请将信息补充完整', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					if(minWeight<0){
+						layer.msg('最小重量不能为负值', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					if(maxWeight<0){
+						layer.msg('最大重量不能为负值', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					if(maxWeight-minWeight<0){
+						layer.msg('最大重量不能小于最小重量', {
+							icon: 5,
+							time: 1000
+						});
+						return;
+					}
+					$.ajax({
+						url: 'http://localhost:8089/basDeliveryStandard/upBasDeliveryStandardByBasicFileNumber',
+						type: 'post',
+						async: false,
+						data: {
+							"name":name,
+							"maxWeight": maxWeight,
+							"minWeight": minWeight,
+							"basicFileNumber":basicFileNumber
+						},
+						success: function(data) {
+							if(data==1){
+								layer.msg('收派标准名称已存在', {
+									icon: 5,
+									time: 1000
+								});
+							}else{
+								var index = parent.layer.getFrameIndex(window.name);
+								parent.layer.close(index);
+							}
+						}
+					});
+				})
+			})
+			
+			//加载'form'模块，使checkbox、select、radio初始化                                                                                              
+			layui.use('form', function() {
+				
+			});
+		</script>
+	</body>
+</html>
