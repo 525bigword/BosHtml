@@ -6,79 +6,165 @@
 	<title>包装材料管理</title>
 	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
-<body>
 <div class="layui-form">
+	<form class="layui-form" action="/pacpackaging/addPacpackaging" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
 			<td class="layui-bg-gray" width="15%">物品编码</td>
 			<td width="35%">
-				<input type="text" name="title" placeholder="请输入物品编码" autocomplete="off" class="layui-input">
+				<input type="text" name="itemCode"  readonly="readonly" lay-verify="itemCode" placeholder="请输入物品编码" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray" width="15%">物品名称</td>
 			<td width="35%">
-				<input type="text" name="title" placeholder="请输入物品名称" autocomplete="off" class="layui-input">
+				<input type="text" name="itemName" lay-verify="itemName" placeholder="请输入物品名称" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">计划价格</td>
 			<td >
-				<input type="text" name="title" placeholder="请输入计划价格" autocomplete="off" class="layui-input">
+				<input type="number" name="plannedPrice" lay-verify="plannedPrice" placeholder="请输入计划价格" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">规格</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入规格" autocomplete="off" class="layui-input">
+				<input type="text" name="specifications" lay-verify="specifications" placeholder="请输入规格" autocomplete="off" class="layui-input">
 			</td>
-		</tr>
-		<tr>
+		</tr>	<meta charset="utf-8">
 			<td class="layui-bg-gray">类型</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入类型" autocomplete="off" class="layui-input">
-			</td>
+				<select name="city"  id="lx" lay-verify="" lay-search>
+					<option>请选择类型</option>
+				</select>
+				<!-- <input type="text" name="type" id='lx' lay-verify="type" placeholder="请输入类型" autocomplete="off" class="layui-input">
+			 --></td>
 			<td class="layui-bg-gray">状态</td>
 			<td>
-				<input type="radio" name="sex" value="1" title="正常" checked>
-				<input type="radio" name="sex" value="-1" title="作废">
+				<input type="radio" name="stats" value="1" title="正常" checked>
+				<input type="radio" name="stats" value="-1" title="作废">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">操作人工号</td>
-			<td>YGGH1001</td>
+			<td ><input type="text" readonly="readonly" lay-verify="operatorId" name='operatorId' autocomplete="off" class="layui-input"/></td>
 			<td class="layui-bg-gray">操作人姓名</td>
-			<td>张三</td>
+			<td ><input type="text" readonly="readonly" lay-verify="empName" name="empName" autocomplete="off" class="layui-input"/></td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">操作时间</td>
-			<td>2017-11-11 11:11:11</td>
+			<td ><input type="text" readonly="readonly" lay-verify="operationTime" name="operationTime" autocomplete="off" class="layui-input"/></td>
 			<td class="layui-bg-gray"></td>
 			<td></td>
 		</tr>
 
 		<tr>
 			<td colspan="6">
-				<button class="layui-btn" style="background: #1da02b;">确定</button>
-				<button type="button" class="layui-btn layui-btn-primary">取消</button>
+				<button class="layui-btn" style="background: #1da02b;" lay-submit lay-filter="add">确定</button>
+				<button type="button" class="layui-btn layui-btn-primary" lay-submit lay-filter="quxiao">取消</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-
+</form>
 </div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript">
-
+	function getNow(s) {
+	return s < 10 ? '0' + s: s;
+	}
+	 
+	var myDate = new Date();            
+	 
+	var year=myDate.getFullYear();        //获取当前年
+	var month=myDate.getMonth()+1;   //获取当前月
+	var date=myDate.getDate();            //获取当前日
+	 
+	 
+	var h=myDate.getHours();              //获取当前小时数(0-23)
+	var m=myDate.getMinutes();          //获取当前分钟数(0-59)
+	var s=myDate.getSeconds();
+	 
+	var now=year+'/'+getNow(month)+"/"+getNow(date)+" "+getNow(h)+':'+getNow(m)+":"+getNow(s);
 	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
-
+	layui.use(['table','form','laypage','element'], function(){
+		 var table = layui.table,
+		 form=layui.form,
+		 laypage=layui.laypage,
+		 element=layui.element;
+		 var $ = layui.$;
+		 $.ajax({
+		 	url:'http://localhost:8089/pacpackaging/queryAllpactype',
+		 	type:'get',
+		 	dataType : 'json',
+		 	sync : false,
+		 	success:function(data){
+		 		console.log(data);
+		 		var pacoout=data.map.PacOutBound[0];
+		 		//console.log(pacoout);
+		 		for(var i=0;i<pacoout.length;i++){
+		 			 /* $('#qx').append('<option value="0">请选择</option>'); */
+		 			 $('#lx').append('<option value="'+pacoout[i].id+'">'+pacoout[i].outBoundType+'</option>');
+		 		}
+		 		 form.render()
+		 	}
+		 })
+  $.ajax({
+			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
+			type:'get',
+			dataType : 'json',
+			async : true,
+			success:function(res){
+				form.val('example', {
+					  "itemCode": res,
+					  "operatorId":"007",
+					  "empName":"邬童",
+					  "operationTime":now
+				});
+			}
+		})
+		form.on('submit(add)', function(data){
+		  console.log(data.elem); //被执行事件的元素DOM对象，一般为button对象
+		 /* console.log(data.form);//被执行提交的form对象，一般在存在form标签时才会返回
+		  console.log(data.field); *///当前容器的全部表单字段，名值对形式：{name: value}
+		  
+		        layer.alert("新增成功", {icon: 6},function () {
+		            // 获得frame索引
+		            var index = parent.layer.getFrameIndex(window.name);
+		            //关闭当前frame
+		            parent.layer.close(index);
+		          $(".layui-form").submit();
+		        });
+		  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		});
+		//自定义验证规则
+		  form.verify({
+		    itemName: function(value){
+		      if(value.length < 1){
+		        return '物品名称不得小于一个字符';
+		      }
+		    }
+		    ,plannedPrice:function(value){
+				if(value<1){
+				  return '亏本了';
+				}
+			}
+		  });
+		form.on('submit(quxiao)', function(data){
+		     var index = parent.layer.getFrameIndex(window.name);
+		            //关闭当前frame
+		            parent.layer.close(index);
+		  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		});
+  
 	});
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-	layui.use('element', function(){
+	/* layui.use('element', function(){
 		var element = layui.element;
 
 		//…
-	});
+	}); */
 
 </script>
 </body>

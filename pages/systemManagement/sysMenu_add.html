@@ -98,17 +98,20 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script src="../js/xadmin.js"></script>
 <script src="../js/bos.js"></script>
+<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">
 	
 	
 	//加载'form'模块，使checkbox、select、radio初始化
 	layui.use('form', function(){
 		var form = layui.form;
+		
 		form.render();
 		//加载栏目
 			
 			$.ajax({
-				url:url+'jurisdiction/loadmenus',
+				url:'http://localhost:8089/jurisdiction/loadmenus',
+				//headers:{"appId":"appId","appKey":"appId","Content-Type":"text/plain;charset=UTF-8"},
 				type:'get',
 				dataType : 'json',
 				sync : false,
@@ -128,6 +131,9 @@
 			url:url+'jurisdiction/loadoptions',
 			type:'get',
 			dataType : 'json',
+			 headers : {
+					'Authorization': 'bos'+$.cookie('user')
+				}, 
 			sync : false,
 			success:function(data){
 				console.log(data);
@@ -143,6 +149,23 @@
 			
 	});
 	$(function(){
+		$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+			    headers: {
+			        "Authorization": 'bos'+$.cookie('user')
+			    },
+			    xhrFields: {
+				    withCredentials: true
+			    } /* ,
+			    complete: function(xhr) {
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			}); 
+		
 		$("#big").click(function(){
 			$("#biga").css("display","block");
 			$("#smalla").css("display","none");
@@ -164,6 +187,7 @@
 					url:url+"jurisdiction/addsymenus",
 					dataType:'json',
 					sync:true,
+					
 					type:'post',
 					success:function(data){
 					}
