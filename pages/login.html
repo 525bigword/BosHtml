@@ -88,15 +88,37 @@
 <script src="js/jquery.cookie.js"></script>
 <script src="js/bos.js"></script>
 <script type="text/javascript">
+	
 	$(function(){
-		var code;
-		getCode()
+		var a;
+		getCode();
+		
+		$.ajaxSetup({
+			dataType: "json",
+			cache: false,
+		    headers: {
+		        "Authorization": 'bos'+$.cookie('user')
+		    },
+		    xhrFields: {
+			    withCredentials: true
+		    } /* ,
+		    complete: function(xhr) {
+		        //token过期，则跳转到登录页面
+		        if(xhr.responseJSON.code == 401){
+		            parent.location.href = baseURL + 'login.html';
+		        }
+		    } */
+		}); 
+		
+		
+		
+		
 	})
 	function login(){
 		var user=$("input[name='username']").val();
 		var pwd=$("input[name='pwd']").val();
 		var acode=$("input[name='acode']").val();
-		if(acode.length != code.length && acode.toLowerCase()!=code.toLowerCase()){
+		if(acode.length != a.length && acode.toLowerCase()!=a.toLowerCase()){
 			$("#ts").text("验证码错误");
 			
 		}
@@ -114,8 +136,13 @@
 				type:'post',
 				sync:false,
 				success:function(data){
-					$.cookie("user", data.map);
-					console.log($.cookie("user"))
+					if(data.stausEnum=='SUCCESS'){
+						$("#ts").html("&nbsp");
+						$.cookie("user", data.map);
+						window.location.href="main.html";
+					}else{
+						$("#ts").text("账号或密码错误");
+					}
 				}
 			})
 		}
@@ -128,7 +155,7 @@
 			sync:false,
 			success:function(data){
 				$("#imagecode").attr("src",'http://localhost:8089/jurisdiction/ImageCode?code='+data);
-				code=data;
+				a=data;
 				//imageCode(data)
 			}
 		})
