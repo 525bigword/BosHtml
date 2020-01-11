@@ -100,7 +100,22 @@
 <script src="../js/bos.js"></script>
 <script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">
-	
+	$.ajaxSetup({
+					dataType: "json",
+					cache: false,
+				    headers: {
+				        "Authorization": 'bos'+$.cookie('user')
+				    },
+				    xhrFields: {
+					    withCredentials: true
+				    } /* ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } */
+				});
 	
 	//加载'form'模块，使checkbox、select、radio初始化
 	layui.use('form', function(){
@@ -149,22 +164,7 @@
 			
 	});
 	$(function(){
-		$.ajaxSetup({
-				dataType: "json",
-				cache: false,
-			    headers: {
-			        "Authorization": 'bos'+$.cookie('user')
-			    },
-			    xhrFields: {
-				    withCredentials: true
-			    } /* ,
-			    complete: function(xhr) {
-			        //token过期，则跳转到登录页面
-			        if(xhr.responseJSON.code == 401){
-			            parent.location.href = baseURL + 'login.html';
-			        }
-			    } */
-			}); 
+		 
 		
 		$("#big").click(function(){
 			$("#biga").css("display","block");
@@ -186,12 +186,10 @@
 					data:{"parentID":s1,"type":ltype,"text":lname,"url":lurl,"bigmenus":mk},
 					url:url+"jurisdiction/addsymenus",
 					dataType:'json',
-					sync:true,
-					
-					type:'post',
+					sync:false,
+					type:'post',	
 					success:function(data){
 					}
-					
 				})
 			}else{
 				$("#atext").text("请将信息填写完整");
