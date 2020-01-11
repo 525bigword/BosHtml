@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <div class="layui-form">
-	<form class="layui-form" action="/pacpackaging/addPacpackaging" lay-filter="example">
+	<form class="layui-form" action="/pacpackaging/updatePacpackaging" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
@@ -23,6 +23,7 @@
 		<tr>
 			<td class="layui-bg-gray">计划价格</td>
 			<td >
+				<input type="hidden" id='dataId' name='id'  />
 				<input type="number" name="plannedPrice" lay-verify="plannedPrice" placeholder="请输入计划价格" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">规格</td>
@@ -33,7 +34,7 @@
 			<td class="layui-bg-gray">类型</td>
 			<td>
 				<select  name='type' id="lx" lay-verify="" lay-search>
-					<option value="1">请选择类型</option>
+					<option>请选择类型</option>
 				</select>
 				<!-- <input type="text" name="type" id='lx' lay-verify="type" placeholder="请输入类型" autocomplete="off" class="layui-input">
 			 --></td>
@@ -70,6 +71,13 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript">
+	var rid = getQueryString("id");
+	function getQueryString(name) {
+	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	    var r = window.location.search.substr(1).match(reg);
+	    if (r != null) return r[2];
+	    return null;
+	}
 	function getNow(s) {
 	return s < 10 ? '0' + s: s;
 	}
@@ -101,26 +109,60 @@
 		 	success:function(data){
 		 		console.log(data);
 		 		var pacoout=data.map.PacOutBound[0];
-		 		//console.log(pacoout);
+		 		
 		 		for(var i=pacoout.length-1;i>=0;i--){
-		 			 /* $('#qx').append('<option value="0">请选择</option>'); */
+		 			
 		 			 $('#lx').append('<option value="'+pacoout[i].id+'">'+pacoout[i].outBoundType+'</option>');
 		 		}
 		 		 form.render()
 		 	}
 		 })
+	
+	$("#dataId").val(rid); 
+		
+		Date.prototype.format = function(fmt) { 
+		     var o = { 
+		        "M+" : this.getMonth()+1,                 //月份 
+		        "d+" : this.getDate(),                    //日 
+		        "h+" : this.getHours(),                   //小时 
+		        "m+" : this.getMinutes(),                 //分 
+		        "s+" : this.getSeconds(),                 //秒 
+		        "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+		        "S"  : this.getMilliseconds()             //毫秒 
+		    }; 
+		    if(/(y+)/.test(fmt)) {
+		            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+		    }
+		     for(var k in o) {
+		        if(new RegExp("("+ k +")").test(fmt)){
+		             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+		         }
+		     }
+		    return fmt; 
+		}
+	
   $.ajax({
-			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
+			url:'http://localhost:8089/pacpackaging/findOnebyid',
 			type:'get',
 			dataType : 'json',
 			async : true,
+			data:{'id':rid},
 			success:function(res){
+				console.log(res);
+			
+				var date=new Date(res.operationTime).format("yyyy/MM/dd hh:mm:ss");
+				$('#lx').find('option[value="'+res.type+'"]').prop('selected',true);//选中value=""的option
+				$("input:radio[value='"+res.status+"']").prop('checked','true');
 				form.val('example', {
-					  "itemCode": res,
-					  "operatorId":"007",
-					  "empName":"邬童",
-					  "operationTime":now
+					  "itemCode": res.itemCode,
+					  "itemName":res.itemName,
+					  "plannedPrice":res.plannedPrice,
+					  "specifications":res.specifications,
+					  "operatorId":res.operatorId,
+					  "empName":res.syEmp.empName,
+					  "operationTime": date
 				});
+				form.render('select');
 			}
 		})
 		form.on('submit(add)', function(data){
@@ -128,7 +170,7 @@
 		 /* console.log(data.form);//被执行提交的form对象，一般在存在form标签时才会返回
 		  console.log(data.field); *///当前容器的全部表单字段，名值对形式：{name: value}
 		  
-		        layer.alert("新增成功", {icon: 6},function () {
+		        layer.alert("修改", {icon: 6},function () {
 		            // 获得frame索引
 		            var index = parent.layer.getFrameIndex(window.name);
 		            //关闭当前frame
