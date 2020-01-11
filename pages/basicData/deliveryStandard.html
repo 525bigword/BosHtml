@@ -227,9 +227,10 @@
 
 								return arr.join('');
 							}();
+							form.render();
 						}
 					});
-					form.render();
+					
 				});
 			}
 			//加载'form'模块，使checkbox、select、radio初始化
@@ -241,7 +242,7 @@
 					} else {
 						$('input[name=check]').prop("checked", false);
 					}
-					layui.form.render();
+					form.render();
 				});
 /* 				form.on('checkbox(check)', function(data) {
 					var bool = 1;
@@ -321,7 +322,10 @@
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
 						area: ['650px', '300px'], //宽高
-						content: 'deliveryStandard_add.html'
+						content: 'deliveryStandard_add.html',
+						end: function() {
+							location.reload();
+						}
 					});
 				});
 

@@ -77,9 +77,8 @@
 					<button type="button" class="layui-btn layui-btn-small btnOther">取消</button>
 				</div>
 			</div>
-
 			<!-- 数据表格 -->
-			<table class="layui-table">
+			<!-- <table class="layui-table">
 				<colgroup>
 				    <col width="50">
 				    <col width="60">
@@ -92,114 +91,30 @@
 				    <col width="170">
 				    <col>
 			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>基本档案编号</th>
-				      	<th>基本档案名称</th>
-				      	<th>档案是否分级</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
-					  	<th>备注</th>
-					  	<th>操作</th>
-				    </tr> 
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery" id="btnList">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-			  	</tbody>
-			</table>
+			  	
+			</table> -->
+			<table class="layui-hide" id="test" lay-filter="test"></table>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">     
+<script type="text/javascript" src="../js/bos.js"></script>
+<script type="text/javascript">  
+var da;
+   $(function(){
+	   $.ajax({
+	   	url: url + 'basicArchiveController/findBasicArchives',
+	   	type: 'post',
+	   	async: false,
+	   	dateType: 'json',
+	   	success: function(data) {
+	   		 da = data.BasicArchives[0];
+	   		console.log(da);
+	   	}
+	   });
+   })
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
    
