@@ -29,12 +29,8 @@
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >入库类型:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<select name="pro" lay-verify="required">
-							<option value="0">全部</option>
-							<option value="1">期初库存</option>
-							<option value="-1">调拨入库</option>
-							<option value="-1">下发入库</option>
-							<option value="-1">盘盈调整</option>
+						<select name="pro" id='lx' lay-verify="required">
+							<option value="">全部</option>
 						</select>
 					</div>
 			    </div>
@@ -83,9 +79,9 @@
 						<label class="layui-form-label">状态</label>
 						<div class="layui-input-block" style="width: 150px;">
 							<select name="pro" lay-verify="required">
-								<option value="0">全部</option>
-								<option value="1">正常</option>
-								<option value="-1">作废</option>
+								<option value="">全部</option>
+								<option value="0">正常</option>
+								<option value="1">作废</option>
 							</select>
 						</div>
 					</div>
@@ -143,7 +139,7 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
+				    	<th><input type="checkbox" name="checkn" lay-skin="primary"></th>
 				    	<th>序号</th>
 				      	<th>入库单号</th>
 				      	<th>入库类型</th>
@@ -157,8 +153,8 @@
 						<th>操作</th>
 				    </tr>
 			  	</thead>
-			  	<tbody>
-				    <tr>
+			  	<tbody id="demo">
+				    <!-- <tr>
 				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
 				      	<td>1</td>
 				      	<td>RK1001</td>
@@ -173,9 +169,10 @@
 						<td>
 							<button  type="button" class="layui-btn layui-btn-small btnQuery" id="btnList">查看明细</button>
 						</td>
-				    </tr>
+				    </tr> -->
 			  	</tbody>
 			</table>
+			<div id="demo7" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
@@ -190,8 +187,97 @@ layui.use('form', function(){
 });
 
 //加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
+layui.use(['table','form','laypage','element'], function(){
+	 var table = layui.table,
+	 form=layui.form,
+	 laypage=layui.laypage,
+	 element=layui.element
+	 var $ = layui.$;
+  $.ajax({
+  		 	url:'http://localhost:8089/pacpackaging/queryAllpacGetBoundtype',
+  		 	type:'get',
+  		 	dataType : 'json',
+  		 	sync : false,
+  		 	success:function(data){
+  		 		console.log(data);
+  		 		var pacoout=data;
+  		 		//console.log(pacoout);
+  		 		for(var i=pacoout.length-1;i>=0;i--){
+  		 			 /* $('#qx').append('<option value="0">请选择</option>'); */
+  		 			 $('#lx').append('<option value="'+pacoout[i].pacgetid+'">'+pacoout[i].getBoundType+'</option>');
+  		 		}
+  		 		 form.render()
+  		 	}
+  		 });
+		 form.on('checkbox(checkn)', function(data){
+		    console.log(data.elem); //得到checkbox原始DOM对象
+		    console.log(data.elem.checked); //是否被选中，true或者false
+		    console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+		    console.log(data.othis); //得到美化后的DOM对象
+		    if(data.elem.checked){
+		 	   $('input[name=check]').prop("checked",true);
+		 	     
+		    }
+		    else{
+		 	   $('input[name=check]').prop("checked",false);
+		 	  
+		    }
+		   layui.form.render();
+		  });  
+		 	form.on('checkbox(check)', function(data){
+		 		var bool=1;
+		 	var child = $("input[name='check']");
+		 	for(var a=0;a<child.length;a++){
+		 		if(child[a].checked==false){
+		 			bool=2;
+		 			 $('input[name=checkn]').prop("checked",false);
+		 			   layui.form.render();
+		 			return;
+		 		}
+		 		
+		 	}
+		 /* 	alert(bool); */
+		 	 if(bool==1){
+		 		 $('input[name=checkn]').prop("checked",true);
+		 	
+		 		 layui.form.render();
+		 	 }
+		 	
+		 	
+		 	 });
+			 $.ajax({
+			  			url:'http://localhost:8089/pacpackaging/queryAllpacStock',
+			  			type:'get',
+			  			dataType : 'json',
+			  			async : true,
+			  			success:function(res){
+			  				console.log(res);
+			  				var pacPack=eval(res);
+			  				console.log(pacPack);
+			 					total=pacPack.length;
+			 					 //完整功能
+			 					  laypage.render({
+			 					    elem: 'demo7'
+			 					    ,count: total
+			 					    ,layout: [ 'prev', 'page', 'next','count']
+			 					    ,jump: function(obj){
+			 							 //模拟渲染
+			 							      document.getElementById('demo').innerHTML = function(){
+			 							        var arr = []
+			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+			 							        layui.each(thisData, function(index, item){
+			 										console.log('item'+item);
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'作废')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList'>查看明细</button></td></tr>");
+			 							             });
+			 							        return arr.join('');
+			 							      }();
+			 					  form.render("checkbox");
+			 				
+			 					    }
+			 					  });
+			 					
+			  			}
+			  	 });
 });
 
 //加载'laydate'时间组件
