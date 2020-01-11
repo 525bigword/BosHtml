@@ -35,9 +35,9 @@
 					</tr>
 					<tr>
 						<td class="layui-bg-gray">操作人员</td>
-						<td>张三</td>
+						<td id="empName"></td>
 						<td class="layui-bg-gray">操作单位</td>
-						<td>总公司</td>
+						<td id="unitName"></td>
 					</tr>
 					<tr>
 						<td class="layui-bg-gray">操作时间</td>
@@ -56,10 +56,10 @@
 		</form>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/text/javascript" src="../js/bos.js"></script>
-		<script type="text/text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
-				
+				var da;
 			$(function() {
 					$.ajaxSetup({
 						dataType: "json",
@@ -79,14 +79,18 @@
 					}); 
 				$.ajax({
 					url: url + 'jurisdiction/parsetoken',
-					type: 'post',
+					type: 'get',
 					header:{
 						"Authorization": 'bos'+$.cookie('user')
 					},
 					async: false,
 					dateType: 'json',
 					success: function(data) {
-						console.log(data);
+						da=data;
+						console.log(da);
+						console.log(da.map.empName);
+						$("#empName").text(da.map.empName);
+						$("#unitName").text(da.map.syUnits.name);
 					}
 				});
 				getDate();
@@ -105,6 +109,8 @@
 					var name = $("#name").text();
 					var minWeight = $("#minWeight").val();
 					var maxWeight = $("#maxWeight").val();
+					var status=$("input[type=radio][name=del]:checked").val();
+					console.log(status);
 					if (minWeight == null || maxWeight == null || minWeight == "" || maxWeight == "") {
 						layer.msg('请将信息补充完整', {
 							icon: 5,
@@ -133,7 +139,7 @@
 						});
 						return;
 					}
-					/* $.ajax({
+					$.ajax({
 						url: url+'basDeliveryStandard/saveBasDeliveryStandard',
 						type: 'post',
 						async: false,
@@ -141,7 +147,9 @@
 							"name":name,
 							"maxWeight": maxWeight,
 							"minWeight": minWeight,
-							"basicFileNumber":basicFileNumber
+							"syEmp.id":da.map.id,
+							"syUnits.id":da.map.syUnits.id,
+							"status":status
 						},
 						success: function(data) {
 							if(data==1){
@@ -154,7 +162,7 @@
 								parent.layer.close(index);
 							}
 						}
-					}); */
+					});
 				})
 			})
 
