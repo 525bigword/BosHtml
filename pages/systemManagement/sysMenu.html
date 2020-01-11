@@ -22,8 +22,9 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">上级栏目:</label>
 							<div class="layui-input-block" style="width: 150px;">
-								<select name="city" id="sjlm"  lay-verify="">
-									<option value="0">请选择栏目</option>
+								<select name="city" id="sjlm" lay-verify="">
+									<option value="1">全部</option>
+									<option value="0">功能模块</option>
 								</select>
 							</div>
 						</div>
@@ -37,7 +38,7 @@
 
 						<!-- 查询按钮组 -->
 						<div class="layui-inline">
-							<button type="button" class="layui-btn btnQuery">
+							<button type="button" onclick="findemenu()" class="layui-btn btnQuery">
 								<i class="layui-icon">&#xe615;</i> 查询
 							</button>
 
@@ -59,16 +60,6 @@
 
 					<!-- 数据表格 -->
 					<table class="layui-table">
-						<colgroup>
-							<col width="50">
-							<col width="60">
-							<col>
-							<col>
-							<col>
-							<col>
-							<col>
-							<col>
-						</colgroup>
 						<thead>
 							<tr>
 								<th><input type="checkbox" name="check" lay-skin="primary"></th>
@@ -81,53 +72,47 @@
 								<th>栏目提示语</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><input type="checkbox" name="check" lay-skin="primary"></td>
-								<td>1</td>
-								<td>1001</td>
-								<td>无</td>
-								<td>功能模块</td>
-								<td>权限管理</td>
-								<td>roleAction.do?method=getRight&rightId=1001</td>
-								<td>功能模块</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" name="check" lay-skin="primary"></td>
-								<td>2</td>
-								<td>100101</td>
-								<td>权限管理</td>
-								<td>子模块</td>
-								<td>栏目管理</td>
-								<td>roleAction.do?method=getRight&rightId=100101</td>
-								<td>栏目管理</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" name="check" lay-skin="primary"></td>
-								<td>3</td>
-								<td>100102</td>
-								<td>权限管理</td>
-								<td>子模块</td>
-								<td>栏目管理</td>
-								<td>roleAction.do?method=getRight&rightId=100101</td>
-								<td>栏目管理</td>
-							</tr>
+						<tbody id="tbody">
+							
 						</tbody>
 					</table>
 			</div>
 			</form>
+			<center>
+				<div id="page"></div>
+			</center>
 		</div>
 		</div>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layer/layer.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/xadmin.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
-			function findemenu(){
-				var tip=$('#sjlm option:selected').val();
-				var text=$("input[name='menuname']").val();
+			$(function(){
+				findemenu();
+			})
+			var pagedata;
+			var pagedatacount;
+			function findemenu() {
+				var tip = $('#sjlm option:selected').val();
+				var text = $("input[name='menuname']").val();
 				$.ajax({
-					
+					url: url + 'jurisdiction/loadmenues',
+					type: 'get',
+					dataType: 'json',
+					data: {
+						"parentid": tip,
+						"text": text
+					},
+					sync: false,
+					success: function(data) {
+						pagedata = data.SyMenusBypParentidTozero;
+						pagedatacount = pagedata.length;
+						console.log(data);
+						sx();
+					}
 				})
 			}
 			$.ajaxSetup({
@@ -150,13 +135,14 @@
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 				var form = layui.form;
+
 				$.ajax({
 					url: 'http://localhost:8089/jurisdiction/loadmenus',
 					type: 'get',
 					dataType: 'json',
 					sync: false,
 					success: function(data) {
-						console.log(data);
+						//console.log(data);
 						var loadmenus = data.SyMenusBypParentidTozero[0];
 						//console.log(loadmenus);
 						for (var i = 0; i < loadmenus.length; i++) {
@@ -166,7 +152,62 @@
 						form.render()
 					}
 				})
+
+
+				$(function() {
+					$.ajaxSetup({
+						dataType: "json",
+						cache: false,
+						headers: {
+							"Authorization": 'bos' + $.cookie('user')
+						},
+						xhrFields: {
+							withCredentials: true
+						}
+						/* ,
+					    complete: function(xhr) {
+					        //token过期，则跳转到登录页面
+					        if(xhr.responseJSON.code == 401){
+					            parent.location.href = baseURL + 'login.html';
+					        }
+					    } */
+					});
+
+				})
 			});
+			function sx(){
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer; //测试数据
+						findemenu()
+
+					//调用分页
+					laypage.render({
+						elem: 'page'
+						,first: '首页'
+						,last: '尾页'
+						,prev: '<em>上一页</em>'
+						,next: '<em>下一页</em>'
+						,limit: 5,
+						count: pagedatacount,
+						 jump: function(obj) {
+							//模拟渲染
+							document.getElementById('tbody').innerHTML = function() {
+								var arr = [],
+									thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
+								layui.each(thisData, function(index, item) {
+									arr.push('<tr><td>' + index + '</td></tr>');
+								});
+								return arr.join('');
+							}();
+						} 
+					});
+
+				});
+			}
+
+
+
 
 			//加载'table'组件
 			layui.use('table', function() {
