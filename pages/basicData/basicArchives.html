@@ -1,177 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>基础档案</title>
-<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../css/page.css">
-</head>
-<body>
-<!-- 外部整体 -->
-<div class="external">
-	<!-- 标题 -->
-	<p class="ptitle">基础档案</p>
-	<!-- 操作区域 -->
-	<div class="operation">
-		<!-- 向上间距 -->
-		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
-			<div class="layui-form-item">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>基础档案</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../css/page.css">
+	</head>
+	<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
+	<body>
+		<!-- 外部整体 -->
+		<div class="external">
+			<!-- 标题 -->
+			<p class="ptitle">基础档案</p>
+			<!-- 操作区域 -->
+			<div class="operation">
+				<!-- 向上间距 -->
+				<div style="height: 10px;"></div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">档案编号:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入档案编号" autocomplete="off" class="layui-input">
-				    </div>
-				    
-			    </div>
+						<div class="layui-inline">
+							<label class="layui-form-label">档案编号:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" id="basicFileNumber" name="title" placeholder="请输入档案编号" autocomplete="off" class="layui-input">
+							</div>
 
-			    <div class="layui-inline">
-				    <label class="layui-form-label" >档案名称:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入档案名称" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
+						</div>
 
-				<!-- 查询按钮组 -->
-			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
-						<i class="layui-icon">&#xe615;</i> 查询
-					</button>
+						<div class="layui-inline">
+							<label class="layui-form-label">档案名称:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" id="name" name="title" placeholder="请输入档案名称" autocomplete="off" class="layui-input">
+							</div>
+						</div>
 
-					<button type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#x1002;</i> 重置
-					</button>
+						<!-- 查询按钮组 -->
+						<div class="layui-inline">
+							<button type="button" class="layui-btn btnQuery">
+								<i class="layui-icon" id="chaxun">&#xe615;</i> 查询
+							</button>
 
-					<button id="btnMore" type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#xe671;</i>更多
-					</button>
-				</div>
-			    
+							<button type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#x1002;</i> 重置
+							</button>
+
+							<button id="btnMore" type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#xe671;</i>更多
+							</button>
+						</div>
+
+					</div>
+
+					<!-- 隐藏其它查询条件 -->
+					<div id="hQuery" class="layui-form-item" style="display: none;">
+						<div class="layui-inline">
+							<label class="layui-form-label">操作人:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" id="empName" name="title" placeholder="请输入操作人" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">操作时间:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input id="opTime" type="text" name="title" placeholder="请输入操作时间" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+					</div>
+
+					<!-- 操作按扭组 -->
+					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+						<div class="layui-inline">
+							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增主信息</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther">取消</button>
+						</div>
+					</div>
+
+					<!-- 数据表格 -->
+					<table class="layui-table">
+						<colgroup>
+							<col width="50">
+							<col width="60">
+							<col width="120">
+							<col width="120">
+							<col width="120">
+							<col width="100">
+							<col width="120">
+							<col width="150">
+							<col width="150">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+								<th>序号</th>
+								<th>基本档案编号</th>
+								<th>基本档案名称</th>
+								<th>档案是否分级</th>
+								<th>操作人员</th>
+								<th>操作单位</th>
+								<th>操作时间</th>
+								<th>备注</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+					<div id="demo1" style="text-align: center;"></div>
 			</div>
-
-			<!-- 隐藏其它查询条件 -->
-			<div id="hQuery" class="layui-form-item" style="display: none;">
-			    <div class="layui-inline">
-				    <label class="layui-form-label">操作人:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入操作人" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-
-			    <div class="layui-inline">
-				    <label class="layui-form-label" >操作时间:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入操作时间" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-			
-			</div>
-
-			<!-- 操作按扭组 -->
-			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
-				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增主信息</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther">取消</button>
-				</div>
-			</div>
-			<!-- 数据表格 -->
-			<!-- <table class="layui-table">
-				<colgroup>
-				    <col width="50">
-				    <col width="60">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
-				    <col width="100">
-				    <col width="120">
-				    <col width="170">
-				    <col width="170">
-				    <col>
-			  	</colgroup>
-			  	
-			</table> -->
-			<table class="layui-hide" id="test" lay-filter="test"></table>
+			</form>
 		</div>
-		</form>
-	</div>
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript" src="../js/bos.js"></script>
-<script type="text/javascript">  
-var da;
-   $(function(){
-	   $.ajax({
-	   	url: url + 'basicArchiveController/findBasicArchives',
-	   	type: 'post',
-	   	async: false,
-	   	dateType: 'json',
-	   	success: function(data) {
-	   		 da = data.BasicArchives[0];
-	   		console.log(da);
-	   	}
-	   });
-   })
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
+		</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../layer/layer.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript">
+			var fyy;
+			var fyycount;
+			var xxx = [];
+			var layer, layuiTable;
+			$(function() {
+				/* $.ajaxSetup({
+					dataType: "json",
+					cache: false,
+				    headers: {
+				        "Authorization": 'bos'+$.cookie('user')
+				    },
+				    xhrFields: {
+					    withCredentials: true
+				    } ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } 
+				}); */
+				all();
+				//查询
+				$("#chaxun").click(function() {
+					var basicFileNumber = $("#basicFileNumber").val();
+					var name = $("#name").val();
+					var empName = $("#empName").val();
+					var operationTime = $("#opTime").val();
+					$.ajax({
+						url: url + 'basDeliveryStandard/findBasDeliveryStandards',
+						type: 'post',
+						async: false,
+						data: {
+							"basicFileNumber": basicFileNumber,
+							"name": name,
+							"syEmp.empName": empName,
+							"operationTime": operationTime
+						},
+						success: function(data) {
+							var da = data;
+							console.log(da);
+							fyy = da;
+							fyycount = da.length;
+							sxfy();
+						}
+					});
+				})
+			})
 
-//加载'table'模块
-layui.use('table', function(){
-  var table = layui.table;
-});
+			function all() {
+				$.ajax({
+					url: url + 'basicArchiveController/findBasicArchives',
+					type: 'post',
+					async: false,
+					dateType: 'json',
+					success: function(data) {
+						fyy = data;
+						fyycount = data.length;
+						sxfy();
+					}
+				});
+			}
 
-$(function(){
-	//显示、隐藏剩余的查询条件
-	$('#btnMore').click(function(){
-		$("#hQuery").toggle();
-	});
+			function sxfy() {
+				/* if(fyycount<5){
+					$("#demo1").hide();
+				} */
+				xxx.length = 0;
+				layui.use(['laypage', 'layer','form'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer,
+						form = layui.form;
+					//调用分页
+					laypage.render({
+						elem: 'demo1',
+						count: fyycount,
+						layout: ['prev', 'page', 'next', 'count'],
+						limit: 1,
+						jump: function(obj) {
+							//模拟渲染
+							document.getElementById('tbody').innerHTML = function() {
+								var arr = [],
+									thisData = fyy.concat()
+									.splice(obj.curr * obj.limit - obj.limit,
+										obj.limit);
+								layui.each(thisData, function(index, item) {
+									xxx.push(item);
+									arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
+										index + '></td><td>' +
+										(parseInt(index) + 1) + '</td><td>' +
+										item.basicFileNumber + '<input type="hidden" value=' + item.id + '></td><td>' +
+										item.name + '</td><td>' +
+										(item.grade == 0 ? "否" : "是") + '</td><td>' +
+										item.syEmp.empName + '</td><td>' +
+										item.syUnits.name + '</td><td>' +
+										item.operationTime + '</td><td>' +
+										item.remarks + '</td><td>' +
+										(item.grade == 0 ? '<button type="button" class="layui-btn layui-btn-disabled">查看列表</button>' :
+											'<th><button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button></th></tr>'));
+								});
 
-	//新增主信息
-	$('#opAdd').click(function(){
-		//页面层
-		layer.open({
-		  title: ['新增', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '360px'], //宽高
-		  content: 'basicArchives_add.html'
-		});
-	});
+								return arr.join('');
+							}();
+							form.render();
+						},
+						
+					});
 
-	//编辑
-	$('#opUpdate').click(function(){
-		//页面层
-		layer.open({
-		  title: ['编辑', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '360px'], //宽高
-		  content: 'basicArchives_add.html'
-		});
-	});
+				});
+			}
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#opTime' //指定元素
+				});
+			});
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				var form = layui.form;
+				form.on('checkbox(checkn)', function(data) {
+					if (data.elem.checked) {
+						$('input[name=check]').prop("checked", true);
+					} else {
+						$('input[name=check]').prop("checked", false);
+					}
+					form.render();
+				});
+				form.on('checkbox(check)', function(data) {
+					var bool = 1;
+					var child = $("input[name='check']");
+					for (var a = 0; a < child.length; a++) {
+						if (child[a].checked == false) {
+							bool = 2;
+							$('input[name=checkn]').prop("checked", false);
+							layui.form.render();
+							return;
+						}
 
-	//查看列表
-	$('#btnList').click(function(){
-		//页面层
-		layer.open({
-		  title: ['列表', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['980px', '440px'], //宽高
-		  content: 'basicArchives_list.html'
-		});
-	});
+					}
+					if (bool == 1) {
+						$('input[name=checkn]').prop("checked", true);
+						layui.form.render();
+					}
 
 
-	
-});
+				});
+			});
 
-</script>
+			//加载'table'模块
+			layui.use('table', function() {
+				var table = layui.table;
+			});
 
-</body>
+			$(function() {
+				//显示、隐藏剩余的查询条件
+				$('#btnMore').click(function() {
+					$("#hQuery").toggle();
+				});
+
+				//新增主信息
+				$('#opAdd').click(function() {
+					//页面层
+					layer.open({
+						title: ['新增', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['650px', '360px'], //宽高
+						content: 'basicArchives_add.html'
+					});
+				});
+
+				//编辑
+				$('#opUpdate').click(function() {
+					//页面层
+					layer.open({
+						title: ['编辑', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['650px', '360px'], //宽高
+						content: 'basicArchives_add.html'
+					});
+				});
+
+				//查看列表
+				$('#btnList').click(function() {
+					//页面层
+					layer.open({
+						title: ['列表', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['980px', '440px'], //宽高
+						content: 'basicArchives_list.html'
+					});
+				});
+
+
+
+			});
+		</script>
+
+	</body>
 </html>
