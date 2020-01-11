@@ -146,13 +146,31 @@
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
 		<script type="text/javascript" src="../js/xadmin.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			var fyy;
 			var fyycount;
 			var xxx = [];
 			var layer, layuiTable;
 			$(function() {
+				$.ajaxSetup({
+					dataType: "json",
+					cache: false,
+				    headers: {
+				        "Authorization": 'bos'+$.cookie('user')
+				    },
+				    xhrFields: {
+					    withCredentials: true
+				    } /* ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } */
+				}); 
 				all();
+				
 			})
 
 			function all() {
@@ -296,6 +314,7 @@
 				})
 				//新增
 				$('#opAdd').click(function() {
+					
 					//页面层
 					layer.open({
 						title: ['新增', 'color:#fff;background:#1da02b;'],
