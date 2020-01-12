@@ -87,7 +87,7 @@
 					<tr>
 						<td colspan="6">
 							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
+							<input name="close" value="取消" type="button" class="layui-btn layui-btn-primary"/>
 						</td>
 					</tr>
 					</tbody>
@@ -110,7 +110,10 @@
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 	layui.use('element', function(){
 		var element = layui.element;
-
+		$("input[name='close']").click(function(){
+			var index = parent.layer.getFrameIndex(window.name);
+			    parent.layer.close(index);
+		})
 		//…
 	});
 

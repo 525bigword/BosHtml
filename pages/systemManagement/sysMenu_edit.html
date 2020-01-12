@@ -1,84 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>栏目</title>
-	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-</head>
-<body>
-<div class="layui-form">
-	<div class="layui-tab layui-tab-brief">
-		<ul class="layui-tab-title">
-			<li class="layui-this">修改栏目</li>
-		</ul>
-		<div class="layui-tab-content" style="height: 100px;">
-			<div class="layui-tab-item layui-show">
-				<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-					<tbody>
-					<tr>
-						<td class="layui-bg-gray" width="20%">上级栏目</td>
-						<td width="30%">
-							<select name="city" lay-verify="">
-								<option value="">请选择</option>
-								<option value="1">无</option>
-								<option value="0">权限管理</option>
-							</select>
-						</td>
-						<td class="layui-bg-gray" width="20%">栏目名称</td>
-						<td width="30%">
-							<input type="text" name="title" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">栏目类型</td>
-						<td >
-							<input type="text" name="title" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
-						</td>
-						<td class="layui-bg-gray">栏目提示语</td>
-						<td>
-							<input type="text" name="title" placeholder="请输入栏目提示语" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">栏目地址</td>
-						<td colspan="3">
-							<input type="text" name="title" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td colspan="6">
-							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>栏目</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<div class="layui-form">
+			<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">修改栏目</li>
+				</ul>
+				<div class="layui-tab-content" style="height: 100px;">
+					<div class="layui-tab-item layui-show">
+						<table id="smalla" style="display: block;" class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+							<tbody>
+								<tr>
+									<td class="layui-bg-gray" width="20%">上级栏目</td>
+									<td width="30%">
+										<select name="city" id="sjlm" lay-verify="" lay-search>
+											<option value="0">请选择(顶级栏目)</option>
+										</select>
+									</td>
+									<td class="layui-bg-gray" width="20%">栏目名称</td>
+									<td width="30%">
+										<input type="text" name="lname" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">栏目类型</td>
+									<td>
+										<input type="text" name="ltype" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">所属模块</td>
+									<td>
+										<select name="city" id="mk" lay-verify="">
+											<option value="0">请选择</option>
+
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">栏目地址</td>
+									<td colspan="3">
+										<input type="text" name="lurl" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td colspan="6">
+										<center><button class="layui-btn" id="smallbtn" style="background: #1da02b;">确定</button>
+											<input type="button" name="close" value="取消" class="layui-btn layui-btn-primary" />
+											<span id="atext" style="color: red;"></span></center>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
 			</div>
 
 		</div>
-	</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script src="../js/xadmin.js"></script>
+		<script src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } */
+			});
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				var form = layui.form;
+				//加载栏目
+				$.ajax({
+					url: 'http://localhost:8089/jurisdiction/loadmenus',
+					//headers:{"appId":"appId","appKey":"appId","Content-Type":"text/plain;charset=UTF-8"},
+					type: 'get',
+					dataType: 'json',
+					sync: false,
+					success: function(data) {
+						console.log(data);
+						var loadmenus = data.SyMenusBypParentidTozero[0];
+						//console.log(loadmenus);
+						for (var i = 0; i < loadmenus.length; i++) {
+							/* $('#qx').append('<option value="0">请选择</option>'); */
+							$('#sjlm').append('<option value="' + loadmenus[i].id + '">' + loadmenus[i].text + '</option>');
+						}
+						form.render()
+					}
+				})
+				//加载模块
+				$.ajax({
+					url: url + 'jurisdiction/loadoptions',
+					type: 'get',
+					dataType: 'json',
+					headers: {
+						'Authorization': 'bos' + $.cookie('user')
+					},
+					sync: false,
+					success: function(data) {
+						console.log(data);
+						var loadoption = data.bigmenus[0];
+						console.log(loadoption);
+						for (var i = 0; i < loadoption.length; i++) {
+							$('#mk').append('<option value="' + loadoption[i].id + '">' + loadoption[i].bigmenus + '</option>');
+						}
+						form.render()
+					}
+				})
 
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">
+				function child(data) {
+					console.log(data);
+					$("#sjlm").val();
+				}
+			});
 
-	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
-
-	});
-
-	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-	layui.use('element', function(){
-		var element = layui.element;
-
-		//…
-	});
-
-</script>
-</body>
+			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+			layui.use('element', function() {
+				var element = layui.element;
+				$("input[name='close']").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				})
+				//…
+			});
+		</script>
+	</body>
 </html>
