@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>基础档案</title>
 		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../../layer/theme/default/layer.css" />
 		<link rel="stylesheet" type="text/css" href="../css/page.css">
 	</head>
 	<style>
@@ -44,8 +45,8 @@
 
 						<!-- 查询按钮组 -->
 						<div class="layui-inline">
-							<button type="button" class="layui-btn btnQuery">
-								<i class="layui-icon" id="chaxun">&#xe615;</i> 查询
+							<button type="button" class="layui-btn btnQuery" id="chaxun">
+								<i class="layui-icon">&#xe615;</i> 查询
 							</button>
 
 							<button type="button" class="layui-btn btnOther">
@@ -103,15 +104,15 @@
 						<thead>
 							<tr>
 								<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
-								<th>序号</th>
-								<th>基本档案编号</th>
-								<th>基本档案名称</th>
-								<th>档案是否分级</th>
-								<th>操作人员</th>
-								<th>操作单位</th>
-								<th>操作时间</th>
-								<th>备注</th>
-								<th>操作</th>
+								<th style="text-align: center;">序号</th>
+								<th style="text-align: center;">基本档案编号</th>
+								<th style="text-align: center;">基本档案名称</th>
+								<th style="text-align: center;">档案是否分级</th>
+								<th style="text-align: center;">操作人员</th>
+								<th style="text-align: center;">操作单位</th>
+								<th style="text-align: center;">操作时间</th>
+								<th style="text-align: center;">备注</th>
+								<th style="text-align: center;">操作</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
@@ -149,15 +150,28 @@
 				        }
 				    } 
 				}); */
-				all();
+				//初始化数据
+				$.ajax({
+					url: url + 'basicArchiveController/findBasicArchives',
+					type: 'post',
+					async: false,
+					dateType: 'json',
+					success: function(data) {
+						var da = data.BasicArchives[0];
+						fyy = da;
+						fyycount = da.length;
+						sxfy();
+					}
+				});
 				//查询
 				$("#chaxun").click(function() {
 					var basicFileNumber = $("#basicFileNumber").val();
 					var name = $("#name").val();
 					var empName = $("#empName").val();
 					var operationTime = $("#opTime").val();
+					console.log(basicFileNumber + " " + name + " " + empName + " " + operationTime);
 					$.ajax({
-						url: url + 'basDeliveryStandard/findBasDeliveryStandards',
+						url: url + 'basicArchiveController/findBasBasicArchivesByTerm',
 						type: 'post',
 						async: false,
 						data: {
@@ -167,36 +181,21 @@
 							"operationTime": operationTime
 						},
 						success: function(data) {
-							var da = data;
-							console.log(da);
-							fyy = da;
-							fyycount = da.length;
+							fyy = data;
+							fyycount = data.length;
 							sxfy();
 						}
 					});
 				})
 			})
 
-			function all() {
-				$.ajax({
-					url: url + 'basicArchiveController/findBasicArchives',
-					type: 'post',
-					async: false,
-					dateType: 'json',
-					success: function(data) {
-						fyy = data;
-						fyycount = data.length;
-						sxfy();
-					}
-				});
-			}
 
 			function sxfy() {
 				/* if(fyycount<5){
 					$("#demo1").hide();
 				} */
 				xxx.length = 0;
-				layui.use(['laypage', 'layer','form'], function() {
+				layui.use(['laypage', 'layer', 'form'], function() {
 					var laypage = layui.laypage,
 						layer = layui.layer,
 						form = layui.form;
@@ -205,7 +204,7 @@
 						elem: 'demo1',
 						count: fyycount,
 						layout: ['prev', 'page', 'next', 'count'],
-						limit: 1,
+						limit: 5,
 						jump: function(obj) {
 							//模拟渲染
 							document.getElementById('tbody').innerHTML = function() {
@@ -226,14 +225,14 @@
 										item.operationTime + '</td><td>' +
 										item.remarks + '</td><td>' +
 										(item.grade == 0 ? '<button type="button" class="layui-btn layui-btn-disabled">查看列表</button>' :
-											'<th><button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button></th></tr>'));
+											'<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button></td></tr>'));
 								});
 
 								return arr.join('');
 							}();
 							form.render();
 						},
-						
+
 					});
 
 				});
@@ -302,13 +301,32 @@
 
 				//编辑
 				$('#opUpdate').click(function() {
+					var a = $("input[name=check]:checked").length;
+					if (a == 0 || a > 1||a==null) {
+						layer.msg('请选中一行', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					var objects = $("input[name=check]:checked")[0].value;
+					var grade = xxx[objects];
+					console.log(grade);
 					//页面层
 					layer.open({
 						title: ['编辑', 'color:#fff;background:#1da02b;'],
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
 						area: ['650px', '360px'], //宽高
-						content: 'basicArchives_add.html'
+						content: 'basicArchives_add.html',
+						success: function(layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+								iframe.child(grade);
+						},
+						end: function() {
+							location.reload();
+						}
 					});
 				});
 

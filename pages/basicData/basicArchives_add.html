@@ -13,23 +13,23 @@
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">档案名称</td>
 		      	<td width="35%">
-      				<input type="text" name="title" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
+      				<input type="text" id="name" name="title" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">是否分级</td>
-		      	<td width="35%">
+		      	<td width="35%" id="aaa">
 					<input type="radio" name="del" value="1" title="是">
 					<input type="radio" name="del" value="0" title="否" checked>
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td>张三</td>
+		      	<td id="empName"></td>
 		      	<td class="layui-bg-gray">操作单位</td>
-		      	<td>总公司</td>
+		      	<td id="untis"></td>
 		    </tr>
 			<tr>
 		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td> 2017-10-23 16:17:10 </td>
+		      	<td id="time"></td>
 		      	<td class="layui-bg-gray"></td>
 		      	<td></td>
 		    </tr>
@@ -51,12 +51,30 @@
 	</form>
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/text/javascript" src="../js/bos.js"></script>
 	<script type="text/javascript">
-        
+        var basicFileNumber;
+		var grade=0;
+        function child(d) {
+			if(d!=null){
+				basicFileNumber=d.id;
+				$("#name").val(d.name);
+				grade=d.grade;
+				$("#empName").text(d.syEmp.empName);
+				$("#untis").text(d.syUnits.name);
+				$("#time").text(d.operationTime);
+				$("#remarks").val(d.remarks);
+				
+			}
+			layui.use('form', function(){
+			   var form=layui.form;
+			   $("input:radio[value="+grade+"]").prop('checked','true');
+			   form.render();
+			});
+        	
+        }
         //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-           
-        });
+        
       
     </script>
 </body> 
