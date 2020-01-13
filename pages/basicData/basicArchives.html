@@ -83,7 +83,7 @@
 						<div class="layui-inline">
 							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增主信息</button>
 							<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-							<button type="button" class="layui-btn layui-btn-small btnOther">取消</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" id="del">取消</button>
 						</div>
 					</div>
 
@@ -128,10 +128,10 @@
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../../layer/layer.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			var fyy;
 			var fyycount;
-			var xxx = [];
 			var layer, layuiTable;
 			$(function() {
 				/* $.ajaxSetup({
@@ -181,6 +181,7 @@
 							"operationTime": operationTime
 						},
 						success: function(data) {
+							
 							fyy = data;
 							fyycount = data.length;
 							sxfy();
@@ -188,13 +189,10 @@
 					});
 				})
 			})
-
-
 			function sxfy() {
 				/* if(fyycount<5){
 					$("#demo1").hide();
 				} */
-				xxx.length = 0;
 				layui.use(['laypage', 'layer', 'form'], function() {
 					var laypage = layui.laypage,
 						layer = layui.layer,
@@ -204,18 +202,20 @@
 						elem: 'demo1',
 						count: fyycount,
 						layout: ['prev', 'page', 'next', 'count'],
-						limit: 5,
+						limit: 4,
 						jump: function(obj) {
 							//模拟渲染
+							var page=$(".layui-laypage-em").next().html(); 
+							var inde=4;
+							console.log(page);
 							document.getElementById('tbody').innerHTML = function() {
 								var arr = [],
 									thisData = fyy.concat()
 									.splice(obj.curr * obj.limit - obj.limit,
 										obj.limit);
 								layui.each(thisData, function(index, item) {
-									xxx.push(item);
 									arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
-										index + '></td><td>' +
+										(page*4-inde) + '></td><td>' +
 										(parseInt(index) + 1) + '</td><td>' +
 										item.basicFileNumber + '<input type="hidden" value=' + item.id + '></td><td>' +
 										item.name + '</td><td>' +
@@ -223,9 +223,12 @@
 										item.syEmp.empName + '</td><td>' +
 										item.syUnits.name + '</td><td>' +
 										item.operationTime + '</td><td>' +
-										item.remarks + '</td><td>' +
+										(item.remarks!=null?item.remarks:"") + '</td><td>' +
 										(item.grade == 0 ? '<button type="button" class="layui-btn layui-btn-disabled">查看列表</button>' :
-											'<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button></td></tr>'));
+											'<button type="button" onclick="ckk()" class="layui-btn layui-btn-small btnQuery">查看列表</button></td></tr>'));
+									console.log(page*4-inde);
+									inde--;
+									
 								});
 
 								return arr.join('');
@@ -236,6 +239,8 @@
 					});
 
 				});
+				console.log(fyy);
+				
 			}
 			layui.use('laydate', function() {
 				var laydate = layui.laydate;
@@ -282,6 +287,22 @@
 			});
 
 			$(function() {
+				$.ajaxSetup({
+					dataType: "json",
+					cache: false,
+				    headers: {
+				        "Authorization": 'bos'+$.cookie('user')
+				    },
+				    xhrFields: {
+					    withCredentials: true
+				    } /* ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } */
+				}); 
 				//显示、隐藏剩余的查询条件
 				$('#btnMore').click(function() {
 					$("#hQuery").toggle();
@@ -295,7 +316,10 @@
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
 						area: ['650px', '360px'], //宽高
-						content: 'basicArchives_add.html'
+						content: 'basicArchives_add.html',
+						end: function() {
+						window.location.reload();
+					}
 					});
 				});
 
@@ -310,7 +334,7 @@
 						return;
 					}
 					var objects = $("input[name=check]:checked")[0].value;
-					var grade = xxx[objects];
+					var grade = fyy[objects];
 					console.log(grade);
 					//页面层
 					layer.open({
@@ -329,22 +353,60 @@
 						}
 					});
 				});
-
-				//查看列表
-				$('#btnList').click(function() {
-					//页面层
-					layer.open({
-						title: ['列表', 'color:#fff;background:#1da02b;'],
-						type: 2,
-						//skin: 'layui-layer-rim', //加上边框
-						area: ['980px', '440px'], //宽高
-						content: 'basicArchives_list.html'
+				$("#del").click(function(){
+					var a = $("input[name=check]:checked").length;
+					if (a == 0 || a > 1||a==null) {
+						layer.msg('请选中一行', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					var objects = $("input[name=check]:checked")[0].value;
+					var grade = fyy[objects];
+					if(grade.grade==1){
+						layer.msg('已分级不可取消', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					$.ajax({
+						url: url + 'basicArchiveController/delBasBasicArchivesById',
+						type: 'post',
+						async: false,
+						data: "id="+grade.id,
+						success: function(data) {
+							layer.msg('取消成功', {
+								icon: 1,
+								time: 800
+							});
+							window.location.reload();
+						}
 					});
-				});
-
-
+				})
+				
 
 			});
+			//查看列表
+			function ckk(){
+				//页面层
+				layer.open({
+					title: ['列表', 'color:#fff;background:#1da02b;'],
+					type: 2,
+					//skin: 'layui-layer-rim', //加上边框
+					area: ['980px', '440px'], //宽高
+					content: 'basicArchives_list.html',
+					success: function(layero, index) {
+						// 获取子页面的iframe
+						var iframe = window['layui-layer-iframe' + index];
+							iframe.child();
+					},
+					end: function() {
+						window.location.reload();
+					}
+				});
+			}
 		</script>
 
 	</body>

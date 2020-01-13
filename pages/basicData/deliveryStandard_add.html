@@ -87,8 +87,6 @@
 					dateType: 'json',
 					success: function(data) {
 						da=data;
-						console.log(da);
-						console.log(da.map.empName);
 						$("#empName").text(da.map.empName);
 						$("#unitName").text(da.map.syUnits.name);
 					}
