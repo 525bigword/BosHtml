@@ -25,14 +25,14 @@
 									</td>
 									<td class="layui-bg-gray" width="20%">栏目名称</td>
 									<td width="30%">
-										<input type="text" name="lname" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
+										<input type="text" name="menuname" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td class="layui-bg-gray">栏目类型</td>
 									<td>
-										<input type="text" name="ltype" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
+										<input type="text" name="menutype" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
 									</td>
 									<td class="layui-bg-gray">所属模块</td>
 									<td>
@@ -46,32 +46,90 @@
 								<tr>
 									<td class="layui-bg-gray">栏目地址</td>
 									<td colspan="3">
-										<input type="text" name="lurl" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
+										<input type="text" name="menuurl" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td colspan="6">
-										<center><button class="layui-btn" id="smallbtn" style="background: #1da02b;">确定</button>
+										<center><button class="layui-btn" id="smallbtn" onclick="update()" style="background: #1da02b;">确定</button>
 											<input type="button" name="close" value="取消" class="layui-btn layui-btn-primary" />
 											<span id="atext" style="color: red;"></span></center>
-
+										<input type="hidden" name="menusid" />
 									</td>
 								</tr>
+
 							</tbody>
 						</table>
+
 					</div>
 
 				</div>
 			</div>
 
 		</div>
+		<div id="hiddend"></div>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script src="../js/xadmin.js"></script>
 		<script src="../js/bos.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
+			var parentmenus;
+			var parentbigmenus;
+
+			$(function(){
+				
+			})
+			function update() {
+				var id = $("input[name='menusid']").val();
+				var menus = $("#sjlm option:selected").val();
+				var menuname = $("input[name='menuname']").val();
+				var menutype = $("input[name='menutype']").val();
+				var menuurl = $("input[name='menuurl']").val();
+				var bigmenus = $("#mk option:selected").val();
+				if (menuname != "" && menutype != "" && menuurl != "" && bigmenus > 0 && id > 0) {
+					$('#atext').text("");
+					$.ajax({
+						url: url + "jurisdiction/upmenus",
+						data: {
+							"id": id,
+							"parentID": menus,
+							"text": menuname,
+							"type": menutype,
+							"url": menuurl,
+							"bigmenus": bigmenus
+						},
+						type: 'post',
+						//async: true,
+						dataType:'json',
+						success: function(data) {
+							alert(data);
+							console.log(data);
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(index);
+							if(data=="success"){
+								
+							}
+							
+						}
+					})
+				} else {
+					$('#atext').text("请完善信息");
+				}
+			}
+
+			function child(data) {
+				console.log(data);
+				var form = layui.form;
+				parentbigmenus = data.bigmenus;
+				parentmenus = data.parentID;
+				$("input[name='menusid']").val(data.id);
+				$("input[name='menuname']").val(data.text);
+				$("input[name='menutype']").val(data.type);
+				$("input[name='menuurl']").val(data.url);
+				form.render();
+			}
 			$.ajaxSetup({
 				dataType: "json",
 				cache: false,
@@ -98,16 +156,15 @@
 					//headers:{"appId":"appId","appKey":"appId","Content-Type":"text/plain;charset=UTF-8"},
 					type: 'get',
 					dataType: 'json',
-					sync: false,
+					async: true,
 					success: function(data) {
-						console.log(data);
 						var loadmenus = data.SyMenusBypParentidTozero[0];
-						//console.log(loadmenus);
 						for (var i = 0; i < loadmenus.length; i++) {
 							/* $('#qx').append('<option value="0">请选择</option>'); */
 							$('#sjlm').append('<option value="' + loadmenus[i].id + '">' + loadmenus[i].text + '</option>');
 						}
-						form.render()
+						$('#sjlm').val(parentmenus);
+						form.render();
 					}
 				})
 				//加载模块
@@ -118,24 +175,23 @@
 					headers: {
 						'Authorization': 'bos' + $.cookie('user')
 					},
-					sync: false,
+					async: true,
 					success: function(data) {
-						console.log(data);
 						var loadoption = data.bigmenus[0];
 						console.log(loadoption);
 						for (var i = 0; i < loadoption.length; i++) {
 							$('#mk').append('<option value="' + loadoption[i].id + '">' + loadoption[i].bigmenus + '</option>');
 						}
-						form.render()
+						$('#mk').val(parentbigmenus);
+						form.render();
 					}
 				})
+				form.render();
+				//加载属性
+				//console.log(parentvalue)
 
-				function child(data) {
-					console.log(data);
-					$("#sjlm").val();
-				}
+
 			});
-
 			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 			layui.use('element', function() {
 				var element = layui.element;
@@ -143,6 +199,11 @@
 					var index = parent.layer.getFrameIndex(window.name);
 					parent.layer.close(index);
 				})
+				function close(){
+					var element1 = layui.element;
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				}
 				//…
 			});
 		</script>

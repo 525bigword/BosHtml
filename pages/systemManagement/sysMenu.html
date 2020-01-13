@@ -69,7 +69,7 @@
 								<th>栏目类型</th>
 								<th>栏目名称</th>
 								<th>栏目地址</th>
-								<th>栏目提示语</th>
+								<th>所属模块</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
@@ -91,7 +91,7 @@
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			var checkboxCount=0;
-			var vue;
+			var vue=[];
 			$(function() {
 				findemenu();
 			})
@@ -101,15 +101,16 @@
 			function findemenu() {
 				var tip = $('#sjlm option:selected').val();
 				var text = $("input[name='menuname']").val();
+				console.log(tip+text);
 				$.ajax({
 					url: url + 'jurisdiction/loadmenues',
 					type: 'get',
 					data: {
-						"parentid": tip,
+						"parentID": tip,
 						"text": text
 					},
 					dataType: 'json',
-					sync: false,
+					async:false,
 					success: function(data) {
 						var str
 						console.log(data)
@@ -129,7 +130,7 @@
 					url: 'http://localhost:8089/jurisdiction/loadmenus',
 					type: 'get',
 					dataType: 'json',
-					sync: false,
+					async:true,
 					success: function(data) {
 						//console.log(data);
 						var loadmenus = data.SyMenusBypParentidTozero[0];
@@ -150,10 +151,12 @@
 						 if(child[i].checked==false){				
 							 $("input[name='checkn']").prop("checked",false);
 						 }else{
-							 vue=$("input[name='checkn']");
 							 checkboxCount++;
 						 }
 					}
+					/* if(checkboxCount==1){
+						vue=this;
+					} */
 					/* if(child.is(":checked")){
 						
 					}else{
@@ -165,7 +168,6 @@
 					var bool = 1;
 					var part = $("input[name='checkn']");
 					var child = $("input[name='check']");
-					console.log(child);
 					$('input[name=check]').prop("checked", part.is(":checked"));
 					layui.form.render();
 				});
@@ -175,6 +177,7 @@
 					$.ajaxSetup({
 						dataType: "json",
 						cache: false,
+						async:true,
 						headers: {
 							"Authorization": 'bos' + $.cookie('user')
 						},
@@ -183,13 +186,35 @@
 						}
 						/* ,
 					    complete: function(xhr) {
+							
 					        //token过期，则跳转到登录页面
 					        if(xhr.responseJSON.code == 401){
 					            parent.location.href = baseURL + 'login.html';
 					        }
 					    } */
 					});
-
+					$("#opDelete").click(function(){
+						 var ids=[];
+						 var i=0;
+						$("input:checkbox[name=check]:checked").each(function(){
+							ids[i]=this.id;
+							i++;
+						});
+						console.log(ids);
+						$.ajax({
+							url:url+"jurisdiction/delmenus",
+							type:'post',
+							async:true,
+							data:{"ids":ids},
+							success:function(data){
+								console.log(data);
+								if(data=="SUCCESS"){
+									findemenu()
+								}
+							}
+						})
+						
+					})
 				})
 			});
 
@@ -210,14 +235,16 @@
 						jump: function(obj) {
 							//模拟渲染
 							document.getElementById('tbody').innerHTML = function() {
+								vue=[];
 								var arr = [],
 									thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
 								layui.each(thisData, function(index, item) {
-									arr.push('<tr><td>' + '<input type="checkbox" lay-filter="check" value=' + item.id +
-										' name="check" lay-skin="primary">' +
+									
+									vue.push(item);
+									arr.push('<tr><td>' + '<input type="checkbox" lay-filter="check" id='+(item.id)+' value='+index+' name="check" lay-skin="primary">' +
 										'</td><td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' + (item.parentname == null ? "无" :
 											item.parentname) + '</td><td>' + item.type + '</td><td>' + item.text + '</td><td>' + item.url +
-										'</td><td>' + item.text + '</td></tr>');
+										'</td><td>' + item.bigmenusname + '</td></tr>');
 								});
 								return arr.join('');
 							}();
@@ -260,7 +287,10 @@
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
 						area: ['690px', '350px'], //宽高
-						content: 'sysMenu_add.html'
+						content: 'sysMenu_add.html',
+						end:function(){
+							findemenu();
+						}
 					});
 				});
 
@@ -290,8 +320,12 @@
 								// 获取子页面的iframe
 								var iframe = window['layui-layer-iframe' + index];
 								// 向子页面的全局函数child传参
-								iframe.child(grade);
+								var check=$("input[name='check']:checked").val();
+								iframe.child(vue[check]);
 							},
+							end:function(){
+								findemenu();
+							}
 						});
 					}
 				});
