@@ -90,6 +90,25 @@
 		<script type="text/javascript" src="../js/xadmin.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
 			var checkboxCount=0;
 			var vue=[];
 			$(function() {
@@ -154,14 +173,6 @@
 							 checkboxCount++;
 						 }
 					}
-					/* if(checkboxCount==1){
-						vue=this;
-					} */
-					/* if(child.is(":checked")){
-						
-					}else{
-						$("input[name='checkn']").prop("checked", false);
-					} */
 					layui.form.render();
 				}); 
 				form.on('checkbox(checkn)', function(data) {
@@ -174,25 +185,10 @@
 
 
 				$(function() {
-					$.ajaxSetup({
-						dataType: "json",
-						cache: false,
-						async:true,
-						headers: {
-							"Authorization": 'bos' + $.cookie('user')
-						},
-						xhrFields: {
-							withCredentials: true
-						}
-						/* ,
-					    complete: function(xhr) {
-							
-					        //token过期，则跳转到登录页面
-					        if(xhr.responseJSON.code == 401){
-					            parent.location.href = baseURL + 'login.html';
-					        }
-					    } */
-					});
+					
+					$("#page").click(function(){
+						
+					})
 					$("#opDelete").click(function(){
 						 var ids=[];
 						 var i=0;
@@ -222,7 +218,7 @@
 				layui.use(['laypage', 'layer'], function() {
 					var laypage = layui.laypage,
 						layer = layui.layer; //测试数据
-
+					var form = layui.form;
 					//调用分页
 					laypage.render({
 						elem: 'page',
@@ -248,6 +244,7 @@
 								});
 								return arr.join('');
 							}();
+							form.render();
 						}
 					});
 
