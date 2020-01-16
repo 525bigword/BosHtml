@@ -139,7 +139,7 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="checkn" lay-skin="primary"></th>
+				    	<th><input type="checkbox" name="checkn" lay-filter="checkn" lay-skin="primary"></th>
 				    	<th>序号</th>
 				      	<th>入库单号</th>
 				      	<th>入库类型</th>
@@ -304,20 +304,59 @@ $(function(){
 			type: 2,
 			//skin: 'layui-layer-rim', //加上边框
 			area: ['660px', '400px'], //宽高
-			content: 'warehousingManagement_add.html'
+			content: 'warehousingManagement_add.html',
+			end:function(){
+	 			/* alert('怀化'); */
+				 setTimeout("location.reload();", 1000);
+	 			  
+	 			  
+	 		}
 		});
 	});
 
 	//修改
 	$('#opEdit').click(function(){
+		var objects=$("input[name=check]");
+		
+		var flag=0;
+		var arr=[];
+		for(var i=0;i<objects.length;i++){
+			if(objects[i].checked==true){
+				arr.push(objects[i].value)
+				flag++;
+			}
+			
+		}
+		if(flag>1){
+			layer.alert('不支持修改多个');
+			return;
+		} 
+		else if(flag<1){
+			layer.msg('请选择需要修改的包装材料');
+			return;
+		}
+		var id=arr;
 		//页面层
 		layer.open({
 			title: ['修改', 'color:#fff;background:#1da02b;'],
 			type: 2,
 			//skin: 'layui-layer-rim', //加上边框
-			area: ['660px', '400px'], //宽高
-			content: 'warehousingManagement_add.html'
+			area: ['950px', '380px'], //宽高
+			content: 'warehousingManagement_edit.html?id='+id,
+			end:function(){
+				setTimeout("location.reload();", 1000);
+			},
+			success: function(layero, index) {
+			  			//向iframe页的id=house的元素传值  // 参考 https://yq.aliyun.com/ziliao/133150
+			  			/* var body = layer.getChildFrame('body', index);
+			  			body.contents().find("#dataId").val(id); */
+			  			console.log(id);
+			  		},
+			  		error: function(layero, index) {
+			  			console.log('异常错误');
+			  		}
 		});
+
 	});
 
 	//查看列表
@@ -328,7 +367,13 @@ $(function(){
 			type: 2,
 			//skin: 'layui-layer-rim', //加上边框
 			area: ['980px', '440px'], //宽高
-			content: 'warehousingManagement_list.html'
+			content: 'warehousingManagement_list.html',
+			end:function(){
+	 			/* alert('怀化'); */
+				 setTimeout("location.reload();", 1000);
+	 			  
+	 			  
+	 		}
 		});
 	});
 

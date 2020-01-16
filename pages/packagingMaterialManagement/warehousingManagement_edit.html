@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="layui-form">
-	<form class="layui-form" action="/pacpackaging/addpacStock" lay-filter="example">
+	<form class="layui-form" action="/pacpackaging/updatePacStock" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
@@ -20,6 +20,7 @@
 			</td>
 			<td class="layui-bg-gray" width="17%">运输单号</td>
 			<td width="33%">
+					<input type="hidden" id='dataId' name='id'  />
 				<input type="text" name="transport" readonly="readonly" lay-verify="transport" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
@@ -51,7 +52,7 @@
 		</tr>
 		<tr>
 			<td colspan="6">
-				<button class="layui-btn" style="background: #1da02b;" lay-submit lay-filter="add">确定</button>
+				<button class="layui-btn" style="background: #1da02b;" lay-submit lay-filter="update">确定</button>
 				<button type="button" class="layui-btn layui-btn-primary" lay-submit lay-filter="quxiao">取消</button>
 			</td>
 		</tr>
@@ -71,6 +72,13 @@
 		 laypage=layui.laypage,
 		 element=layui.element
 		 var $ = layui.$;
+		 var rid = getQueryString("id");
+		 function getQueryString(name) {
+		     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		     var r = window.location.search.substr(1).match(reg);
+		     if (r != null) return r[2];
+		     return null;
+		 }
 		 function getNow(s) {
 		 return s < 10 ? '0' + s: s;
 		 }
@@ -103,27 +111,53 @@
   		 		 form.render()
   		 	}
   		 });
+		 Date.prototype.format = function(fmt) {
+		      var o = { 
+		         "M+" : this.getMonth()+1,                 //月份 
+		         "d+" : this.getDate(),                    //日 
+		         "h+" : this.getHours(),                   //小时 
+		         "m+" : this.getMinutes(),                 //分 
+		         "s+" : this.getSeconds(),                 //秒 
+		         "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+		         "S"  : this.getMilliseconds()             //毫秒 
+		     }; 
+		     if(/(y+)/.test(fmt)) {
+		             fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+		     }
+		      for(var k in o) {
+		         if(new RegExp("("+ k +")").test(fmt)){
+		              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+		          }
+		      }
+		     return fmt; 
+		 }
 		 $.ajax({
-		 			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
+		 			url:'http://localhost:8089/pacpackaging/queryOnebyid',
 		 			type:'get',
 		 			dataType : 'json',
 		 			async : true,
+					data:{"id":rid},
 		 			success:function(res){
+						var date=new Date(res.drawerTime).format("yyyy/MM/dd hh:mm:ss");
+						alert(res.pacGetBoundType.getBoundType);
+						$('#lx').find('option[value="'+res.pacGetBoundType.pacGetid+'"]').prop('selected',true);//选中value=""的option
+						$("#dataId").val(rid); 
 		 				form.val('example', {
-							"subordinateUnit":"长沙分部",
-		 					  "transport": res,
-		 					  "drawerNo":"007",
-		 					  "drawerName":"邬童",
-		 					  "drawerTime":now
+							"subordinateUnit":res.syUnits.name,
+		 					  "transport": res.transport,
+		 					  "drawerNo":res.drawerNo,
+		 					  "drawerName":res.drawerName,
+		 					  "drawerTime":date,
+							  "remark":res.remark
 		 				});
 		 			}
 		 		})
-		 form.on('submit(add)', function(data){
+		 form.on('submit(update)', function(data){
 		   console.log(data.elem); //被执行事件的元素DOM对象，一般为button对象
 		  /* console.log(data.form);//被执行提交的form对象，一般在存在form标签时才会返回
 		   console.log(data.field); *///当前容器的全部表单字段，名值对形式：{name: value}
 		   
-		         layer.alert("新增成功", {icon: 6},function () {
+		         layer.alert("修改成功", {icon: 6},function () {
 		             // 获得frame索引
 		             var index = parent.layer.getFrameIndex(window.name);
 		             //关闭当前frame
