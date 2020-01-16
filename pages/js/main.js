@@ -1,3 +1,20 @@
+		var men;
+function user(){
+			$.ajax({
+				url:url+"jurisdiction/parsetoken",
+				type:'get',
+				async:true,
+				success:function(data){
+					if(data=="SUCCESS"){
+						console.log(data);
+						for(var i=0;i<data.map.sybigmenus.bigmenus[0].length;i++){
+							men+="title:"+data.map.sybigmenus.bigmenus[0][i].bigmenus
+						}
+						console.log(men);
+					}
+				}
+			})
+		}
 var mainPlatform = {
 
 	init: function(){
@@ -8,6 +25,8 @@ var mainPlatform = {
 
 	bindEvent: function(){
 		var self = this;
+
+		
 		// 顶部大菜单单击事件
 		$(document).on('click', '.pf-nav-item', function() {
             $('.pf-nav-item').removeClass('current');

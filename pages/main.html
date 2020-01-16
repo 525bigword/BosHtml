@@ -42,7 +42,7 @@
                 <div class="pf-user-panel">
                     <ul class="pf-user-opt">
                         <li>
-                            <a href="javascript:;">
+                            <a onclick="user()" href="javascript:;">
                                 <i class="iconfont">&#xe60d;</i>
                                 <span class="pf-opt-name">用户信息</span>
                             </a>
@@ -186,6 +186,8 @@
     <script type="text/javascript" src="../custom/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/bos.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="../layer/layer.js"></script>
 	<script type="text/javascript" src="../layui/layui.js"></script>
     <!--[if IE 7]>
@@ -196,9 +198,69 @@
         
       </script>
     <![endif]-->  
-
+	
     
     <script type="text/javascript">
+		function user(){
+					$.ajax({
+						url:url+"jurisdiction/parsetoken",
+						type:'get',
+						async:true,
+						success:function(data){
+							var men="[{";
+							var id;
+								console.log(data);
+								//打印顶部的大模块信息
+								for(var i=0;i<data.map.o.length;i++){
+									id=data.map.o[i].id;
+									men+="title:"+data.map.o[i].bigmenus+","+"icon:"+data.map.o[i].icon+"isCurrent: true,menu: [";
+									//data.map.syEmps.syRolesMenus[j].menuNames[0].text
+									//打印父级栏目
+									for(var j=0;j<data.map.syEmps.syRolesMenus.length;j++){
+										if(data.map.syEmps.syRolesMenus[j].menuNames[0].bigmenus==id&&data.map.syEmps.syRolesMenus[j].menuNames[0].parentID==0){
+											var parentid=data.map.syEmps.syRolesMenus[j].menuNames[0].id;
+											men+="{title:"+data.map.syEmps.syRolesMenus[j].menuNames[0].text+",icon:"+data.map.syEmps.syRolesMenus[j].menuNames[0].icon+",href:"+data.map.syEmps.syRolesMenus[j].menuNames[0].url+",isCurrent: true,children: [";
+											//打印子模块
+											 for(var j=0;j<data.map.syEmps.syRolesMenus.length;j++){
+												 console.log(data.map.syEmps.syRolesMenus[j].menuNames[0].parentID);
+												 console.log(parentid)
+												if(data.map.syEmps.syRolesMenus[j].menuNames[0].parentID==parentid){
+													console.log(data.map.syEmps.syRolesMenus[j].menuNames[0].parentID);
+													men+="{title:"+data.map.syEmps.syRolesMenus[j].menuNames[0].text+",href:"+data.map.syEmps.syRolesMenus[j].menuNames[0].url+"},";
+												}
+											}
+											men+="]";
+											men+="}"; 
+										}
+									}
+									men+="]";
+								}
+								console.log(men);
+						}
+					})
+				}
+		$(function(){
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
+			user();
+		})
     // $('.easyui-tabs1').tabs({
     //   tabHeight: 44,
     //   onSelect:function(title,index){
