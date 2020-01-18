@@ -180,7 +180,26 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">
+<script src="../js/jquery.cookie.js"></script>
+<script type="text/javascript">$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
 
