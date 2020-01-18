@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
+<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
 <body>
 <!-- 外部整体 -->
 <div class="external">
@@ -20,41 +28,35 @@
 			<div class="layui-form-item">
 
 				<div class="layui-inline">
-				    <label class="layui-form-label">线路名称:</label>
+				    <label class="layui-form-label">线路类型:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">全部</option>
+				     	<select name="city" id="city"  lay-verify="required">
+				        	<option value="0" selected="selected">全部</option>
 				        	<option value="1">干线</option>
 				        	<option value="2">周边</option>
 				        	<option value="3">省内</option>
 				        	<option value="4">临时</option>
-				        	<option value="4">市内</option>
+				        	<option value="5">市内</option>
 				      	</select>
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
-				    <label class="layui-form-label" >线路类型:</label>
+				    <label class="layui-form-label" >线路名称:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">线路名称</option>
-				        	<option value="1">线路名称</option>
-				        	<option value="2">线路名称</option>
-				        	<option value="3">线路名称</option>
-				        	<option value="4">线路名称</option>
+				     	<select id="select" name="xianlu" lay-verify="required">
+							<option value="0" selected="selected">请选择</option>
 				      	</select>
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button id="chaxun" type="button" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button id="rest" type="button" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -105,12 +107,12 @@
 				<colgroup>
 					<col width="50">
 				    <col width="60">
-				    <col width="87">
+				    <col width="77">
 				    <col width="87">
 				    <col width="98">
-				    <col width="80">
+				    <col width="90">
 				    <col width="60">
-				    <col width="60">
+				    <col width="77">
 				    <col width="40">
 				    <col width="60">
 				    <col width="90">
@@ -119,114 +121,25 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>线路类型</th>
-				      	<th>线路名称</th>
-				      	<th>车牌号</th>
-					  	<th>承运商</th>
-					  	<th>车型</th>
-					  	<th>司机</th>
-					  	<th>电话</th>
-					  	<th>吨控</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
+				    	<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+				    	<th style="text-align: center;">序号</th>
+				      	<th style="text-align: center;">线路类型</th>
+				      	<th style="text-align: center;">线路名称</th>
+				      	<th style="text-align: center;">车牌号</th>
+					  	<th style="text-align: center;">承运商</th>
+					  	<th style="text-align: center;">车型</th>
+					  	<th style="text-align: center;">司机</th>
+					  	<th style="text-align: center;">电话</th>
+					  	<th style="text-align: center;">吨控</th>
+					  	<th style="text-align: center;">操作人员</th>
+					  	<th style="text-align: center;">操作单位</th>
+					  	<th style="text-align: center;">操作时间</th>
 				    </tr> 
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>全部</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10001</td>
-				      	<td>宅急送</td>
-				      	<td>微型</td>
-						<td>老王</td>
-						<td>18612345678</td>
-						<td>1.8</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>干线</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10002</td>
-				      	<td>宅急送</td>
-				      	<td>中型</td>
-						<td>老李</td>
-						<td>18612345678</td>
-						<td>6</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>全部</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10001</td>
-				      	<td>宅急送</td>
-				      	<td>微型</td>
-						<td>老王</td>
-						<td>18612345678</td>
-						<td>1.8</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>干线</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10002</td>
-				      	<td>宅急送</td>
-				      	<td>中型</td>
-						<td>老李</td>
-						<td>18612345678</td>
-						<td>6</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>全部</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10001</td>
-				      	<td>宅急送</td>
-				      	<td>微型</td>
-						<td>老王</td>
-						<td>18612345678</td>
-						<td>1.8</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>干线</td>
-				      	<td>线路名称</td>
-				      	<td>湘A10002</td>
-				      	<td>宅急送</td>
-				      	<td>中型</td>
-						<td>老李</td>
-						<td>18612345678</td>
-						<td>6</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
+			  	<tbody id="tbody">
 			  	</tbody>
 			</table>
+			<div id="demo1" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
@@ -234,16 +147,138 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../js/bos.js"></script>
+<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">     
+	var fyy;
+	var fyycount;
+	var layer, layuiTable;
+	$(function(){
+		$.ajaxSetup({
+			dataType: "json",
+			cache: false,
+		    headers: {
+		        "Authorization": 'bos'+$.cookie('user')
+		    },
+		    xhrFields: {
+			    withCredentials: true
+		    } /* ,
+		    complete: function(xhr) {
+		        //token过期，则跳转到登录页面
+		        if(xhr.responseJSON.code == 401){
+		            parent.location.href = baseURL + 'login.html';
+		        }
+		    } */
+		});
+		//初始化数据
+		$.ajax({
+			url: url + 'basShuttleBusController/findBasShuttleBus',
+			type: 'post',
+			async: false,
+			dateType: 'json',
+			success: function(data) {
+				var da = data.BasShuttleBus[0];
+				fyy = da;
+				console.log(fyy);
+				fyycount = da.length;
+				sxfy();
+				for(var i=0;i<fyy.length;i++){
+					$("#select").append('<option value="'+da[i].logLogistics.id+'">'+da[i].logLogistics.lineName+'</option>');
+				}
+			}
+		});
+		$("#city").click(function(){
+			console.log(1111111);
+		})
+		$("#chaxun").click(function(){
+			
+		})
+		$("#rest").click(function() {
+			$(".layui-input").val("");
+		})
+	})
+	
+	function sxfy() {
+		/* if(fyycount<5){
+			$("#demo1").hide();
+		} */
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer,
+				form = layui.form;
+			//调用分页
+			laypage.render({
+				elem: 'demo1',
+				count: fyycount,
+				layout: ['prev', 'page', 'next', 'count'],
+				limit: 4,
+				jump: function(obj) {
+					//模拟渲染
+					var page=$(".layui-laypage-em").next().html(); 
+					var inde=4;
+					document.getElementById('tbody').innerHTML = function() {
+						var arr = [],
+							thisData = fyy.concat()
+							.splice(obj.curr * obj.limit - obj.limit,
+								obj.limit);
+						layui.each(thisData, function(index, item) {
+							arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
+								(page*4-inde) + '></td><td>' +
+								(parseInt(index) + 1) + '</td><td>' +
+								(item.lineType==1?"干线":(item.lineType==2?"周边":(item.lineType==3?"省内":(item.lineType==4?"临时":"市内")))) + '</td><td>' +
+								item.logLogistics.lineName + '</td><td>' +
+								item.licensePlateInt + '</td><td>' +
+								item.carrier + '</td><td>' +
+								item.models + '</td><td>' +
+								item.driver + '</td><td>' +
+								item.telephone + '</td><td>' +
+								item.ton + '</td><td>' +
+								item.syEmp.empName + '</td><td>' +
+								item.syUnits.name + '</td><td>' +
+								item.operationTime + '</td></tr>');
+							console.log(page*4-inde);
+							inde--;
+						});
+	
+						return arr.join('');
+					}();
+					form.render();
+				}
+			});
+			
+		});
+	}
 //加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
-
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+			layui.use('form', function() {
+				var form = layui.form;
+				form.on('checkbox(checkn)', function(data) {
+					if (data.elem.checked) {
+						$('input[name=check]').prop("checked", true);
+					} else {
+						$('input[name=check]').prop("checked", false);
+					}
+					form.render();
+				});
+				form.on('checkbox(check)', function(data) {
+					var bool = 1;
+					var child = $("input[name='check']");
+					for (var a = 0; a < child.length; a++) {
+						if (child[a].checked == false) {
+							bool = 2;
+							$('input[name=checkn]').prop("checked", false);
+							layui.form.render();
+							return;
+						}
+				
+					}
+					if (bool == 1) {
+						$('input[name=checkn]').prop("checked", true);
+						layui.form.render();
+					}
+				
+				
+				});
+			});
 
 //加载'laydate'时间组件
 layui.use('laydate', function(){
