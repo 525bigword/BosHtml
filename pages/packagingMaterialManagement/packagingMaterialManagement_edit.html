@@ -71,10 +71,47 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript">
+	$.ajaxSetup({
+		dataType: "json",
+		cache: false,
+		async:true,
+		headers: {
+			"Authorization": 'bos' + $.cookie('user')
+		},
+		xhrFields: {
+			withCredentials: true
+		}
+		/* ,
+	    complete: function(xhr) {
+			
+	        //token过期，则跳转到登录页面
+	        if(xhr.responseJSON.code == 401){
+	            parent.location.href = baseURL + 'login.html';
+	        }
+	    } */
+	});
 	var rid = getQueryString("id");
 	function getQueryString(name) {
 	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	    var r = window.location.search.substr(1).match(reg);
+	    var r = window.location.search$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});.substr(1).match(reg);
 	    if (r != null) return r[2];
 	    return null;
 	}
