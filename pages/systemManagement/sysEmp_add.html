@@ -19,7 +19,7 @@
 								<tr>
 									<td class="layui-bg-gray" width="20%">员工姓名</td>
 									<td width="30%">
-										<input type="text" name="title" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
+										<input type="text" name="empname" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
 									</td>
 									<td class="layui-bg-gray" width="20%">角色</td>
 									<td width="30%">
@@ -32,59 +32,57 @@
 								<tr>
 									<td class="layui-bg-gray">密码</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入密码" autocomplete="off" class="layui-input">
+										<input  name="emppassword" placeholder="请输入密码" autocomplete="off" class="layui-input">
 									</td>
 									<td class="layui-bg-gray">确认密码</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
+										<input  name="emppasswordtoo" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td class="layui-bg-gray">查台密码</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
+										<input  name="chapassword" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
 									</td>
 									<td class="layui-bg-gray">确认查台密码</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
+										<input  name="chapasswordtoo" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td class="layui-bg-gray">是否可用</td>
 									<td>
-										<select name="city" lay-verify="">
+										<select name="city" id="yesrono" lay-verify="">
 											<option value="">请选择</option>
-											<option value="1">是</option>
-											<option value="0">否</option>
+											<option value="0">是</option>
+											<option value="1">否</option>
 										</select>
 									</td>
 									<td class="layui-bg-gray">工号</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入工号" autocomplete="off" class="layui-input">
+										<input readonly="readonly" type="password" name="gh" placeholder="请输入工号" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td class="layui-bg-gray">所属单位</td>
 									<td>
-										<select name="city" lay-verify="">
-											<option value="">请选择</option>
-											<option value="1">单位1</option>
-											<option value="2">单位2</option>
+										<select name="city" id="dw" lay-verify="">
 										</select>
 									</td>
 									<td class="layui-bg-gray">备注</td>
 									<td>
-										<input type="password" name="title" placeholder="请输入备注" autocomplete="off" class="layui-input">
+										<input type="password" name="comment" placeholder="请输入备注" autocomplete="off" class="layui-input">
 									</td>
 								</tr>
 
 								<tr>
 									<td colspan="6">
-										<button class="layui-btn" style="background: #1da02b;">确定</button>
+										<button onclick="addEmp()" class="layui-btn" style="background: #1da02b;">确定</button>
 										<input type="button" class="layui-btn layui-btn-primary" name="close" value="取消"/>
+										<span id="ts" style="color: red;"></span>
 									</td>
 								</tr>
 							</tbody>
@@ -121,20 +119,73 @@
 			        }
 			    } */
 			});
-			
+			function addEmp(){
+				var empname=$("input[name='empname']").val();
+				var role=$("#role option:selected").val();
+				var emppassword=$("input[name='emppassword']").val();
+				var emppasswordtoo=$("input[name='emppasswordtoo']").val();
+				var chapassword=$("input[name='chapassword']").val();
+				var chapasswordtoo=$("input[name='chapasswordtoo']").val();
+				var yesorno=$("#yesrono option:selected").val();
+				var gh=$("input[name='gh']").val();
+				var dw=$("#dw option:selected").val();
+				var comment=$("input[name='comment']").val();
+				if(empname==""||role==0||emppassword==""||emppasswordtoo==""||chapassword==""||chapasswordtoo==""||yesorno==""||gh==""||dw=="") {
+					layer.msg("请将信息填写完整",{
+						icon:2,
+						time:1000
+					})
+				}else if(emppassword!=emppasswordtoo){
+					layer.msg("请确认两次密码填写一致",{
+						icon:2,
+						time:1000
+					})
+				}else if(chapassword!=chapasswordtoo){
+					layer.msg("请确认两次查台密码填写一致",{
+						icon:2,
+						time:1000
+					})
+				}else{
+					 $.ajax({
+						url:url+"jurisdiction/addemp",
+						type:'post',
+						dataType:'json',
+						data:{"empName":empname,"roleid":role,"empNo":gh,"pwd":emppassword,"queryPwd":chapassword,"empunit":dw,"remark":comment,"disabled":yesorno},
+						success:function(data){
+							
+						}
+					})
+					 var index = parent.layer.getFrameIndex(window.name);
+					 parent.layer.close(index);
+				}
+				
+				 
+			}
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 				var form = layui.form;
+				$("input[name='gh']").val(getingDate());
+				//加载角色下拉框
 				$.ajax({
 					url:url+"jurisdiction/findrole",
 					type:'get',
-					dataType:'json',
 					data:{"roleName":""},
 					success:function(data){
 						console.log(data);
 						for(var i=0;i<data.length;i++){
 							$("#role").append('<option value='+data[i].id+'>'+data[i].roleName+'</option>');
 						}
+						form.render();
+					}
+				});
+				//加载单位
+				$.ajax({
+					url:url+"jurisdiction/parsetoken",
+					type:'get',
+					dataType:'json',
+					success:function(data){
+						console.log(data);
+						$("#dw").append('<option value='+data.map.syEmps.syUnits.id+'>'+data.map.syEmps.syUnits.name+'</option>');
 						form.render();
 					}
 				})
