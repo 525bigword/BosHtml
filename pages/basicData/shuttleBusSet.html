@@ -185,11 +185,19 @@
 						layui.use('form', function() {
 							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 							$("#select").append('<option value="">请选择</option>');
+							var ty=$("#city").val();
 							for (var i = 0; i < fyy.length; i++) {
+								if(ty==fyy[i].lineType){
 								$("#select").append('<option value="' + da[i].logLogistics.id + '">' + da[i].logLogistics.lineName +
 									'</option>');
+									}
 							}
-
+							 $("#select option").each(function () {
+							 								var text = $(this).text();
+							 								if ($("#select option:contains('" + text + "')").length > 1){
+							 									$("#select option:contains('" + text + "'):gt(0)").remove();
+							 									}
+							 								})
 							form.render();
 						});
 					}
@@ -223,7 +231,7 @@
 					$(".layui-input").val("");
 				})
 			})
-
+			
 			function sxfy() {
 				/* if(fyycount<5){
 					$("#demo1").hide();
@@ -319,6 +327,12 @@
 						}
 						
 					}
+					$("#select option").each(function () {
+													var text = $(this).text();
+													if ($("#select option:contains('" + text + "')").length > 1){
+														$("#select option:contains('" + text + "'):gt(0)").remove();
+														}
+													})
 					form.render();
 				})
 			});
@@ -346,7 +360,16 @@
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
 						area: ['650px', '430px'], //宽高
-						content: 'shuttleBusSet_add.html'
+						content: 'shuttleBusSet_add.html',
+						success: function(layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.child(fyy,null);
+						},
+						end: function() {
+							location.reload();
+						}
 					});
 				});
 

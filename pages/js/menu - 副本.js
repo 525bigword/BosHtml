@@ -34,7 +34,7 @@ var SystemMenu = [{
 			title: '班车设置',
 			href: 'basicData/shuttleBusSet.html'
 		},{
-			title: '取派员设置',
+			title: '取派设置',
 			href: 'basicData/dispatchingPersonnelSet.html'
 		},{
 			title: '区域设置',

@@ -82,6 +82,7 @@
 	<script type="text/javascript">
 		var da;
 		var id;
+		var adminD;
 		function child(pagedate,d) {
 			da=pagedate;
 			if(d!=null){
@@ -105,15 +106,25 @@
 								'</option>');
 						}
 					}
+					$("#select option").each(function () {
+													var text = $(this).text();
+													if ($("#select option:contains('" + text + "')").length > 1){
+														$("#select option:contains('" + text + "'):gt(0)").remove();
+														}
+													})
 					$("#select").val(d.logLogistics.id);
 					form.render();
 				});
 			}else{
 				layui.use('form', function() {
 					var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+					var ty=$("#city").val();
 						for (var i = 0; i < da.length; i++) {
-							$("#select").append('<option value="' + da[i].logLogistics.id + '">' + da[i].logLogistics.lineName +
-								'</option>');
+							if(ty==da[i].lineType){
+								$("#select").append('<option value="' + da[i].logLogistics.id + '">' + da[i].logLogistics.lineName +
+									'</option>');
+							}
+							
 						}
 					form.render();
 				});
@@ -138,6 +149,18 @@
 			    }
 			} */
 				});
+				$.ajax({
+					url: url+'jurisdiction/parsetoken',
+					type: 'get',
+					header:{
+						"Authorization": 'bos'+$.cookie('user')
+					},
+					async: false,
+					dateType: 'json',
+					success: function(data) {
+						adminD=data;
+					}
+				});
 				$("#baocun").click(function(){
 					var city=$("#city").val();
 					var select=$("#select").val();
@@ -150,6 +173,14 @@
 					var remarks=$("#remarks").val();
 					if(licensePlateInt==null||licensePlateInt==""||carrier==null||carrier==""||models==null||models==""||driver==null||driver==""||telephone==null||telephone==""||ton==null||ton==""){
 						layer.msg('请将信息填写完整', {
+							icon: 5,
+							time: 800
+						});
+						return;
+					}
+					var regex=/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;
+					if(!regex.test(telephone)){
+						layer.msg('手机号不符合规则', {
 							icon: 5,
 							time: 800
 						});
@@ -185,6 +216,31 @@
 								
 							}
 						});
+					}else{
+							$.ajax({
+								url: url+'basShuttleBusController/saveBasShuttleBus',
+								type: 'post',
+								async: false,
+								data: {
+									"lineType": city,
+									"logLogistics.id": select,
+									"licensePlateInt":licensePlateInt,
+									"carrier":carrier,
+									"models":models,
+									"driver":driver,
+									"telephone":telephone,
+									"ton":ton,
+									"remarks":remarks,
+									"syUnits.id":adminD.map.syEmps.syUnits.id,
+									"syEmp.id":adminD.map.syEmps.id
+								},
+								success: function(data) {
+										var index = parent.layer.getFrameIndex(window.name);
+										parent.layer.close(index);
+									
+								}
+							});
+						
 					}
 					
 				})
@@ -209,6 +265,12 @@
 					}
 					
 				}
+				$("#select option").each(function () {
+												var text = $(this).text();
+												if ($("#select option:contains('" + text + "')").length > 1){
+													$("#select option:contains('" + text + "'):gt(0)").remove();
+													}
+												})
 				form.render();
 			})
         });
