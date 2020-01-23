@@ -1,290 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>区域设置</title>
-<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../css/page.css">
-</head>
-<body>
-<!-- 外部整体 -->
-<div class="external">
-	<!-- 标题 -->
-	<p class="ptitle">区域设置</p>
-	<!-- 操作区域 -->
-	<div class="operation">
-		<!-- 向上间距 -->
-		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
-			<div class="layui-form-item">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>区域设置</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../css/page.css">
+	</head>
+	<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
+	<body>
+		<!-- 外部整体 -->
+		<div class="external">
+			<!-- 标题 -->
+			<p class="ptitle">区域设置</p>
+			<!-- 操作区域 -->
+			<div class="operation">
+				<!-- 向上间距 -->
+				<div style="height: 10px;"></div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">省份:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<select name="city" id="shen" lay-filter="see" lay-verify="required">
+									<option value="">请选择</option>
+								</select>
+							</div>
+						</div>
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">省份:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">全部</option>
-				        	<option value="1">湖南</option>
-				        	<option value="2">湖北</option>
-				        	<option value="3">广东</option>
-				      	</select>
-				    </div>
-			    </div>
+						<div class="layui-inline">
+							<label class="layui-form-label">城市:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<select name="city" id="shi" lay-filter="see1" lay-verify="required">
+									<option value="">请选择</option>
+								</select>
+							</div>
+						</div>
 
-			    <div class="layui-inline">
-				    <label class="layui-form-label" >城市:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">长沙</option>
-				        	<option value="1">岳阳</option>
-				        	<option value="2">株洲</option>
-				        	<option value="3">深圳</option>
-				        	<option value="4">广州</option>
-				      	</select>
-				    </div>
-			    </div>
+						<!-- 查询按钮组 -->
+						<div class="layui-inline">
+							<button type="button" class="layui-btn btnQuery">
+								<i class="layui-icon">&#xe615;</i> 查询
+							</button>
 
-				<!-- 查询按钮组 -->
-			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
-						<i class="layui-icon">&#xe615;</i> 查询
-					</button>
+							<button type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#x1002;</i> 重置
+							</button>
 
-					<button type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#x1002;</i> 重置
-					</button>
+							<button id="btnMore" type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#xe671;</i>更多
+							</button>
+						</div>
 
-					<button id="btnMore" type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#xe671;</i>更多
-					</button>
-				</div>
+						<!-- 隐藏其它查询条件 -->
+						<div id="hQuery" class="layui-form-item" style="display: none; margin-top: 5px;">
 
+							<div class="layui-inline">
+								<label class="layui-form-label">区县:</label>
+								<div class="layui-input-block" style="width: 150px;">
+									<select name="city" id="qu" lay-filter="see2" lay-verify="required">
+										<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="layui-inline">
+								<label class="layui-form-label">简码:</label>
+								<div class="layui-input-block" style="width: 150px;">
+									<input type="text" id="jm" name="title" placeholder="请输入简码" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-inline">
+								<label class="layui-form-label">城市编码:</label>
+								<div class="layui-input-block" style="width: 150px;">
+									<input type="text" id="bm" name="title" placeholder="请输入城市编码" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+						</div>
+
+						<!-- 操作按扭组 -->
+						<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+							<div class="layui-inline">
+								<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
+								<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
+								<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
+							</div>
+						</div>
+
+						<!-- 数据表格 -->
+						<table class="layui-table">
+							<colgroup>
+								<col width="50">
+								<col width="60">
+								<col width="87">
+								<col width="87">
+								<col width="98">
+								<col width="100">
+								<col width="100">
+								<col width="110">
+								<col width="100">
+								<col width="100">
+								<col>
+							</colgroup>
+							<thead>
+								<tr>
+									<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+									<th style="text-align: center;">序号</th>
+									<th style="text-align: center;">省份</th>
+									<th style="text-align: center;">城市</th>
+									<th style="text-align: center;">区（县）</th>
+									<th style="text-align: center;">邮政编码</th>
+									<th style="text-align: center;">简码</th>
+									<th style="text-align: center;">城市编码</th>
+									<th style="text-align: center;">操作人员</th>
+									<th style="text-align: center;">操作单位</th>
+									<th style="text-align: center;">操作时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value="1"/></td>
+									<td>1</td>
+									<td>湖南</td>
+									<td>长沙</td>
+									<td>岳麓区</td>
+									<td>410006</td>
+									<td>hncsyl</td>
+									<td>changsha</td>
+									<td>张三</td>
+									<td>总公司</td>
+									<td>2017-10-17 14:31:31</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
 			</div>
-
-			<!-- 隐藏其它查询条件 -->
-			<div id="hQuery" class="layui-form-item" style="display: none;">
-
-				<div class="layui-inline">
-				    <label class="layui-form-label">区县:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">长沙县</option>
-				        	<option value="1">望城县</option>
-				        	<option value="2">宁乡县</option>
-				      	</select>
-				    </div>
-			    </div>
-
-			    <div class="layui-inline">
-				    <label class="layui-form-label">简码:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入简码" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-
-			    <div class="layui-inline">
-				    <label class="layui-form-label">城市编码:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入城市编码" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-			</div>
-
-			<!-- 操作按扭组 -->
-			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
-				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
-				</div>
-			</div>
-
-			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="60">
-				    <col width="87">
-				    <col width="87">
-				    <col width="98">
-				    <col width="100">
-				    <col width="100">
-				    <col width="110">
-				    <col width="100">
-				    <col width="100">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>省份</th>
-				      	<th>城市</th>
-				      	<th>区（县）</th>
-					  	<th>邮政编码</th>
-					  	<th>简码</th>
-					  	<th>城市编码</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
-				    </tr> 
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>湖南</td>
-				      	<td>长沙</td>
-				      	<td>岳麓区</td>
-				      	<td>410006</td>
-				      	<td>hncsyl</td>
-						<td>changsha</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				    </tr>
-			  	</tbody>
-			</table>
 		</div>
-		</form>
-	</div>
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layer/layer.js"></script>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">     
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/basicjs/city.js"></script>
+		<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" >
+			var citys;
+			var shi;
+			var qu;
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				var form=layui.form;
+				form.on('checkbox(checkn)', function(data) {
+					if (data.elem.checked) {
+						$('input[name=check]').prop("checked", true);
+					} else {
+						$('input[name=check]').prop("checked", false);
+					}
+					form.render();
+				});
+				form.on('checkbox(check)', function(data) {
+					var bool = 1;
+					var child = $("input[name='check']");
+					for (var a = 0; a < child.length; a++) {
+						if (child[a].checked == false) {
+							bool = 2;
+							$('input[name=checkn]').prop("checked", false);
+							layui.form.render();
+							return;
+						}
+				
+					}
+					if (bool == 1) {
+						$('input[name=checkn]').prop("checked", true);
+						layui.form.render();
+					}
+				
+				
+				});
+				form.on('select(see)',function(data){
+					$("#shi").html('');
+					$("#qu").html('');
+					if($("#shen").val()!==null&&$("#shen").val()!=""){
+						for(i=0;i<citys.length;i++){
+							if($("#shen").val()==citys[i].name){
+								shi=citys[i].shen;
+								for (var j = 0; j < shi.length; j++) {
+									$("#shi").append('<option value="'+shi[j].name+'">'+shi[j].name+'</option>');
+								}
+								
+							}
+							
+							}
+						for (var i = 0; i < shi.length; i++) {
+							if($("#shi").val()==shi[i].name){
+								qu=shi[i].shi;
+								for (var j = 0; j < qu.length; j++) {
+									$("#qu").append('<option value="'+qu[j].zipcode+'" zipcode="'+qu[j].citycode+'" code="'+qu[j].pinyin+'">'+qu[j].name+'</option>');
+								}
+							}
+						}
+					}
+					$("#bm").val($('#qu').find("option:selected").attr("zipcode"));
+					$("#jm").val($('#qu').find("option:selected").attr("code"));
+					form.render();
+				})
+				form.on('select(see1)',function(data){
+					$("#qu").html('');
+					for (var i = 0; i < shi.length; i++) {
+						if($("#shi").val()==shi[i].name){
+							qu=shi[i].shi;
+							for (var j = 0; j < qu.length; j++) {
+								$("#qu").append('<option value="'+qu[j].zipcode+'" zipcode="'+qu[j].citycode+'" code="'+qu[j].pinyin+'">'+qu[j].name+'</option>');
+							}
+						}
+					}
+					$("#bm").val($('#qu').find("option:selected").attr("zipcode"));
+					$("#jm").val($('#qu').find("option:selected").attr("code"));
+					form.render();
+				})
+				form.on('select(see2)',function(data){
+					$("#bm").val($('#qu').find("option:selected").attr("zipcode"));
+					$("#jm").val($('#qu').find("option:selected").attr("code"));
+					form.render();
+				})
+			});
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+			//加载'table'组件
+			layui.use('table', function() {
+				var table = layui.table;
+			});
 
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+			//加载'laydate'时间组件
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#opTime' //指定元素
+				});
+			});
 
-$(function(){
-	//显示、隐藏剩余的查询条件
-	$('#btnMore').click(function(){
-		$("#hQuery").toggle();
-	});
+			$(function() {
+				$.ajaxSetup({
+						dataType: "json",
+						cache: false,
+						headers: {
+							"Authorization": 'bos' + $.cookie('user')
+						},
+						xhrFields: {
+							withCredentials: true
+						}
+						/* ,
+				complete: function(xhr) {
+				    //token过期，则跳转到登录页面
+				    if(xhr.responseJSON.code == 401){
+				        parent.location.href = baseURL + 'login.html';
+				    }
+				} */
+					});
+				$.ajax({
+					url: url + 'cityController/findCities',
+					type: 'post',
+					async: false,
+					dateType: 'json',
+					success: function(data) {
+						citys=data;
+					}
+				});
+				for(var i=0;i<citys.length;i++){
+					$("#shen").append('<option value="'+citys[i].name+'">'+citys[i].name+'</option>');
+					}
+				$("#shen").val("湖南省");
+				for(i=0;i<citys.length;i++){
+					if($("#shen").val()==citys[i].name){
+						shi=citys[i].shen;
+						for (var j = 0; j < shi.length; j++) {
+							$("#shi").append('<option value="'+shi[j].name+'">'+shi[j].name+'</option>');
+						}
+						
+					}
+					
+					}
+				$("#shi").val("长沙市");
+				for (var i = 0; i < shi.length; i++) {
+					if($("#shi").val()==shi[i].name){
+						qu=shi[i].shi;
+						for (var j = 0; j < qu.length; j++) {
+							$("#qu").append('<option value="'+qu[j].zipcode+'" zipcode="'+qu[j].citycode+'" code="'+qu[j].pinyin+'">'+qu[j].name+'</option>');
+						}
+					}
+				}
+				$("#qu").val("410013");
+				$("#bm").val($('#qu').find("option:selected").attr("zipcode"));
+				$("#jm").val($('#qu').find("option:selected").attr("code"));
+				//显示、隐藏剩余的查询条件
+				$('#btnMore').click(function() {
+					$("#hQuery").toggle();
+				});
 
-	//新增
-	$('#opAdd').click(function(){
-		//页面层
-		layer.open({
-		  title: ['新增', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '390px'], //宽高
-		  content: 'areaSet_add.html'
-		});
-	});
+				//新增
+				$('#opAdd').click(function() {
+					//页面层
+					layer.open({
+						title: ['新增', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['650px', '390px'], //宽高
+						content: 'areaSet_add.html'
+					});
+				});
 
-	//编辑
-	$('#opUpdate').click(function(){
-		//页面层
-		layer.open({
-		  title: ['编辑', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-			area: ['650px', '390px'], //宽高
-		  content: 'areaSet_add.html'
-		});
-	});
+				//编辑
+				$('#opUpdate').click(function() {
+					//页面层
+					layer.open({
+						title: ['编辑', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['650px', '390px'], //宽高
+						content: 'areaSet_add.html'
+					});
+				});
 
-	//删除
-	$('#opDelete').click(function(){
-		//询问框
-		layer.confirm('确定是否删除？', {
-		  	btn: ['是','否'] //按钮
-		}, function(){
-		  	layer.msg('删除成功', {icon: 1});
-		}, function(){
-		  	
-		});
-	});
+				//删除
+				$('#opDelete').click(function() {
+					//询问框
+					layer.confirm('确定是否删除？', {
+						btn: ['是', '否'] //按钮
+					}, function() {
+						layer.msg('删除成功', {
+							icon: 1
+						});
+					}, function() {
 
-});
+					});
+				});
 
-</script>
+			});
+		</script>
 
-</body>
+	</body>
 </html>
