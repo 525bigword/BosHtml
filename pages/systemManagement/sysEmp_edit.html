@@ -1,122 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>员工管理</title>
-	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-</head>
-<body>
-<div class="layui-form">
-	<div class="layui-tab layui-tab-brief">
-		<ul class="layui-tab-title">
-			<li class="layui-this">修改员工</li>
-		</ul>
-		<div class="layui-tab-content" style="height: 100px;">
-			<div class="layui-tab-item layui-show">
-				<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-					<tbody>
-					<tr>
-						<td class="layui-bg-gray" width="20%">员工姓名</td>
-						<td width="30%">
-							<input type="text" name="title" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
-						</td>
-						<td class="layui-bg-gray" width="20%">角色</td>
-						<td width="30%">
-							<select name="city" lay-verify="">
-								<option value="">请选择角色</option>
-								<option value="1">系统管理员</option>
-								<option value="2">系统管理员</option>
-								<option value="3">系统管理员</option>
-							</select>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">密码</td>
-						<td >
-							<input type="password" name="title" placeholder="请输入密码" autocomplete="off" class="layui-input">
-						</td>
-						<td class="layui-bg-gray">确认密码</td>
-						<td>
-							<input type="password" name="title" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">查台密码</td>
-						<td >
-							<input type="password" name="title" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
-						</td>
-						<td class="layui-bg-gray">确认查台密码</td>
-						<td>
-							<input type="password" name="title" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">是否可用</td>
-						<td >
-							<select name="city" lay-verify="">
-								<option value="">请选择</option>
-								<option value="1">是</option>
-								<option value="0">否</option>
-							</select>
-						</td>
-						<td class="layui-bg-gray">工号</td>
-						<td>
-							<input type="password" name="title" placeholder="请输入工号" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">所属单位</td>
-						<td >
-							<select name="city" lay-verify="">
-								<option value="">请选择</option>
-								<option value="1">单位1</option>
-								<option value="2">单位2</option>
-							</select>
-						</td>
-						<td class="layui-bg-gray">备注</td>
-						<td>
-							<input type="password" name="title" placeholder="请输入备注" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td colspan="6">
-							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<input name="close" value="取消" type="button" class="layui-btn layui-btn-primary"/>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>员工管理</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<div class="layui-form">
+			<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">修改员工</li>
+				</ul>
+				<div class="layui-tab-content" style="height: 100px;">
+					<div class="layui-tab-item layui-show">
+						<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+							<tbody>
+								<tr>
+									<td class="layui-bg-gray" width="20%">员工姓名</td>
+									<td width="30%">
+										<input type="text" name="empname" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray" width="20%">角色</td>
+									<td width="30%">
+										<select name="city" id="role" lay-verify="">
+											<option value="0">请选择角色</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">密码</td>
+									<td>
+										<input type="password" name="pwd" placeholder="请输入密码" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">确认密码</td>
+									<td>
+										<input type="password" name="pwdtoo" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">查台密码</td>
+									<td>
+										<input type="password" name="chapwd" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">确认查台密码</td>
+									<td>
+										<input type="password" name="chapwdtoo" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">是否可用</td>
+									<td>
+										<select name="city" id="isno" lay-verify="">
+											<option value="3">请选择</option>
+											<option value="0">是</option>
+											<option value="1">否</option>
+										</select>
+									</td>
+									<td class="layui-bg-gray">工号</td>
+									<td>
+										<input type="text" name="gh" readonly="readonly" placeholder="请输入工号" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">所属单位</td>
+									<td>
+										<select name="city" id="dw" lay-verify="">
+
+										</select>
+									</td>
+									<td class="layui-bg-gray">备注</td>
+									<td>
+										<input  name="comment" placeholder="请输入备注" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+
+								<tr>
+									<td colspan="6">
+										<input type="hidden" name="empid" />
+										<button class="layui-btn" onclick="up()" style="background: #1da02b;">确定</button>
+										<input name="close" value="取消" type="button" class="layui-btn layui-btn-primary" />
+										<span id="ts" style="color: red;"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
 			</div>
 
 		</div>
-	</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layer/layer.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/xadmin.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			var disabled;
+			var roleid;
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
+			function child(data) {
+				console.log(data);
+				$("input[name='empname']").val(data.empName);
+				$("input[name='comment']").val(data.remark);
+				$("input[name='empid']").val(data.id);
+				disabled=data.disabled;
+				roleid=data.roleid;
+				
+			}
+			function up(){
+				var empname=$("input[name='empname']").val();
+				var role=$("#role option:selected").val();
+				var pwd=$("input[name='pwd']").val();
+				var pwdtoo=$("input[name='pwdtoo']").val();
+				var chapwd=$("input[name='chapwd']").val();
+				var chapwdtoo=$("input[name='chapwdtoo']").val();
+				var disabled=$("#isno option:selected").val();
+				var gh=$("input[name='gh']").val();
+				var dw=$("#dw option:selected").val();
+				var remark=$("input[name='comment']").val();
+				var id=$("input[name='empid']").val();
+				if(id==""||empname==""||role==0||pwd==""||pwdtoo==""||chapwd==""||chapwdtoo==""||disabled==3||gh==""){
+					$("#ts").text("请完善信息");
+					return;
+				}if(pwd!=pwdtoo){
+					$("#ts").text("请确认两次密码一致");
+					return;
+				}if(chapwd!=chapwdtoo){
+					$("#ts").text("请确认两次查台密码一致");
+					return;
+				}
+				$("#ts").text("");
+				$.ajax({
+					url:url+"jurisdiction/upemp",
+					type:'post',
+					dataType:'json',
+					data:{"id":id,"empName":empname,"roleid":role,"pwd":pwd,"queryPwd":chapwd,"disabled":disabled,"empNo":gh,"empunit":dw,"remark":remark},
+					success:function(data){
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+					}
+				})
+			}
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				var form = layui.form;
+				$("input[name='gh']").val(getingDate());
+				//加载角色下拉框
+				$.ajax({
+					url:url+"jurisdiction/findrole",
+					type:'get',
+					data:{"roleName":""},
+					success:function(data){
+						console.log(data);
+						for(var i=0;i<data.length;i++){
+							$("#role").append('<option value='+data[i].id+'>'+data[i].roleName+'</option>');
+						}
+						$("#role").val(roleid);
+						$("#isno").val(disabled);
+						form.render();
+					}
+				});
+				//加载单位
+				$.ajax({
+					url:url+"jurisdiction/parsetoken",
+					type:'get',
+					dataType:'json',
+					success:function(data){
+						console.log(data);
+						$("#dw").append('<option value='+data.map.syEmps.syUnits.id+'>'+data.map.syEmps.syUnits.name+'</option>');
+						form.render();
+					}
+				})
+			});
 
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">
-
-	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
-
-	});
-
-	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-	layui.use('element', function(){
-		var element = layui.element;
-		$("input[name='close']").click(function(){
-			var index = parent.layer.getFrameIndex(window.name);
-			    parent.layer.close(index);
-		})
-		//…
-	});
-
-</script>
-</body>
+			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+			layui.use('element', function() {
+				var element = layui.element;
+				$("input[name='close']").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				})
+				//…
+			});
+		</script>
+	</body>
 </html>
