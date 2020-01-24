@@ -53,7 +53,7 @@
 
 								<tr>
 									<td colspan="6">
-										<center><button class="layui-btn" id="smallbtn" style="background: #1da02b;">确定</button>
+										<center><button class="layui-btn" id="smallbtn" onclick="smallbtn()" style="background: #1da02b;">确定</button>
 											<input type="button" name="close" value="取消" class="layui-btn layui-btn-primary" />
 											<span id="atext" style="color: red;"></span></center>
 
@@ -80,7 +80,7 @@
 								</tr>
 								<tr>
 									<td colspan="5">
-										<button class="layui-btn" id="bigbtn" style="background: #1da02b;">确定</button>
+										<button class="layui-btn" id="bigbtn" style="background: #1da02b;" >确定</button>
 										<input type="button" name="close" value="取消" class="layui-btn layui-btn-primary" />
 										<!-- <button type="button" name="close" class="layui-btn layui-btn-primary">取消</button> -->
 										<span id="ttext" style="color: red;"></span>
@@ -164,6 +164,38 @@
 
 
 			});
+			
+			function smallbtn() {
+				$("#smallbtn").attr("onclick", "");
+				var s1 = $("#sjlm option:selected").val();
+				var mk = $("#mk option:selected").val();
+				var ltype = $("input[name='ltype']").val();
+				var lname = $("input[name='lname']").val();
+				var lurl = $("input[name='lurl']").val();
+				if (mk != 0 && ltype != "" && lname != "") { //
+					$("#atext").text("");
+					$.ajax({
+						data: {
+							"parentID": s1,
+							"type": ltype,
+							"text": lname,
+							"url": lurl,
+							"bigmenus": mk
+						},
+						url: url + "jurisdiction/addsymenus",
+						dataType: 'json',
+						async: true,
+						type: 'post',
+						success: function(data) {
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(index);
+						}
+					})
+				} else {
+					$("#atext").text("请将信息填写完整");
+				}
+				//alert(s1mk);
+			}
 			$(function() {
 
 
@@ -175,36 +207,7 @@
 					$("#biga").css("display", "none");
 					$("#smalla").css("display", "block");
 				})
-				$("#smallbtn").click(function() {
-					var s1 = $("#sjlm option:selected").val();
-					var mk = $("#mk option:selected").val();
-					var ltype = $("input[name='ltype']").val();
-					var lname = $("input[name='lname']").val();
-					var lurl = $("input[name='lurl']").val();
-					if (mk != 0 && ltype != "" && lname != "") { //
-						$("#atext").text("");
-						$.ajax({
-							data: {
-								"parentID": s1,
-								"type": ltype,
-								"text": lname,
-								"url": lurl,
-								"bigmenus": mk
-							},
-							url: url + "jurisdiction/addsymenus",
-							dataType: 'json',
-							async: true,
-							type: 'post',
-							success: function(data) {
-								var index = parent.layer.getFrameIndex(window.name);
-								parent.layer.close(index);
-							}
-						})
-					} else {
-						$("#atext").text("请将信息填写完整");
-					}
-					//alert(s1mk);
-				})
+				
 				$("#bigbtn").click(function() {
 					var title = $("input[name='mname']").val();
 					var u = $("input[name='url']").val();

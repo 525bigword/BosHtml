@@ -101,6 +101,7 @@
 			$.ajaxSetup({
 				dataType: "json",
 				cache: false,
+				async: true,
 				headers: {
 					"Authorization": 'bos' + $.cookie('user')
 				},
@@ -131,7 +132,6 @@
 						"disabled": disabled
 					},
 					dataType: 'json',
-					async: false,
 					success: function(data) {
 						var str
 						console.log(data)
@@ -229,9 +229,10 @@
 						ids[i] = this.id;
 						i++;
 					});
+					console.log(ids);
 					$.ajax({
 						url: url + "jurisdiction/delrole",
-						type: 'delete',
+						type: 'post',
 						async: true,
 						data: {
 							"ids": ids
@@ -298,7 +299,31 @@
 
 				//分配
 				$('#opDistribution').click(function() {
-					window.location.href = 'sysRole_distribution.html';
+					
+					if(checkboxCount!=1){
+						layer.msg("请先正确选择需要修改的模块",{
+							icon:2,
+							time:800
+						})
+					}else{
+						//页面层
+						layer.open({
+							title: ['修改', 'color:#fff;background:#1da02b;'],
+							type: 2,
+							//skin: 'layui-layer-rim', //加上边框
+							area: ['690px', '600px'], //宽高
+							content: 'sysRole_distribution.html',
+							 success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								var check=$("input[name='check']:checked").val();
+								console.log(check);
+								iframe.child(vue[check]);//
+							}
+						});
+					}
+					//window.location.href = 'sysRole_distribution.html';
 				});
 
 				initRole();

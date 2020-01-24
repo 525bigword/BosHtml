@@ -42,7 +42,7 @@
 								<i class="layui-icon">&#xe615;</i> 查询
 							</button>
 
-							<button type="button" class="layui-btn btnOther">
+							<button type="reset" class="layui-btn btnOther">
 								<i class="layui-icon">&#x1002;</i> 重置
 							</button>
 
@@ -205,7 +205,9 @@
 							success:function(data){
 								console.log(data);
 								if(data=="SUCCESS"){
-									findemenu()
+									$("#sjlm").val(1);
+									$("input[name='menuname']").val("");
+									findemenu();
 								}
 							}
 						})
