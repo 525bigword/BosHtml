@@ -24,8 +24,8 @@
 									<td class="layui-bg-gray" width="20%">是否可用</td>
 									<td width="30%">
 										<select name="city" id="disa" lay-verify="">
-											<option value="1">可用</option>
-											<option value="0">不可用</option>
+											<option value="0">可用</option>
+											<option value="1">不可用</option>
 										</select>
 									</td>
 								</tr>
@@ -39,6 +39,8 @@
 
 								<tr>
 									<td colspan="6">
+										<input type="hidden" name="roleid" />
+										<input type="hidden" name="bj" value=0 />
 										<button class="layui-btn" id="commit" style="background: #1da02b;">确定</button>
 										<input type="button" class="layui-btn layui-btn-primary" value="取消" name="close" />
 										<span id="ttext" style="color: red;"></span>
@@ -53,8 +55,10 @@
 
 		</div>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layer/layer.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/xadmin.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			$.ajaxSetup({
@@ -74,6 +78,14 @@
 				        }
 				    } */
 			});
+			function child(data){
+				console.log(data);
+				$("input[name='bj']").val(1);
+				$("input[name='roleName']").val(data.roleName);
+				$("input[name='roleid']").val(data.id);
+				$("input[name='roledesc']").val(data.roleDesc);
+				$("#disa").val(data.disabled);
+			}
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 
@@ -81,18 +93,25 @@
 			$(function() {
 
 				$("#commit").click(function() {
+					var id;
+					if($("input[name='bj']").val()==1){
+						id=$("input[name='roleid']").val();
+					}
+					
 					var roleName = $("input[name='roleName']").val();
 					var roleDesc = $("#roledesc").val();
 					var disa = $("#disa option:selected").val();
 					if (roleName != "" && disa != "") {
 						$.ajax({
 							data: {
+								"bj":$("input[name='bj']").val(),
+								"id":id,
 								"roleName": roleName,
 								"roleDesc": roleDesc,
 								"disabled": disa
 							},
 							dataType: 'json',
-							url: url + "jurisdiction/addrole",
+							url: url + "jurisdiction/addOrUprole",
 							async: true,
 							type: 'put',
 							success:function(data){
