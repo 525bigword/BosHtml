@@ -3,93 +3,90 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>包装材料管理</title>
+	<title>包装材料管理</title><!-- 新增出库记录 -->
 	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
 <div class="layui-form">
+	<form class="layui-form" action="/pacpackaging/insertPacPackagingOutFrom" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
 			<td class="layui-bg-gray" width="13%">出库类型</td>
 			<td width="20%">
-				<select name="pro" lay-verify="required">
-					<option value="0">全部</option>
-					<option value="1">调拨出库</option>
-					<option value="2">下发出库</option>
-					<option value="3">盘亏调整</option>
-					<option value="4">核销出库</option>
-					<option value="5">领用出库</option>
+				<select name='outboundType' id="lx">
+					<option value="1">全部</option><!--选择全部默认为第一个选项 -->
 				</select>
 			</td>
-			<td class="layui-bg-gray" width="13%">运输单号</td>
+			<td class="layui-bg-gray" width="13%" >运输单号</td>
 			<td width="20%">
-				<input type="text" name="title" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
+				<input type="text" readonly="readonly" name="transportSlip" lay-verify="transportSlip" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray" width="13%">所属单位</td>
 			<td width="20%">
-				<input type="text" name="title" placeholder="系统默认登录人所在单位" autocomplete="off" class="layui-input">
+				<input type="hidden" name="affiliatedUnit" lay-verify="affiliatedUnit" placeholder="系统默认登录人单位id" autocomplete="off" class="layui-input">
+				
+				<input type="text" name="affiliatedUnitName" readonly="readonly" placeholder="系统默认登录人所在单位" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">下发单位</td>
 			<td >
-				<input type="text" name="title" placeholder="请输入下发单位" autocomplete="off" class="layui-input">
-			</td>
+				<select name='issuedByTheUnit' id="xfdw" lay-verify="issuedByTheUnit" >
+					<option value="1">请选择下发单位</option><!--选择全部默认为第一个选项 -->
+				</select>
+				</td>
 			<td class="layui-bg-gray">经办人单位</td>
 			<td>
-				<select name="pro" lay-verify="required">
-					<option value="0">全部</option>
-					<option value="1">经办人单位</option>
-					<option value="2">经办人单位</option>
-					<option value="3">经办人单位</option>
+				<select id='jbrdw' name="operatorUnit" lay-verify="operatorUnit">
+					<option value="1">请选择经办人单位</option>
 				</select>
 			</td>
 			<td class="layui-bg-gray">经办人工号</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入经办人工号" autocomplete="off" class="layui-input">
+				<input type="text" name="operEmpNo" id="operEmpNo" lay-verify="operEmpNo" placeholder="请输入经办人工号" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">经办人姓名</td>
 			<td>
-				<input type="text" name="title" placeholder="根据工号和单位获得姓名" autocomplete="off" class="layui-input">
+				<input type="text" name="operEmpName" readonly="readonly"  placeholder="根据工号和单位获得姓名" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">客户编号</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+				<input type="text" name="clienterid" lay-verify="clienterid" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">客户名称</td>
 			<td>
-				<input type="text" name="title" placeholder="根据客户编号填充名称" autocomplete="off" class="layui-input">
+				<input type="text" name="clienterName" readonly="readonly"  placeholder="根据客户编号填充名称" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">领用人工号</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入领用人工号" autocomplete="off" class="layui-input">
+				<input type="text" name="recipient" placeholder="请输入领用人工号" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">领用人姓名</td>
 			<td>
-				<input type="text" name="title" placeholder="根据工号和单位获得姓名" autocomplete="off" class="layui-input">
+				<input type="text" name="recipientName" readonly="readonly" placeholder="根据工号获得姓名" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">领用时间</td>
 			<td>
-				<input type="text" name="title" placeholder="默认当前服务器时间" autocomplete="off" class="layui-input">
+				<input type="text" name="recipientsTime" id="test5" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">开单人工号</td>
 			<td>
-				<input type="text" name="title" placeholder="系统默认登录人工号" autocomplete="off" class="layui-input">
+				<input type="text" name="single" lay-verify="single" placeholder="系统默认登录人工号" autocomplete="off" class="layui-input">
 			</td>
-			<td class="layui-bg-gray">领用人姓名</td>
+			<td class="layui-bg-gray">开单人姓名</td>
 			<td>
-				<input type="text" name="title" placeholder="系统默认登录人姓名" autocomplete="off" class="layui-input">
+				<input type="text" name="singleName" readonly="readonly" lay-verify="singleName" placeholder="系统默认登录人姓名" autocomplete="off" class="layui-input">
 			</td>
-			<td class="layui-bg-gray">领用时间</td>
+			<td class="layui-bg-gray">开单时间</td>
 			<td>
-				<input type="text" name="title" placeholder="系统默认服务器时间" autocomplete="off" class="layui-input">
+				<input type="text" name="orderTime" id="test6" placeholder="yyyy-MM-dd HH:mm:ss" lay-verify="orderTime" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 
@@ -102,15 +99,123 @@
 
 		</tbody>
 	</table>
-
+</form>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">
-
+	$.ajaxSetup({
+		dataType: "json",
+		cache: false,
+		async:true,
+		headers: {
+			"Authorization": 'bos' + $.cookie('user')
+		},
+		xhrFields: {
+			withCredentials: true
+		}
+	});
+	function time(){
+		layui.use(['element','laydate'], function(){
+			var element=layui.element,
+			laydate=layui.laydate;
+		laydate.render({
+		     elem: '#test5'
+			 ,value:new Date()
+			  ,isInitValue: true //是否允许填充初始值，默认为 true
+		     ,type: 'datetime'
+		   });
+		   laydate.render({
+		     elem: '#test6'
+		   			 ,value:new Date()
+		   			  ,isInitValue: true //是否允许填充初始值，默认为 true
+		     ,type: 'datetime'
+		   });
+		   });
+	}
 	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
+	layui.use(['table','form','laypage','element','laydate'], function(){
+		 var table = layui.table,
+		 form=layui.form,
+		 laypage=layui.laypage,
+		 element=layui.element,
+		 laydate=layui.laydate;
+		 var $ = layui.$;
+		 /* 动态赋值实时设置当前时间*/
+		 setInterval( "time() " , 1000 );
 
+		/* 初始化出库类型 */
+ $.ajax({
+		 	url:'http://localhost:8089/pacpackaging/queryAllpacOutType',
+		 	type:'get',
+		 	dataType : 'json',
+		 	sync : false,
+		 	success:function(data){
+		 	console.log(data);
+		 	var pacoout=data;
+		 	//console.log(pacoout);
+		 	for(var i=pacoout.length-1;i>=0;i--){
+		 		 /* $('#qx').append('<option value="0">请选择</option>'); */
+		 		 $('#lx').append('<option value="'+pacoout[i].id+'">'+pacoout[i].outType+'</option>');
+		 	}
+		 		 form.render()
+		 	}
+		 });
+		 /*初始化下发单位 ,经办人单位*/
+		 $.ajax({
+		 		 	url:'http://localhost:8089/pacpackaging/findAllSyUnits',
+		 		 	type:'get',
+		 		 	dataType : 'json',
+		 		 	sync : false,
+		 		 	success:function(data){
+		 		 	console.log(data);
+		 		 	var pacoout=data;
+		 		 	
+		 		 	for(var i=pacoout.length-1;i>=0;i--){
+		 		 	$('#jbrdw').append('<option value="'+pacoout[i].id+'">'+pacoout[i].name+'</option>');
+		 		 	
+		 		 		 $('#xfdw').append('<option value="'+pacoout[i].id+'">'+pacoout[i].name+'</option>');
+		 		 	}
+		 		 		 form.render()
+		 		 	}
+		 		 });
+		 /**
+		  * 初始化系统自动生成的单号类数据
+		  */
+		 $.ajax({
+		 			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
+		 			type:'get',
+		 			dataType : 'json',
+		 			async : true,
+		 			success:function(res){
+						/* 初始化系统默认生成的数据 */
+		 				form.val('example', {
+		 							"transportSlip":res,//运输单号
+		 					  "affiliatedUnitName": "长沙分部"//所属单位系统默认登录人所在单位
+		 					 ,"single":"007",//开单人工号
+							 "affiliatedUnit":"2",//所属单位id
+							 "singleName":"邬童"//开单人姓名
+		 				});
+		 			}
+		 		});
+				$("#operEmpNo").blur(function(){
+					var operEmpNo=$("#operEmpNo").val();
+				 $.ajax({
+				 			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
+				 			type:'get',
+				 			dataType : 'json',
+				 			async : true,
+							data:{"operEmpNo":operEmpNo}
+				 			success:function(res){
+				 						/* 根据经办人工号填充姓名 */
+				 				form.val('example', {
+				 							"operEmpName":res,//运输单号
+				 				
+				 				});
+				 			}
+				 		});
+				});
 	});
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
