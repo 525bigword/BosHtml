@@ -46,11 +46,11 @@
 
 						<!-- 查询按钮组 -->
 						<div class="layui-inline">
-							<button type="button" class="layui-btn btnQuery">
+							<button type="button" id="chaxun" class="layui-btn btnQuery">
 								<i class="layui-icon">&#xe615;</i> 查询
 							</button>
 
-							<button type="button" class="layui-btn btnOther">
+							<button type="button" id="rest" class="layui-btn btnOther">
 								<i class="layui-icon">&#x1002;</i> 重置
 							</button>
 
@@ -125,22 +125,11 @@
 									<th style="text-align: center;">操作时间</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value="1"/></td>
-									<td>1</td>
-									<td>湖南</td>
-									<td>长沙</td>
-									<td>岳麓区</td>
-									<td>410006</td>
-									<td>hncsyl</td>
-									<td>changsha</td>
-									<td>张三</td>
-									<td>总公司</td>
-									<td>2017-10-17 14:31:31</td>
-								</tr>
+							<tbody id="tbody">
+								
 							</tbody>
 						</table>
+						<div id="demo1" style="text-align: center;"></div>
 					</div>
 				</form>
 			</div>
@@ -154,6 +143,9 @@
 			var citys;
 			var shi;
 			var qu;
+			var fyy;
+			var fyycount;
+			var layer, layuiTable;
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 				var form=layui.form;
@@ -245,7 +237,54 @@
 					elem: '#opTime' //指定元素
 				});
 			});
-
+			function sxfy() {
+				/* if(fyycount<5){
+					$("#demo1").hide();
+				} */
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer,
+						form = layui.form;
+					//调用分页
+					laypage.render({
+						elem: 'demo1',
+						count: fyycount,
+						layout: ['prev', 'page', 'next', 'count'],
+						limit: 4,
+						jump: function(obj) {
+							//模拟渲染
+							var page=$(".layui-laypage-em").next().html(); 
+							var inde=4;
+							document.getElementById('tbody').innerHTML = function() {
+								var arr = [],
+									thisData = fyy.concat()
+									.splice(obj.curr * obj.limit - obj.limit,
+										obj.limit);
+								layui.each(thisData, function(index, item) {
+									arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
+										(page*4-inde) + '></td><td>' +
+										(parseInt(index) + 1) + '</td><td>' +
+										item.province + '</td><td>' +
+										item.city + '</td><td>' +
+										item.county + '</td><td>' +
+										item.postalCode + '</td><td>' +
+										item.simpleCode + '</td><td>' +
+										item.cityCode + '</td><td>' +
+										item.syEmp.empName + '</td><td>' +
+										item.complementUnit.name + '</td><td>' +
+										item.operationTime + '</td></tr>');
+									console.log(page*4-inde);
+									inde--;
+								});
+			
+								return arr.join('');
+							}();
+							form.render();
+						}
+					});
+					
+				});
+			}
 			$(function() {
 				$.ajaxSetup({
 						dataType: "json",
@@ -263,6 +302,19 @@
 				        parent.location.href = baseURL + 'login.html';
 				    }
 				} */
+					});
+					$.ajax({
+						url: url + 'basAreaController/findBasAreas',
+						type: 'post',
+						async: false,
+						dateType: 'json',
+						success: function(data) {
+							var da = data.BasArea[0];
+							console.log(da);
+							fyy = da;
+							fyycount = da.length;
+							sxfy();
+						}
 					});
 				$.ajax({
 					url: url + 'cityController/findCities',
@@ -303,7 +355,35 @@
 				$('#btnMore').click(function() {
 					$("#hQuery").toggle();
 				});
-
+				$("#rest").click(function() {
+					$(".layui-input").val("");
+				})
+				$("#chaxun").click(function(){
+					var shen=$("#shen").val();
+					var shi=$("#shi").val();
+					var qu=$("#qu option:checked").text();
+					var bm=$("#bm").val();
+					var jm=$("#jm").val();
+					console.log(shen+" "+shi+" "+qu+" "+bm+" "+jm);
+					$.ajax({
+						url: url + 'basAreaController/findBasAreaByTerm',
+						type: 'post',
+						async: false,
+						data: {
+							"province": shen,
+							"city": shi,
+							"county": qu,
+							"simpleCode": jm,
+							"cityCode": bm
+						},
+						success: function(data) {
+							var da = data;
+							fyy = da;
+							fyycount = da.length;
+							sxfy();
+						}
+					});
+				})
 				//新增
 				$('#opAdd').click(function() {
 					//页面层
