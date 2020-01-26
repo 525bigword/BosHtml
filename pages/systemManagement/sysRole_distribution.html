@@ -22,7 +22,7 @@
 					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 						<div class="layui-inline">
 							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">保存</button>
-							<button type="button" class="layui-btn layui-btn-small btnOther" id="opBack">返回</button>
+							<input type="button" class="layui-btn layui-btn-primary" value="取消" name="close" />
 						</div>
 					</div>
 					<!-- 数据表格 -->
@@ -62,19 +62,44 @@
 				        }
 				    } */
 			});
-			
+			var permissions=[];
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 				var form = layui.form;
 				init();
-				//form.render();
-			});
-			
-			function child(data) {}
-			//加载'form'模块，使checkbox、select、radio初始化
-			layui.use('form', function() {
+				form.on('checkbox(parent)',function(data){
+					permissions=[];
+					console.log(data);
+					var parentid=data.value;
+					var child = $("input[name="+parentid+"]");
+						$("input[name="+parentid+"]").prop("checked",data.elem.checked);
+						var sdata = $("input[type=checkbox]:checked");
+						for(var i=0;i<sdata.length;i++){
+							permissions[i]=sdata[i].value;
+						}
+						console.log(permissions);
+					form.render();
+				});
+				
+				
 				
 			});
+			var roleid=0;
+			function child(data) {
+				 console.log(data);
+				 roleid=data.id;
+				/* $.ajax({
+					url: url + "jurisdiction/findmenubyrole",
+					type: 'get',
+					data:{"id":data.id},
+					success: function(da) {
+						console.log(da);
+						
+						//layui.form.render();
+					}
+				}) */
+			}
+
 			function init(){
 				$.ajax({
 					url: url + "jurisdiction/symenustree",
@@ -82,9 +107,9 @@
 					success: function(data) {
 						console.log(data);
 						for(var i=0;i<data.length;i++){
-							$("#tbd").append('<tr><td class="layui-bg-gray"><input type="checkbox" value='+data[i].id+' id='+data[i].id+' name="parent" lay-skin="primary" title='+data[i].text+'></td></tr>');
+							$("#tbd").append('<tr><td class="layui-bg-gray"><input type="checkbox" value='+data[i].id+' id='+data[i].id+' class="layui-form"  lay-filter="parent" name="parent" lay-skin="primary" title='+data[i].text+' checkbox></td></tr>');
 							for(var j=0;j<data[i].syMenus.length;j++){
-								$("#tbd").append('<tr><td class="layui-bg-gray"><span style="padding-left:80px;"><span><input type="checkbox" name='+data[i].id+' name="" lay-skin="primary" title='+data[i].syMenus[j].text+'></td></tr>');
+								$("#tbd").append('<tr><td class="layui-bg-gray"><span style="padding-left:80px;"><span><input   type="checkbox" value='+data[i].syMenus[j].id+' name='+data[i].id+'  disabled="disabled" class="layui-form"  lay-filter="child" name="" lay-skin="primary" title='+data[i].syMenus[j].text+' checkbox></td></tr>');
 							}
 						}
 						layui.form.render();
@@ -92,7 +117,7 @@
 				})
 				
 			}
-			
+
 			//加载'table'组件
 			layui.use('table', function() {
 				var table = layui.table;
@@ -112,19 +137,17 @@
 				$('#btnMore').click(function() {
 					$("#hQuery").toggle();
 				});
-				$("input[name='parent']").click(function(){
-					alert("123")
-				})
 				//新增
 				$('#opAdd').click(function() {
-					//页面层
-					layer.open({
-						title: ['新增', 'color:#fff;background:#1da02b;'],
-						type: 2,
-						//skin: 'layui-layer-rim', //加上边框
-						area: ['930px', '450px'], //宽高
-						content: 'businessAcceptance_add.html'
-					});
+					$.ajax({
+						url: url + "jurisdiction/assignrolepermissions",
+						type: 'post',
+						data:{"menuid":permissions,"roleid":roleid},
+						success: function(data) {
+							
+							
+						}
+					})
 				});
 
 				//编辑
@@ -138,28 +161,15 @@
 						content: 'dispatchingPersonnelSet_add.html'
 					});
 				});
-
-				//删除
-				$('#opDelete').click(function() {
-					//询问框
-					layer.confirm('确定是否删除？', {
-						btn: ['是', '否'] //按钮
-					}, function() {
-						layer.msg('删除成功', {
-							icon: 1
-						});
-					}, function() {
-
-					});
+				$("input[name='close']").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
 				});
-
-				//返回
-				$('#opBack').click(function() {
-					history.back();
+				//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+				layui.use('element', function() {
+					var element = layui.element;
+					
 				});
-
-
-
 			});
 		</script>
 

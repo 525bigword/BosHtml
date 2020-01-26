@@ -167,6 +167,7 @@
 			
 			function smallbtn() {
 				$("#smallbtn").attr("onclick", "");
+				setTimeout($("#smallbtn").attr("onclick", "smallbtn()"),2000);
 				var s1 = $("#sjlm option:selected").val();
 				var mk = $("#mk option:selected").val();
 				var ltype = $("input[name='ltype']").val();
