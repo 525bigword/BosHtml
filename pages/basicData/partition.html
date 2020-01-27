@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
+<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
 <body>
 <!-- 外部整体 -->
 <div class="external">
@@ -22,37 +30,28 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">省份:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">全部</option>
-				        	<option value="1">湖南</option>
-				        	<option value="2">湖北</option>
-				        	<option value="3">广东</option>
-				      	</select>
+				     	<select name="city" id="shen" lay-filter="see" lay-verify="required">
+				     		<option value="">请选择</option>
+				     	</select>
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >城市:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">长沙</option>
-				        	<option value="1">岳阳</option>
-				        	<option value="2">株洲</option>
-				        	<option value="3">深圳</option>
-				        	<option value="4">广州</option>
-				      	</select>
+				     	<select name="city" id="shi" lay-filter="see1" lay-verify="required">
+				     		<option value="">请选择</option>
+				     	</select>
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button" id="chaxun" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="button" id="rest" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -69,26 +68,23 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">区县:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">长沙县</option>
-				        	<option value="1">望城县</option>
-				        	<option value="2">宁乡县</option>
-				      	</select>
+				     	<select name="city" id="qu" lay-filter="see2" lay-verify="required">
+				     		<option value="">请选择</option>
+				     	</select>
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">定区编码:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
+				     	<input type="text" name="title" id="dqbm" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">关键字:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+				     	<input type="text" name="title" id="key" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 			</div>
@@ -124,178 +120,237 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>分拣编码</th>
-				      	<th>定区编码</th>
-				      	<th>省份</th>
-				      	<th>城市</th>
-				      	<th>区（县）</th>
-					  	<th>关键字</th>
-					  	<th>起始号</th>
-					  	<th>终止号</th>
-					  	<th>单双号</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
+				    	<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+				    	<th style="text-align: center;">序号</th>
+				      	<th style="text-align: center;">分拣编码</th>
+				      	<th style="text-align: center;">定区编码</th>
+				      	<th style="text-align: center;">省份</th>
+				      	<th style="text-align: center;">城市</th>
+				      	<th style="text-align: center;">区（县）</th>
+					  	<th style="text-align: center;">关键字</th>
+					  	<th style="text-align: center;">起始号</th>
+					  	<th style="text-align: center;">终止号</th>
+					  	<th style="text-align: center;">单双号</th>
+					  	<th style="text-align: center;">操作人员</th>
+					  	<th style="text-align: center;">操作单位</th>
+					  	<th style="text-align: center;">操作时间</th>
 				    </tr> 
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>BQ001</td>
-				      	<td>DQ001</td>
-				      	<td>北京</td>
-				      	<td>北京</td>
-				      	<td>朝阳区</td>
-						<td>朝阳北路</td>
-						<td>1</td>
-						<td>100</td>
-						<td>0</td>
-						<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>
-							<p title="2017-10-17 14:31:31" style="width: 85px;" class="overlength">
-					      		2017-10-17 14:31:31
-					      	</p>
-				      	</td>
-				    </tr>
+			  	<tbody id="tbody">
+				    
 			  	</tbody>
 			</table>
+			<div id="demo1" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
 <script type="text/javascript">     
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
-
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
-
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+var citys;
+			var shi;
+			var qu;
+			var fyy;
+			var fyycount;
+			var layer, layuiTable;
+			layui.use('form', function() {
+				var form=layui.form;
+				form.on('checkbox(checkn)', function(data) {
+					if (data.elem.checked) {
+						$('input[name=check]').prop("checked", true);
+					} else {
+						$('input[name=check]').prop("checked", false);
+					}
+					form.render();
+				});
+				form.on('checkbox(check)', function(data) {
+					var bool = 1;
+					var child = $("input[name='check']");
+					for (var a = 0; a < child.length; a++) {
+						if (child[a].checked == false) {
+							bool = 2;
+							$('input[name=checkn]').prop("checked", false);
+							layui.form.render();
+							return;
+						}
+				
+					}
+					if (bool == 1) {
+						$('input[name=checkn]').prop("checked", true);
+						layui.form.render();
+					}
+				
+				
+				});
+				form.on('select(see)',function(data){
+					$("#shi").html('');
+					$("#qu").html('');
+					if($("#shen").val()!==null&&$("#shen").val()!=""){
+						for(i=0;i<citys.length;i++){
+							if($("#shen").val()==citys[i].name){
+								shi=citys[i].shen;
+								for (var j = 0; j < shi.length; j++) {
+									$("#shi").append('<option value="'+shi[j].name+'">'+shi[j].name+'</option>');
+								}
+								
+							}
+							
+							}
+						for (var i = 0; i < shi.length; i++) {
+							if($("#shi").val()==shi[i].name){
+								qu=shi[i].shi;
+								for (var j = 0; j < qu.length; j++) {
+									$("#qu").append('<option value="'+qu[j].name+'">'+qu[j].name+'</option>');
+								}
+							}
+						}
+					}
+					form.render();
+				})
+				form.on('select(see1)',function(data){
+					$("#qu").html('');
+					for (var i = 0; i < shi.length; i++) {
+						if($("#shi").val()==shi[i].name){
+							qu=shi[i].shi;
+							for (var j = 0; j < qu.length; j++) {
+								$("#qu").append('<option value="'+qu[j].name+'">'+qu[j].name+'</option>');
+							}
+						}
+					}
+					form.render();
+				})
+			});
 
 $(function(){
+	$.ajaxSetup({
+			dataType: "json",
+			cache: false,
+			headers: {
+				"Authorization": 'bos' + $.cookie('user')
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+			/* ,
+	complete: function(xhr) {
+	    //token过期，则跳转到登录页面
+	    if(xhr.responseJSON.code == 401){
+	        parent.location.href = baseURL + 'login.html';
+	    }
+	} */
+		});
+		$.ajax({
+			url: url + 'basPartitionController/findBasPartitions',
+			type: 'post',
+			async: false,
+			dateType: 'json',
+			success: function(data) {
+				var da = data.BasPartition[0];
+				console.log(da);
+				fyy = da;
+				fyycount = da.length;
+				sxfy();
+			}
+		});
+		$.ajax({
+			url: url + 'cityController/findCities',
+			type: 'post',
+			async: false,
+			dateType: 'json',
+			success: function(data) {
+				citys=data;
+			}
+		});
+		for(var i=0;i<citys.length;i++){
+			$("#shen").append('<option value="'+citys[i].name+'">'+citys[i].name+'</option>');
+			}
+			function sxfy() {
+				/* if(fyycount<5){
+					$("#demo1").hide();
+				} */
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer,
+						form = layui.form;
+					//调用分页
+					laypage.render({
+						elem: 'demo1',
+						count: fyycount,
+						layout: ['prev', 'page', 'next', 'count'],
+						limit: 4,
+						jump: function(obj) {
+							//模拟渲染
+							var page=$(".layui-laypage-em").next().html(); 
+							var inde=4;
+							document.getElementById('tbody').innerHTML = function() {
+								var arr = [],
+									thisData = fyy.concat()
+									.splice(obj.curr * obj.limit - obj.limit,
+										obj.limit);
+								layui.each(thisData, function(index, item) {
+									arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
+										(page*4-inde) + '></td><td>' +
+										(parseInt(index) + 1) + '</td><td>' +
+										item.sortingCode + '</td><td>' +
+										item.zoneCode + '</td><td>' +
+										item.province + '</td><td>' +
+										item.city + '</td><td>' +
+										item.county + '</td><td>' +
+										item.keyword + '</td><td>' +
+										item.startInt + '</td><td>' +
+										item.terminateInt + '</td><td>' +
+										(item.sDInt==1?"单号":"双号") + '</td><td>' +
+										item.syEmp.empName + '</td><td>' +
+										item.syUnits.name + '</td><td>' +
+										item.operationTime + '</td></tr>');
+									console.log(page*4-inde);
+									inde--;
+								});
+			
+								return arr.join('');
+							}();
+							form.render();
+						}
+					});
+					
+				});
+			}
 	//显示、隐藏剩余的查询条件
 	$('#btnMore').click(function(){
 		$("#hQuery").toggle();
 	});
-
+	$("#rest").click(function() {
+		$(".layui-input").val("");
+	})
+	$("#chaxun").click(function(){
+		var shen=$("#shen").val();
+		var shi=$("#shi").val();
+		var qu=$("#qu").val();
+		var dqbm=$("#dqbm").val();
+		var key=$("#key").val();
+		$.ajax({
+			url: url + 'basPartitionController/findBasPartitionByTerm',
+			type: 'post',
+			async: false,
+			data: {
+				"province": shen,
+				"city": shi,
+				"county": qu,
+				"zoneCode": dqbm,
+				"keyword": key
+			},
+			success: function(data) {
+				var da = data;
+				console.log(da);
+				fyy = da;
+				fyycount = da.length;
+				sxfy();
+			}
+		});
+	})
 	//新增
 	$('#opAdd').click(function(){
 		//页面层
