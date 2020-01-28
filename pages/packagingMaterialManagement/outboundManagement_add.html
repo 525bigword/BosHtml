@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="layui-form">
-	<form class="layui-form" action="/pacpackaging/insertPacPackagingOutFrom" lay-filter="example">
+	<form class="layui-form" action="/pacpackaging/addPacPackagingOutFrom" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
@@ -54,7 +54,7 @@
 			</td>
 			<td class="layui-bg-gray">客户编号</td>
 			<td>
-				<input type="text" name="clienterid" lay-verify="clienterid" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+				<input type="text" id="clienterid" name="clienterid" lay-verify="clienterid" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">客户名称</td>
 			<td>
@@ -64,7 +64,7 @@
 		<tr>
 			<td class="layui-bg-gray">领用人工号</td>
 			<td>
-				<input type="text" name="recipient" placeholder="请输入领用人工号" autocomplete="off" class="layui-input">
+				<input type="text" id="recipient" name="recipient" placeholder="请输入领用人工号" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">领用人姓名</td>
 			<td>
@@ -92,8 +92,8 @@
 
 		<tr>
 			<td colspan="6">
-				<button class="layui-btn" style="background: #1da02b;">确定</button>
-				<button type="button" class="layui-btn layui-btn-primary">取消</button>
+				<button class="layui-btn" style="background: #1da02b;" lay-submit lay-filter="add">确定</button>
+				<button type="button" class="layui-btn layui-btn-primary" lay-submit lay-filter="quxiao">取消</button>
 			</td>
 		</tr>
 
@@ -193,29 +193,104 @@
 		 				form.val('example', {
 		 							"transportSlip":res,//运输单号
 		 					  "affiliatedUnitName": "长沙分部"//所属单位系统默认登录人所在单位
-		 					 ,"single":"007",//开单人工号
+		 					 ,"single":"2",//开单人工号
 							 "affiliatedUnit":"2",//所属单位id
-							 "singleName":"邬童"//开单人姓名
+							 "singleName":"林霖"//开单人姓名
 		 				});
 		 			}
 		 		});
+				/* 根据经办人工号获取经办人姓名 */
 				$("#operEmpNo").blur(function(){
-					var operEmpNo=$("#operEmpNo").val();
-				 $.ajax({
-				 			url:'http://localhost:8089/pacpackaging/getPacPackagingma',
-				 			type:'get',
-				 			dataType : 'json',
-				 			async : true,
-							data:{"operEmpNo":operEmpNo}
-				 			success:function(res){
-				 						/* 根据经办人工号填充姓名 */
-				 				form.val('example', {
-				 							"operEmpName":res,//运输单号
-				 				
-				 				});
-				 			}
-				 		});
+					
+			var operEmpNo=$("#operEmpNo").val();
+			$.ajax({
+							 			url:'http://localhost:8089/pacpackaging/findSyEmpByEmpNo',
+							 			type:'get',
+							 			async : true,
+										data:{"empNo":operEmpNo},
+							 			success:function(res){
+							 					if(res==null){
+													form.val('example', {
+																"operEmpName":"没有对应该工号的姓名",//经办人姓名
+													
+													});
+													return;
+												}
+							 				form.val('example', {
+							 							"operEmpName":res.empName,//经办人姓名
+							 				
+							 				});
+							 			}
+							 		}); 
 				});
+				/* 根据客户编号获取客户名称 */
+					$("#clienterid").blur(function(){
+						
+				var clienterid=$("#clienterid").val();
+				$.ajax({
+								 			url:'http://localhost:8089/pacpackaging/findSyEmpById',
+								 			type:'get',
+								 			async : true,
+											data:{"id":clienterid},
+								 			success:function(res){
+								 					if(res==null){
+														form.val('example', {
+																	"clienterName":"没有对应该编号的姓名",//运输单号
+														
+														});
+														return;
+													}
+								 				form.val('example', {
+								 							"clienterName":res.empName,//运输单号
+								 				
+								 				});
+								 			}
+								 		}); 
+					});
+					/* 根据领用人工号获取领用人姓名 */
+						$("#recipient").blur(function(){
+							
+					var recipient=$("#recipient").val();
+					$.ajax({
+									 			url:'http://localhost:8089/pacpackaging/findSyEmpByEmpNo',
+									 			type:'get',
+									 			async : true,
+												data:{"empNo":recipient},
+									 			success:function(res){
+									 					if(res==null){
+															form.val('example', {
+																		"recipientName":"没有对应该工号的姓名",//领用人姓名
+															
+															});
+															return;
+														}
+									 				form.val('example', {
+									 							"recipientName":res.empName,//领用人姓名
+									 				
+									 				});
+									 			}
+									 		}); 
+						});
+						form.on('submit(add)', function(data){
+						  console.log(data.elem); //被执行事件的元素DOM对象，一般为button对象
+						 /* console.log(data.form);//被执行提交的form对象，一般在存在form标签时才会返回
+						  console.log(data.field); *///当前容器的全部表单字段，名值对形式：{name: value}
+						  
+						        layer.alert("新增成功", {icon: 6},function () {
+						            // 获得frame索引
+						            var index = parent.layer.getFrameIndex(window.name);
+						            //关闭当前frame
+						            parent.layer.close(index);
+						          $(".layui-form").submit();
+						        });
+						  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+						});
+						form.on('submit(quxiao)', function(data){
+						     var index = parent.layer.getFrameIndex(window.name);
+						            //关闭当前frame
+						            parent.layer.close(index);
+						  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+						});
 	});
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
