@@ -130,15 +130,30 @@
 			var pagedata;
 			var pagedatacount;
 			var vue=[];
+			var userid=0;
+			function jx(){
+				$.ajax({
+					url:url+"jurisdiction/parsetoken",
+					type:'get',
+					async:true,
+					success:function(data){
+							userid=data.map.syEmps.empunit;
+					}
+				});
+			}
 			function initEmp() {
+				jx();
 				var isno = $("#isno option:selected").val();
 				var empname = $("input[name='empname']").val();
+				
+				alert(userid);
 				$.ajax({
 					url: url + 'jurisdiction/getempall',
 					type: 'get',
 					data: {
 						"empName": empname,
-						"disabled": isno
+						"disabled": isno,
+						"empunit":userid
 					},
 					dataType: 'json',
 					async: true,
@@ -231,6 +246,7 @@
 			});
 
 			$(function() {
+				
 				initEmp();
 				//显示、隐藏剩余的查询条件
 				$('#btnMore').click(function() {

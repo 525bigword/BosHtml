@@ -22,13 +22,13 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">单位名称:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<input type="text" name="title" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+						<input type="text" name="unitname" placeholder="请输入单位名" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button"  onclick="initunit()" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
@@ -60,7 +60,7 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
+				    	<th><input type="checkbox" name="checkn" lay-skin="primary"></th>
 				    	<th>序号</th>
 				      	<th>编号</th>
 				      	<th>单位名称</th>
@@ -69,7 +69,7 @@
 						<th>操作时间</th>
 				    </tr>
 			  	</thead>
-			  	<tbody>
+			  	<tbody id="tbody">
 				    <tr>
 				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
 				      	<td>1</td>
@@ -92,6 +92,9 @@
 			</table>
 		</div>
 		</form>
+		<center>
+			<div id="page"></div>
+		</center>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -120,9 +123,83 @@
 	        }
 	    } */
 	});
+	function jx(){
+		$.ajax({
+			url:url+"jurisdiction/parsetoken",
+			type:'get',
+			async:false,
+			success:function(data){
+					sunitid=data.map.syEmps.empunit;
+			}
+		});
+	}
+	var pagedata;
+	var pagedatacount;
+	var vue=[];
+	var sunitid=0;
+	function initunit() {
+		jx();
+		var unitname = $("input[name='unitname']").val();
+		$.ajax({
+			url: url + 'syUnitsController/findsyunitsbyparentid',
+			type: 'get',
+			data: {
+				"name": unitname,
+				"parentid": sunitid
+			},
+			dataType: 'json',
+			async: false,
+			success: function(data) {
+				var str
+				console.log(data)
+				pagedata = data;
+				pagedatacount = pagedata.length;
+				//console.log(JSON.parse(data.map));
+				//console.log(JSON.parse(str));
+				sx();
+			}
+		}) 
+	
+	}
+	function sx() {
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer; //测试数据
+			var form = layui.form;
+			//调用分页
+			laypage.render({
+				elem: 'page',
+				first: '首页',
+				last: '尾页',
+				prev: '<em>上一页</em>',
+				next: '<em>下一页</em>',
+				limit: 10,
+				count: pagedatacount,
+				jump: function(obj) {
+					//模拟渲染
+					document.getElementById('tbody').innerHTML = function() {
+						vue = [];
+						var arr = [],
+							thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
+						layui.each(thisData, function(index, item) {
+	
+							 vue.push(item);
+							arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
+								' name="check" lay-skin="primary"></td><td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' +
+								item.name + '</td><td>' + item.remarks + '</td><td>' +item.operatorname +
+								'</td><td>'+item.operationTime+'</td></tr>'); 
+						});
+						return arr.join('');
+					}();
+					form.render();
+				}
+			});
+	
+		});
+	}
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
-user()；
+initunit();
 });
 
 //加载'table'组件
