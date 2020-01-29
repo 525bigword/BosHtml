@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
+<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
 <body>
 <!-- 外部整体 -->
 <div class="external">
@@ -19,18 +27,20 @@
 		<form class="layui-form" action="">
 			<div class="layui-form-item">
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">名称:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入名称" autocomplete="off" class="layui-input">
-				    </div>
+				    <div class="layui-inline">
+				        <label class="layui-form-label">所属单位:</label>
+				        <div class="layui-input-block" style="width: 150px;">
+				         	<select name="city" id="dw" lay-verify="required">
+				            	<option value="">请选择</option>
+				          	</select>
+				        </div>
 				    
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >时间名称:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入时间名称" autocomplete="off" class="layui-input">
+				     	<input type="text" id="name" name="title" placeholder="请输入时间名称" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
@@ -43,10 +53,6 @@
 					<button type="button" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
-
-					<button id="btnMore" type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#xe671;</i>更多
-					</button>
 				</div>
 			    
 			</div>
@@ -54,18 +60,7 @@
 			<!-- 隐藏其它查询条件 -->
 			<div id="hQuery" class="layui-form-item" style="display: none;">
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">所属单位:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" lay-verify="required">
-				        	<option value=""></option>
-				        	<option value="0">全部</option>
-				        	<option value="1">总公司</option>
-				        	<option value="2">总公司</option>
-				        	<option value="3">总公司</option>
-				      	</select>
-				    </div>
-			    </div>
+				
 
 			</div>
 
@@ -83,29 +78,29 @@
 				<colgroup>
 					<col width="50">
 				    <col width="60">
+				    <col width="160">
+				    <col width="160">
 				    <col width="140">
 				    <col width="140">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
+				    <col width="140">
+				    <col width="140">
 				    <col>
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>时间名称</th>
-				      	<th>所属单位</th>
-				      	<th>平时上班时间</th>
-					  	<th>平时下班时间</th>
-						<th>周六上班时间</th>
-					  	<th>周六下班时间</th>
-					  	<th>周如上班时间</th>
-					  	<th>周日下班时间</th>
+				    	<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+				    	<th style="text-align: center;">序号</th>
+				      	<th style="text-align: center;">时间名称</th>
+				      	<th style="text-align: center;">所属单位</th>
+				      	<th style="text-align: center;">平时上班时间</th>
+					  	<th style="text-align: center;">平时下班时间</th>
+						<th style="text-align: center;">周六上班时间</th>
+					  	<th style="text-align: center;">周六下班时间</th>
+					  	<th style="text-align: center;">周如上班时间</th>
+					  	<th style="text-align: center;">周日下班时间</th>
 				    </tr> 
 			  	</thead>
-			  	<tbody>
+			  	<tbody id="tbody">
 				    <tr>
 				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
 				      	<td>1</td>
@@ -118,66 +113,7 @@
 				      	<td>14:31</td>
 				      	<td>14:31</td>
 				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
+				    
 				    
 			  	</tbody>
 			</table>
@@ -186,8 +122,9 @@
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
 <script type="text/javascript">     
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
@@ -209,11 +146,34 @@ layui.use('laydate', function(){
 });
 
 $(function(){
-	//显示、隐藏剩余的查询条件
-	$('#btnMore').click(function(){
-		$("#hQuery").toggle();
-	});
-
+	$.ajaxSetup({
+			dataType: "json",
+			cache: false,
+			headers: {
+				"Authorization": 'bos' + $.cookie('user')
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+			/* ,
+	complete: function(xhr) {
+	    //token过期，则跳转到登录页面
+	    if(xhr.responseJSON.code == 401){
+	        parent.location.href = baseURL + 'login.html';
+	    }
+	} */
+		});
+		$.ajax({
+			url: url + 'syUnitsController/findSyUnits',
+			type: 'post',
+			async: false,
+			success: function(data) {
+				var gong=data.SyUnits[0];
+				for (var i = 0; i < gong.length; i++) {
+					$("#dw").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
+				}
+			}
+		});
 	//新增
 	$('#opAdd').click(function(){
 		//页面层

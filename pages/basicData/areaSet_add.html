@@ -212,7 +212,6 @@
 					async: false,
 					success: function(data) {
 						var gong=data.SyUnits[0];
-						console.log(gong);
 						for (var i = 0; i < gong.length; i++) {
 							$("#jg").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
 							$("#cg").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
