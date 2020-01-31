@@ -8,12 +8,13 @@
 </head>
 <body>
 <div class="layui-form">
-	<form class="layui-form" action="/pacpackaging/p" lay-filter="example">
+	<form class="layui-form" action="/pacpackaging/addPacStockItem" lay-filter="example">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 		<tbody>
 		<tr>
 			<td class="layui-bg-gray" width="17%">物品编码</td>
 			<td width="33%">
+				<input type="hidden" value="2" id="gunit" />
 				<input type="text" name="goodsCode" id="goodsCode" placeholder="请输入物品编码" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray" width="17%">货物名称</td>
@@ -24,6 +25,7 @@
 		<tr>
 			<td class="layui-bg-gray" width="17%">入库数量</td>
 			<td width="33%">
+				<input type="hidden" id="sunit" name="sunit" />
 				<input type="hidden" id="warehouseNo" name="warehouseNo"/>
 				<input type="text" id='storageNum' name="storageNum" placeholder="请输入入库数量" autocomplete="off" class="layui-input">
 			</td>
@@ -49,7 +51,7 @@
 			</td>
 			<td class="layui-bg-gray">状态</td>
 			<td>
-				<input type="text" name="status" placeholder="根据货物编码填充" autocomplete="off" class="layui-input">
+				<input type="text" name="statuss" placeholder="根据货物编码填充" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
@@ -115,40 +117,23 @@ $.ajaxSetup({
 													"plannedPrice":res.plannedPrice,//
 													"specifications":res.specifications,
 													"type":res.pacOutBoundType.outBoundType,
-													"status":res.status==0?'正常':'作废',
-													"warehouseNo":warehouseNo
+													"sunit":res.pacOutBoundType.id,
+													"statuss":res.status==0?'正常':'作废',
+													"warehouseNo":warehouseNo,
+													
 		 				 				
 		 				 				});
 		 				 			}
 		 				 		}); 
 		 	});
-			$("#goodsCode").blur(function(){
-					var warehouseNo = $.cookie('doctorId');
-					//alert(warehouseNo);
-			var goodsCode=$("#goodsCode").val();
-			$.ajax({
-							 			url:'http://localhost:8089/pacpackaging/findPacPackagingByitemcode',
-							 			type:'get',
-							 			async : true,
-										data:{"itemCode":goodsCode},
-							 			success:function(res){
-													console.log(res);
-							 					if(res==null){
-												
-													return;
-												}
-							 				form.val('example', {
-							 							"goodsName":res.itemName,//货物名称
-																"plannedPrice":res.plannedPrice,//
-																"specifications":res.specifications,
-																"type":res.pacOutBoundType.outBoundType,
-																"status":res.status==0?'正常':'作废',
-																"warehouseNo":warehouseNo
-							 				
-							 				});
-							 			}
-							 		}); 
-				});
+		
+		$("#storageNum").blur(function(){
+				
+		var storageNum=$("#storageNum").val();
+	form.val('example', {
+				"actualNum":storageNum,//实际数量
+	});
+			});
 			form.on('submit(add)', function(data){
 				//从cookie中取出id
 				
@@ -161,6 +146,17 @@ $.ajaxSetup({
 			            var index = parent.layer.getFrameIndex(window.name);
 			            //关闭当前frame
 			            parent.layer.close(index);
+						var goodsCodess=$("#goodsCode").val();
+						var storageNum=$("#storageNum").val();
+						$.ajax({
+										 			url:'http://localhost:8089/pacpackaging/addPacManegement',
+										 			type:'get',
+										 			async : true,
+													data:{"goodsCode":goodsCodess,"storageNum":storageNum,"gunit":2},
+										 			success:function(){
+														}	
+										 			
+										 		}); 
 			          $(".layui-form").submit();
 			        });
 			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

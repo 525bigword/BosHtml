@@ -305,7 +305,7 @@ layui.use(['table','form','laypage','element'], function(){
 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
 			 							        layui.each(thisData, function(index, item){
 			 										console.log('item'+item);
-			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.outboundNumber+"</td><td>"+item.pacOutType.outType+"</td><td>"+item.transportSlip+"</td><td>"+item.saffiliatedUnit.name+"</td><td>"+item.sissuedByTheUnit.name+"</td><td>"+item.sosperatorUnit.name+"</td><td>"+item.syEmpno.empName+"</td><td>"+item.syEmpc.empName+"</td><td>"+item.recipientsTime+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList'>查看明细</button></td></tr>");
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.outboundNumber+"</td><td>"+item.pacOutType.outType+"</td><td>"+item.transportSlip+"</td><td>"+item.saffiliatedUnit.name+"</td><td>"+item.sissuedByTheUnit.name+"</td><td>"+item.sosperatorUnit.name+"</td><td>"+item.syEmpno.empName+"</td><td>"+item.syEmpc.empName+"</td><td>"+item.recipientsTime+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' onclick=pay('"+item.outboundNumber+"')  id='btnList'>查看明细</button></td></tr>");
 			 							             });
 			 							        return arr.join('');
 			 							      }();
@@ -370,20 +370,31 @@ $(function(){
 		});
 	});
 	//查看列表 layui中的按钮点击事件编写如下，平常写法失效
-$(document).on('click','#btnList',function(){
-	layer.open({
-			title: ['列表', 'color:#fff;background:#1da02b;'],
-			type: 2,
-			//skin: 'layui-layer-rim', //加上边框
-			area: ['980px', '440px'], //宽高
-			content: 'outboundManagement_list.html'
-		});
-});
+/* $(document).on('click','#btnList',function(){
 	
 
+});
+	 */
+
 
 });
-
+function pay(obj){
+	//出库单号存到cookie中
+	 	$.cookie('outhouseNo', obj);
+		
+		layer.open({
+				title: ['列表', 'color:#fff;background:#1da02b;'],
+				type: 2,
+				//skin: 'layui-layer-rim', //加上边框
+				area: ['980px', '440px'], //宽高
+				content: 'outboundManagement_list.html',end:function(){
+			 		
+						location.reload();
+			 			  
+			 			  
+			 		}
+			});
+}
 </script>
 
 </body>
