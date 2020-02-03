@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>管理分区</title>
-<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../css/page.css">
-</head>
-<style>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>管理分区</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../css/page.css">
+	</head>
+	<style>
 		th{
 			text-align: center;
 		}
@@ -15,144 +15,160 @@
 			text-align: center;
 		}
 	</style>
-<body>
-<!-- 外部整体 -->
-<div class="external">
-	<!-- 标题 -->
-	<p class="ptitle">区域设置</p>
-	<!-- 操作区域 -->
-	<div class="operation">
-		<!-- 向上间距 -->
-		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
-			<div class="layui-form-item">
+	<body>
+		<!-- 外部整体 -->
+		<div class="external">
+			<!-- 标题 -->
+			<p class="ptitle">区域设置</p>
+			<!-- 操作区域 -->
+			<div class="operation">
+				<!-- 向上间距 -->
+				<div style="height: 10px;"></div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">省份:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" id="shen" lay-filter="see" lay-verify="required">
-				     		<option value="">请选择</option>
-				     	</select>
-				    </div>
-			    </div>
+						<div class="layui-inline">
+							<label class="layui-form-label">省份:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<select name="city" id="shen" lay-filter="see" lay-verify="required">
+									<option value="">请选择</option>
+								</select>
+							</div>
+						</div>
 
-			    <div class="layui-inline">
-				    <label class="layui-form-label" >城市:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" id="shi" lay-filter="see1" lay-verify="required">
-				     		<option value="">请选择</option>
-				     	</select>
-				    </div>
-			    </div>
+						<div class="layui-inline">
+							<label class="layui-form-label">城市:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<select name="city" id="shi" lay-filter="see1" lay-verify="required">
+									<option value="">请选择</option>
+								</select>
+							</div>
+						</div>
 
-				<!-- 查询按钮组 -->
-			    <div class="layui-inline">
-					<button type="button" id="chaxun" class="layui-btn btnQuery">
-						<i class="layui-icon">&#xe615;</i> 查询
-					</button>
+						<!-- 查询按钮组 -->
+						<div class="layui-inline">
+							<button type="button" id="chaxun" class="layui-btn btnQuery">
+								<i class="layui-icon">&#xe615;</i> 查询
+							</button>
 
-					<button type="button" id="rest" class="layui-btn btnOther">
-						<i class="layui-icon">&#x1002;</i> 重置
-					</button>
+							<button type="button" id="rest" class="layui-btn btnOther">
+								<i class="layui-icon">&#x1002;</i> 重置
+							</button>
 
-					<button id="btnMore" type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#xe671;</i>更多
-					</button>
-				</div>
+							<button id="btnMore" type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#xe671;</i>更多
+							</button>
+						</div>
 
+					</div>
+
+					<!-- 隐藏其它查询条件 -->
+					<div id="hQuery" class="layui-form-item" style="display: none;">
+
+						<div class="layui-inline">
+							<label class="layui-form-label">区县:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<select name="city" id="qu" lay-filter="see2" lay-verify="required">
+									<option value="">请选择</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">定区编码:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" name="title" id="dqbm" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">关键字:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" name="title" id="key" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+
+					<!-- 操作按扭组 -->
+					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+						<div class="layui-inline">
+							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
+							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">导入</button>
+							<button type="button" class="layui-btn layui-btn-small btnQuery" id="daochu">导出</button>
+						</div>
+					</div>
+
+					<!-- 数据表格 -->
+					<table class="layui-table" id="LAY-EXPORT-TEST">
+						<colgroup>
+							<col width="50">
+							<col width="65">
+							<col width="95">
+							<col width="95">
+							<col width="70">
+							<col width="70">
+							<col width="95">
+							<col width="110">
+							<col width="85">
+							<col width="80">
+							<col width="85">
+							<col width="100">
+							<col width="100">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+								<th style="text-align: center;">序号</th>
+								<th style="text-align: center;">分拣编码</th>
+								<th style="text-align: center;">定区编码</th>
+								<th style="text-align: center;">省份</th>
+								<th style="text-align: center;">城市</th>
+								<th style="text-align: center;">区（县）</th>
+								<th style="text-align: center;">关键字</th>
+								<th style="text-align: center;">起始号</th>
+								<th style="text-align: center;">终止号</th>
+								<th style="text-align: center;">单双号</th>
+								<th style="text-align: center;">操作人员</th>
+								<th style="text-align: center;">操作单位</th>
+								<th style="text-align: center;">操作时间</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+					<div id="demo1" style="text-align: center;"></div>
 			</div>
-
-			<!-- 隐藏其它查询条件 -->
-			<div id="hQuery" class="layui-form-item" style="display: none;">
-
-				<div class="layui-inline">
-				    <label class="layui-form-label">区县:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<select name="city" id="qu" lay-filter="see2" lay-verify="required">
-				     		<option value="">请选择</option>
-				     	</select>
-				    </div>
-			    </div>
-
-			    <div class="layui-inline">
-				    <label class="layui-form-label">定区编码:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" id="dqbm" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-
-			    <div class="layui-inline">
-				    <label class="layui-form-label">关键字:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" id="key" placeholder="请输入关键字" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
-			</div>
-
-			<!-- 操作按扭组 -->
-			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
-				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">导入</button>
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">导出</button>
-				</div>
-			</div>
-
-			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="65">
-				    <col width="95">
-				    <col width="95">
-				    <col width="70">
-				    <col width="70">
-				    <col width="95">
-				    <col width="110">
-				    <col width="85">
-				    <col width="80">
-				    <col width="85">
-				    <col width="100">
-				    <col width="100">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
-				    	<th style="text-align: center;">序号</th>
-				      	<th style="text-align: center;">分拣编码</th>
-				      	<th style="text-align: center;">定区编码</th>
-				      	<th style="text-align: center;">省份</th>
-				      	<th style="text-align: center;">城市</th>
-				      	<th style="text-align: center;">区（县）</th>
-					  	<th style="text-align: center;">关键字</th>
-					  	<th style="text-align: center;">起始号</th>
-					  	<th style="text-align: center;">终止号</th>
-					  	<th style="text-align: center;">单双号</th>
-					  	<th style="text-align: center;">操作人员</th>
-					  	<th style="text-align: center;">操作单位</th>
-					  	<th style="text-align: center;">操作时间</th>
-				    </tr> 
-			  	</thead>
-			  	<tbody id="tbody">
-				    
-			  	</tbody>
-			</table>
-			<div id="demo1" style="text-align: center;"></div>
+			</form>
 		</div>
-		</form>
-	</div>
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
-<script type="text/javascript" src="../js/basicjs/partition.js">     
+		<script type="text/javascript" src="../js/basicjs/partition.js"></script>
+		<script type="text/javascript" src="../js/basicjs/excel.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#daochu").click(function() {
+					var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')); // 或者 $('#LAY-EXPORT-TEST')
+					console.log(data);
+					var exportData = [];
+					exportData.push.apply(exportData, data.head);
+					var abc = [];
+					for (var i = 0; i < fyy.length; i++) {
+						exportData.push((""+","+(i + 1) + "," + fyy[i].sortingCode + "," + fyy[i].zoneCode + "," + fyy[i].province + "," +
+							fyy[i].city + "," + fyy[i].county + "," + fyy[i].keyword + "," + fyy[i].startInt + "," + fyy[i].terminateInt +
+							"," + (fyy[i].sDInt == 1 ? "单号" : "双号") + "," + fyy[i].syEmp.empName + "," + fyy[i].syUnits.name + "," +
+							fyy[i].operationTime).split(","));
+					}
+					LAY_EXCEL.exportExcel(exportData, '管理分区.xlsx', 'xlsx');
+				})
+			})
+		</script>
 
-
-</script>
-
-</body>
+	</body>
 </html>
