@@ -286,7 +286,7 @@ layui.use(['table','form','laypage','element'], function(){
 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
 			 							        layui.each(thisData, function(index, item){
 			 										console.log('item'+item);
-			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'作废')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList'>查看明细</button></td></tr>");
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'作废')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList' onclick=pay('"+item.warehouseNo+"') >查看明细</button><input type='hidden' value='"+item.warehouseNo+"'/></td></tr>");
 			 							             });
 			 							        return arr.join('');
 			 							      }();
@@ -379,26 +379,33 @@ $(function(){
 	});
 
 	//查看列表
-$(document).on('click','#btnList',function(){
-		//页面层
-		layer.open({
-			title: ['列表', 'color:#fff;background:#1da02b;'],
-			type: 2,
-			//skin: 'layui-layer-rim', //加上边框
-			area: ['980px', '440px'], //宽高
-			content: 'warehousingManagement_list.html',
-			end:function(){
-	 			/* alert('怀化'); */
-				 setTimeout("location.reload();", 1000);
-	 			  
-	 			  
-	 		}
-		});
+/* $(document).on('click','#btnList',function(obj){	
+	//将id保存在cookie
 	});
+ */
 
 
 });
-
+function pay(obj){
+	//入库单号存到cookie中
+	 	$.cookie('doctorId', obj);
+		
+			//页面层
+			layer.open({
+				title: ['列表', 'color:#fff;background:#1da02b;'],
+				type: 2,
+				//skin: 'layui-layer-rim', //加上边框
+				area: ['980px', '440px'], //宽高
+				content: 'warehousingManagement_list.html',
+				end:function(){
+		 		
+					location.reload();
+		 			  
+		 			  
+		 		}
+			});
+	
+}
 </script>
 
 </body>

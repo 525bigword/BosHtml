@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
+<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
 <body>
 <!-- 外部整体 -->
 <div class="external">
@@ -22,24 +30,24 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">工作单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				    	<input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+				    	<input type="text" id="outboundNumber" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >入库时间:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<input type="text" name="title" placeholder="请输入入库时间" autocomplete="off" class="layui-input">
+						<input type="text" id="drawerTime" name="title" placeholder="请输入入库时间" autocomplete="off" class="layui-input">
 					</div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button" id="chaxun" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="button" id="rest" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -56,23 +64,8 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">包装单位:</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<select name="pro" lay-verify="required">
-								<option value="0">全部</option>
-								<option value="1">包装单位</option>
-								<option value="-1">包装单位</option>
-								<option value="-1">包装单位</option>
-								<option value="-1">包装单位</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="layui-inline">
-						<label class="layui-form-label">单位含下级:</label>
-						<div class="layui-input-block" style="width: 150px;">
-							<select name="pro" lay-verify="required">
-								<option value="0">全部</option>
-								<option value="1">包含</option>
-								<option value="-1">不包含</option>
+							<select name="pro" id="dw" lay-verify="required">
+								<option value="">请选择</option>
 							</select>
 						</div>
 					</div>
@@ -80,48 +73,24 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">品名</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入品名" autocomplete="off" class="layui-input">
+							<input type="text" id="goodsName" name="title" placeholder="请输入品名" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-inline">
 						<label class="layui-form-label">入库人员</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入入库人员" autocomplete="off" class="layui-input">
+							<input type="text" id="drawerName" name="title" placeholder="请输入入库人员" autocomplete="off" class="layui-input">
 						</div>
 					</div>
-
-				</div>
-
-				<div class="layui-form-item">
-
-
 					<div class="layui-inline">
 						<label class="layui-form-label">出库人员</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入出库人员" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-
-					<div class="layui-inline">
-						<label class="layui-form-label">包装人员</label>
-						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入包装人员" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">委托单位</label>
-						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入委托单位" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">包装单位</label>
-						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入包装单位" autocomplete="off" class="layui-input">
+							<input type="text" id="empName" name="title" placeholder="请输入出库人员" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 				</div>
+
 			</div>
 
 			<!-- 操作按扭组 -->
@@ -136,57 +105,159 @@
 			<!-- 数据表格 -->
 			<table class="layui-table">
 				<colgroup>
-					<col width="50">
 				    <col width="60">
 				    <col width="100">
-				    <col width="120">
-				    <col width="90">
-				    <col width="90">
+				    <col width="130">
+				    <col width="110">
 				    <col width="100">
-				    <col width="150">
-				    <col width="100">
+				    <col width="200">
 				    <col width="100">
 				    <col>
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>工作单号</th>
-				      	<th>品名</th>
-				      	<th>发货方式</th>
-					  	<th>包装单位</th>
-					  	<th>入库人</th>
-					  	<th>入库时间</th>
-					  	<th>包装员</th>
-					  	<th>出库人</th>
-						<th>出库时间</th>
+				    	<th style="text-align: center;">序号</th>
+				      	<th style="text-align: center;">工作单号</th>
+				      	<th style="text-align: center;">品名</th>
+					  	<th style="text-align: center;">包装单位</th>
+					  	<th style="text-align: center;">入库人</th>
+					  	<th style="text-align: center;">入库时间</th>
+					  	<th style="text-align: center;">出库人</th>
+						<th style="text-align: center;">出库时间</th>
 				    </tr>
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>GZD1001</td>
-				      	<td>纸盒</td>
-						<td>快递</td>
-				      	<td>长沙分部</td>
-				      	<td>老王</td>
-				      	<td>2017-11-11 11:11:11</td>
-						<td>二狗</td>
-						<td>老张</td>
-				      	<td>2017-11-11 11:11:11</td>
-				    </tr>
+			  	<tbody id="tbody">
 			  	</tbody>
 			</table>
+			<div id="demo1" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
 <script type="text/javascript">
+	var fyy;
+	var fyycount;
+	var layer, layuiTable;
+	
+	function sxfy() {
+		/* if(fyycount<5){
+			$("#demo1").hide();
+		} */
+		layui.use(['laypage', 'layer'], function() {
+			var laypage = layui.laypage,
+				layer = layui.layer,
+				form = layui.form;
+			//调用分页
+			laypage.render({
+				elem: 'demo1',
+				count: fyycount,
+				layout: ['prev', 'page', 'next', 'count'],
+				limit: 4,
+				jump: function(obj) {
+					//模拟渲染
+					document.getElementById('tbody').innerHTML = function() {
+						var arr = [],
+							thisData = fyy.concat()
+							.splice(obj.curr * obj.limit - obj.limit,
+								obj.limit);
+						layui.each(thisData, function(index, item) {
+							arr.push('<tr><td>' +
+								(parseInt(index) + 1) + '</td><td>' +
+								item.outboundNumber + '</td><td>' +
+								item.goodsName + '</td><td>' +
+								item.name + '</td><td>' +
+								item.drawerName + '</td><td>' +
+								item.drawerTime + '</td><td>' +
+								item.empName + '</td><td>' +
+								item.recipientsTime + '</td></tr>');
+							
+						});
+	
+						return arr.join('');
+					}();
+					form.render();
+				}
+			});
+			
+		});
+	}
+	$(function(){
+		$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+		complete: function(xhr) {
+		    //token过期，则跳转到登录页面
+		    if(xhr.responseJSON.code == 401){
+		        parent.location.href = baseURL + 'login.html';
+		    }
+		} */
+			});
+			$.ajax({
+				url: url + 'syUnitsController/findSyUnits',
+				type: 'post',
+				async: false,
+				success: function(data) {
+					var gong=data.SyUnits[0];
+					for (var i = 0; i < gong.length; i++) {
+						$("#dw").append('<option value="'+gong[i].name+'">'+gong[i].name+'</option>');
+					}
+				}
+			});
+			$.ajax({
+				url: url + 'pacWorksheetController/findPacWorksheetsByTrem',
+				type: 'post',
+				async: false,
+				dateType: 'json',
+				success: function(data) {
+					var da = data;
+					fyy = da;
+					fyycount = da.length;
+					sxfy();
+				}
+			});
+			$("#rest").click(function() {
+			$(".layui-input").val("");
+			$("#dw").val("");
+		})
+		$("#chaxun").click(function(){
+			var outboundNumber=$("#outboundNumber").val();
+			var goodsName=$("#goodsName").val();
+			var drawerTime=$("#drawerTime").val();
+			var name=$("#dw").val();
+			var drawerName=$("#drawerName").val();
+			var empName=$("#empName").val();
+			$.ajax({
+				url: url + 'pacWorksheetController/findPacWorksheetsByTrem',
+				type: 'post',
+				async: false,
+				data: {
+					"outboundNumber":outboundNumber,
+					"goodsName":goodsName,
+					"drawerTime":drawerTime,
+					"name":name,
+					"drawerName":drawerName,
+					"empName":empName
+				},
+				success: function(data) {
+					var da = data;
+					fyy = da;
+					fyycount = da.length;
+					sxfy();
+				}
+			});
+		})
+	})
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
 
@@ -202,7 +273,8 @@ layui.use('laydate', function(){
   var laydate = layui.laydate;
   //执行一个laydate实例
   laydate.render({
-    elem: '#opTime' //指定元素
+    elem: '#drawerTime' ,//指定元素
+	type: 'datetime'
   });
 });
 
