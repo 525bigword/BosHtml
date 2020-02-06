@@ -16,31 +16,27 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
+		<form class="layui-form" action="" lay-filter="example">
 			<div class="layui-form-item">
 				<div class="layui-inline">
 					<label class="layui-form-label" >货物编码:</label>
 					<div class="layui-input-block" style="width: 150px;">
-						<input type="text" name="title" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
+						<input type="text" name="itemCode" placeholder="请输入货物编码" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 
 				<div class="layui-inline">
 				    <label class="layui-form-label">所属单位:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<select name="pro" lay-verify="required">
-							<option value="0">全部</option>
-							<option value="1">所属单位</option>
-							<option value="-1">所属单位</option>
-							<option value="-1">所属单位</option>
-							<option value="-1">所属单位</option>
+						<select name="dw" id="ssdw" lay-verify="dw">
+							<option value="">全部</option>
 						</select>
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button" class="layui-btn btnQuery" id="searchs">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
@@ -60,15 +56,17 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">规格:</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入规格" autocomplete="off" class="layui-input">
+							<input type="text" name="specifications" placeholder="请输入规格" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-inline">
 						<label class="layui-form-label">类型:</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入类型" autocomplete="off" class="layui-input">
-						</div>
+							<select  name='type' id="lx" lay-verify="type" lay-search>
+								<option value="">请选择类型</option>
+							</select>
+							</div>
 					</div>
 				</div>
 
@@ -76,35 +74,35 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">库存数量:</label>
 						<div class="layui-input-inline" style="width: 70px;">
-							<select name="pro" lay-verify="required">
+							<select name="number_m" >
 								<option value="0">全部</option>
-								<option value="1"><</option>
-								<option value="-1"><=</option>
-								<option value="-1">=</option>
-								<option value="-1">></option>
-								<option value="-1">>=</option>
+								<option value="<"><</option>
+								<option value="<="><=</option>
+								<option value="=">=</option>
+								<option value=">">></option>
+								<option value=">=">>=</option>
 							</select>
 						</div>
 						<div class="layui-form-mid">-</div>
 						<div class="layui-input-inline" style="width: 52px;">
-							<input type="text" name="price_max" placeholder="数量" autocomplete="off" class="layui-input">
+							<input type="number" name="number_max" placeholder="数量" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-inline">
 						<label class="layui-form-label">金额:</label>
 						<div class="layui-input-inline" style="width: 70px;">
-							<select name="pro" lay-verify="required">
+							<select name="price_m" >
 								<option value="0">全部</option>
-								<option value="1"><</option>
-								<option value="-1"><=</option>
-								<option value="-1">=</option>
-								<option value="-1">></option>
-								<option value="-1">>=</option>
+								<option value="<"><</option>
+								<option value="<="><=</option>
+								<option value="=">=</option>
+								<option value=">">></option>
+								<option value=">=">>=</option>
 							</select>
 						</div>
 						<div class="layui-form-mid">-</div>
 						<div class="layui-input-inline" style="width: 52px;">
-							<input type="text" name="price_max" placeholder="金额" autocomplete="off" class="layui-input">
+							<input type="number" name="price_max" placeholder="金额" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 				</div>
@@ -203,6 +201,40 @@ layui.use(['table','form','laypage','element'], function(){
 	 laypage=layui.laypage,
 	 element=layui.element
 	 var $ = layui.$;
+	/* 初始化物品类型 */
+	 $.ajax({
+	 		 	url:'http://localhost:8089/pacpackaging/queryAllpactype',
+	 		 	type:'get',
+	 		 	dataType : 'json',
+	 		 	sync : false,
+	 		 	success:function(data){
+	 		 		console.log(data);
+	 		 		var pacoout=data.map.PacOutBound[0];
+	 		 		//console.log(pacoout);
+	 		 		for(var i=pacoout.length-1;i>=0;i--){
+	 		 			
+	 		 			 $('#lx').append('<option value="'+pacoout[i].id+'">'+pacoout[i].outBoundType+'</option>');
+	 		 		}
+	 		 		 form.render()
+	 		 	}
+	 		 });
+			 /*初始化所属单位*/
+			 $.ajax({
+			 		 	url:'http://localhost:8089/pacpackaging/findAllSyUnits',
+			 		 	type:'get',
+			 		 	dataType : 'json',
+			 		 	sync : false,
+			 		 	success:function(data){
+			 		 	console.log(data);
+			 		 	var pacoout=data;
+			 		 	
+			 		 	for(var i=pacoout.length-1;i>=0;i--){
+			 		 	$('#ssdw').append('<option value="'+pacoout[i].id+'">'+pacoout[i].name+'</option>');
+			 		 
+			 		 	}
+			 		 		 form.render()
+			 		 	}
+			 		 });
 	 form.on('checkbox(checkn)', function(data){
 	    console.log(data.elem); //得到checkbox原始DOM对象
 	    console.log(data.elem.checked); //是否被选中，true或者false
@@ -272,6 +304,45 @@ layui.use(['table','form','laypage','element'], function(){
 		 					
 		  			}
 		  	 });
+			 layui.$('#searchs').on('click', function(){
+			    var data = form.val('example');
+			   
+			 			 $.ajax({
+			 			  			url:'http://localhost:8089/pacpackaging/findWherePacManegement',
+									type:'get',
+									async : true,
+			 						data:{"itemCode":data.itemCode,"dw":data.dw,"specifications":data.specifications,"type":data.type,"storageNums":data.number_m+data.number_max,"zje":data.price_m+data.price_max},
+			 			  			success:function(res){
+			 						
+			 			  				console.log(res);
+			 			  				var pacPack=res;
+			 			  				console.log(pacPack);
+			 			 					total=pacPack.length;
+			 			  				
+			 			 					 //完整功能
+			 			 					  laypage.render({
+			 			 					    elem: 'demo7'
+			 			 					    ,count: total
+			 			 					    ,layout: [ 'prev', 'page', 'next','count']
+			 			 					    ,jump: function(obj){
+			 			 							 //模拟渲染
+			 			 							      document.getElementById('demo').innerHTML = function(){
+			 			 							        var arr = []
+			 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+			 			 							        layui.each(thisData, function(index, item){
+			 			 										console.log('item'+item);
+			 			 							        arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.gcode.itemCode+"</td><td>"+item.gcode.itemName+"</td><td>"+item.storageNum+"</td><td>"+item.gcode.plannedPrice+"</td><td>"+item.gcode.specifications+"</td><td>"+item.gcode.pacOutBoundType.outBoundType+"</td><td>"+item.gcode.measurementUnit+"</td><td>"+(item.gcode.plannedPrice*item.storageNum)+"</td><td>"+item.gunitss.name+"</td></tr>");
+			 			 							              });
+			 			 							        return arr.join('');
+			 			 							      }();
+			 			 					  form.render("checkbox");
+			 			 				
+			 			 					    }
+			 			 					  });
+			 			 					
+			 			  			}
+			 			  	 });
+			  });
 });
 
 //加载'laydate'时间组件

@@ -70,24 +70,7 @@
 				    </tr>
 			  	</thead>
 			  	<tbody id="tbody">
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>1001</td>
-				      	<td>总公司</td>
-						<td>总公司员工</td>
-				      	<td>二狗</td>
-						<td>2017-12-23 17:11:20</td>
-				    </tr>
-					<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>1002</td>
-				      	<td>长沙公司</td>
-						<td>长沙公司员工</td>
-				      	<td>张三</td>
-						<td>2017-12-23 17:11:20</td>
-				    </tr>
+				   
 			  	</tbody>
 			</table>
 		</div>
@@ -215,19 +198,7 @@ layui.use('laydate', function(){
     elem: '#opTime' //指定元素
   });
 });
-function user(){
-			$.ajax({
-				url:url+"jurisdiction/parsetoken",
-				type:'get',
-				async:true,
-				success:function(data){
-					if(data=="SUCCESS"){
-						console.log(data);
-						
-					}
-				}
-			})
-		}
+
 $(function(){
 	
 	
@@ -244,7 +215,10 @@ $(function(){
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['490px', '500px'], //宽高
-		  content: 'sysUnit_add.html'
+		  content: 'sysUnit_add.html',
+		  end: function() {
+		  	initEmp();
+		  }
 		});
 	});
 
