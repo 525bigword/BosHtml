@@ -16,20 +16,20 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
+		<form class="layui-form" action="" lay-filter="example">
 			<div class="layui-form-item">
 
 				<div class="layui-inline">
 				    <label class="layui-form-label">入库单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				    	<input type="text" name="title" placeholder="请输入入库单号" autocomplete="off" class="layui-input">
+				    	<input type="text" name="warehouseNo" placeholder="请输入入库单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >入库类型:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<select name="pro" id='lx' lay-verify="required">
+						<select name="rklx" id='lx' lay-verify="rklx" >
 							<option value="">全部</option>
 						</select>
 					</div>
@@ -37,7 +37,7 @@
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button" class="layui-btn btnQuery" id="searchs">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
@@ -58,19 +58,15 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">运输单号:</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
+							<input type="text" name="transport" placeholder="请输入运输单号" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-inline">
 						<label class="layui-form-label">所属单位:</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<select name="pro" lay-verify="required">
-								<option value="0">全部</option>
-								<option value="1">所属单位</option>
-								<option value="-1">所属单位</option>
-								<option value="-1">所属单位</option>
-								<option value="-1">所属单位</option>
+							<select name="dw" id="ssdw" lay-verify="dw">
+								<option value="">全部</option>
 							</select>
 						</div>
 					</div>
@@ -78,10 +74,10 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">状态</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<select name="pro" lay-verify="required">
-								<option value="">全部</option>
+							<select name="stats" lay-verify="stats">
+								<option value="-1">全部</option>
 								<option value="0">正常</option>
-								<option value="1">作废</option>
+								<option value="1">审核</option>
 							</select>
 						</div>
 					</div>
@@ -92,21 +88,21 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">开单时间</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入开单时间" autocomplete="off" class="layui-input">
+							<input type="text" name="drawerTime" placeholder="请输入开单时间" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-inline">
 						<label class="layui-form-label">货物编码</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入货物编码" autocomplete="off" class="layui-input">
+							<input type="text" name="goodsCode" placeholder="请输入货物编码" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-inline">
 						<label class="layui-form-label">货物名称</label>
 						<div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入货物名称" autocomplete="off" class="layui-input">
+							<input type="text" name="goodsName" placeholder="请输入货物名称" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 				</div>
@@ -212,6 +208,23 @@ layui.use(['table','form','laypage','element'], function(){
 	 laypage=layui.laypage,
 	 element=layui.element
 	 var $ = layui.$;
+	 /*初始化所属单位*/
+	 $.ajax({
+	 		 	url:'http://localhost:8089/pacpackaging/findAllSyUnits',
+	 		 	type:'get',
+	 		 	dataType : 'json',
+	 		 	sync : false,
+	 		 	success:function(data){
+	 		 	console.log(data);
+	 		 	var pacoout=data;
+	 		 	
+	 		 	for(var i=pacoout.length-1;i>=0;i--){
+	 		 	$('#ssdw').append('<option value="'+pacoout[i].id+'">'+pacoout[i].name+'</option>');
+	 		 
+	 		 	}
+	 		 		 form.render()
+	 		 	}
+	 		 });
   $.ajax({
   		 	url:'http://localhost:8089/pacpackaging/queryAllpacGetBoundtype',
   		 	type:'get',
@@ -223,7 +236,7 @@ layui.use(['table','form','laypage','element'], function(){
   		 		//console.log(pacoout);
   		 		for(var i=pacoout.length-1;i>=0;i--){
   		 			 /* $('#qx').append('<option value="0">请选择</option>'); */
-  		 			 $('#lx').append('<option value="'+pacoout[i].pacgetid+'">'+pacoout[i].getBoundType+'</option>');
+  		 			 $('#lx').append('<option value="'+pacoout[i].pacGetid+'">'+pacoout[i].getBoundType+'</option>');
   		 		}
   		 		 form.render()
   		 	}
@@ -286,7 +299,7 @@ layui.use(['table','form','laypage','element'], function(){
 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
 			 							        layui.each(thisData, function(index, item){
 			 										console.log('item'+item);
-			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'作废')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList' onclick=pay('"+item.warehouseNo+"') >查看明细</button><input type='hidden' value='"+item.warehouseNo+"'/></td></tr>");
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'审核')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList' onclick=pay('"+item.warehouseNo+"') >查看明细</button><input type='hidden' value='"+item.warehouseNo+"'/></td></tr>");
 			 							             });
 			 							        return arr.join('');
 			 							      }();
@@ -297,6 +310,46 @@ layui.use(['table','form','laypage','element'], function(){
 			 					
 			  			}
 			  	 });
+				 layui.$('#searchs').on('click', function(){
+				    var data = form.val('example');
+				    
+				 			 $.ajax({
+				 			  			url:'http://localhost:8089/pacpackaging/findWherePacStock',
+				 			  			type:'get',
+				 			  			async : true,
+				 						data:{"warehouseNo":data.warehouseNo,"rklx":data.rklx,"transport":data.transport,"dw":data.dw,"stats":data.stats,"drawerTime":data.drawerTime,"goodsCode":data.goodsCode,"goodsName":data.goodsName},
+				 			  			success:function(res){
+				 						
+				 			  				console.log(res);
+				 			  				var pacPack=res;
+				 			  				console.log(pacPack);
+				 			 					total=pacPack.length;
+				 			  			
+				 			  				
+				 			 					 //完整功能
+				 			 					  laypage.render({
+				 			 					    elem: 'demo7'
+				 			 					    ,count: total
+				 			 					    ,layout: [ 'prev', 'page', 'next','count']
+				 			 					    ,jump: function(obj){
+				 			 							 //模拟渲染
+				 			 							      document.getElementById('demo').innerHTML = function(){
+				 			 							        var arr = []
+				 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+				 			 							        layui.each(thisData, function(index, item){
+				 			 										console.log('item'+item);
+				 			 							         arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.warehouseNo+"</td><td>"+item.pacGetBoundType.getBoundType+"</td><td>"+item.transport+"</td><td>"+item.syUnits.name+"</td><td>"+item.drawerNo+"</td><td>"+item.drawerName+"</td><td>"+item.drawerTime+"</td><td>"+(item.stats==0?'正常':'审核')+"</td><td>"+item.remark+"</td><td><button  type='button' class='layui-btn layui-btn-small btnQuery' id='btnList' onclick=pay('"+item.warehouseNo+"') >查看明细</button><input type='hidden' value='"+item.warehouseNo+"'/></td></tr>");
+				 			 							             });
+				 			 							        return arr.join('');
+				 			 							      }();
+				 			 					  form.render("checkbox");
+				 			 				
+				 			 					    }
+				 			 					  });
+				 			 					
+				 			  			}
+				 			  	 });
+				  });
 });
 
 //加载'laydate'时间组件

@@ -16,26 +16,26 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
+		<form class="layui-form" action="" lay-filter="example">
 			<div class="layui-form-item">
 
 				<div class="layui-inline">
 				    <label class="layui-form-label">通知单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="businessNoticeNo" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">客户编号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="customCode" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="button" class="layui-btn btnQuery"  id="searchs">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
@@ -86,7 +86,7 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
+				    	<th><input type="checkbox" name="checkn" lay-filter="checkn" lay-skin="primary"></th>
 				    	<th>序号</th>
 				      <th>业务通知单号</th>
 				      <th>客户编号</th>
@@ -100,8 +100,8 @@
 					  	<th>预约取件时间</th>
 				    </tr>
 			  	</thead>
-			  	<tbody>
-				    <tr>
+			  	<tbody id="demo">
+				<!--    <tr>
 				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
 				      	<td>1</td>
 				      	<td>YWD1001</td>
@@ -116,90 +116,12 @@
 								<td>岳阳市</td>
 								<td>手机</td>
 								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
+				    </tr> -->
+				
+			
 
 			  	</tbody>
-			</table>
+			</table>	<div id="demo7" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
@@ -207,10 +129,140 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">
 //加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-
+$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
+layui.use(['table','form','laypage','element'], function(){
+	 var table = layui.table,
+	 form=layui.form,
+	 laypage=layui.laypage,
+	 element=layui.element
+	 var $ = layui.$;
+ form.on('checkbox(checkn)', function(data){
+			    console.log(data.elem); //得到checkbox原始DOM对象
+			    console.log(data.elem.checked); //是否被选中，true或者false
+			    console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+			    console.log(data.othis); //得到美化后的DOM对象
+			    if(data.elem.checked){
+			 	   $('input[name=check]').prop("checked",true);
+			 	     
+			    }
+			    else{
+			 	   $('input[name=check]').prop("checked",false);
+			 	  
+			    }
+			   layui.form.render();
+			  });  
+			 	form.on('checkbox(check)', function(data){
+			 		var bool=1;
+			 	var child = $("input[name='check']");
+			 	for(var a=0;a<child.length;a++){
+			 		if(child[a].checked==false){
+			 			bool=2;
+			 			 $('input[name=checkn]').prop("checked",false);
+			 			   layui.form.render();
+			 			return;
+			 		}
+			 		
+			 	}	 if(bool==1){
+		 		 $('input[name=checkn]').prop("checked",true);
+		 	
+		 		 layui.form.render();
+		 	 }
+		 	
+		 	
+		 	 });	 $.ajax({
+			  			url:'http://localhost:8089/pacpackaging/findAllAccBusinessAdmissibility',
+			  			type:'get',
+			  			dataType : 'json',
+			  			async : true,
+			  			success:function(res){
+			  				console.log(res);
+			  				var pacPack=eval(res);
+			  				console.log(pacPack);
+			 					total=pacPack.length;
+			 					 //完整功能
+			 					  laypage.render({
+			 					    elem: 'demo7'
+			 					    ,count: total
+			 					    ,layout: [ 'prev', 'page', 'next','count']
+			 					    ,jump: function(obj){
+			 							 //模拟渲染
+			 							      document.getElementById('demo').innerHTML = function(){
+			 							        var arr = []
+			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+			 							        layui.each(thisData, function(index, item){
+			 										console.log('item'+item);
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.arriveCity+"</td><td>"+item.ReservationTime+"</td></tr>");
+			 							             });
+			 							        return arr.join('');
+			 							      }();
+			 					  form.render("checkbox");
+								  form.render();
+			 				
+			 					    }
+			 					  });
+			 					
+			  			}
+			  	 });		 layui.$('#searchs').on('click', function(){
+				    var data = form.val('example');
+				    
+				 			 $.ajax({
+				 			  			url:'http://localhost:8089/pacpackaging/findAllWhereAccBusinessAdmissibility',
+				 			  			type:'get',
+				 			  			async : true,
+				 						data:{"businessNoticeNo":data.businessNoticeNo,"customCode":data.customCode},
+				 			  			success:function(res){
+				 						
+				 						
+				 			  				console.log(res);
+				 			  				var pacPack=res;
+				 			  				console.log(pacPack);
+				 			 					total=pacPack.length;
+				 			  			
+				 			 					 //完整功能
+				 			 					  laypage.render({
+				 			 					    elem: 'demo7'
+				 			 					    ,count: total
+				 			 					    ,layout: [ 'prev', 'page', 'next','count']
+				 			 					    ,jump: function(obj){
+				 			 							 //模拟渲染
+				 			 							      document.getElementById('demo').innerHTML = function(){
+				 			 							        var arr = []
+				 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+				 			 							        layui.each(thisData, function(index, item){
+				 			 										console.log('item'+item);
+				 			 							      arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.arriveCity+"</td><td>"+item.ReservationTime+"</td></tr>");
+				 			 							                });
+				 			 							        return arr.join('');
+				 			 							      }();
+				 			 					  form.render("checkbox");
+				 			 				
+				 			 					    }
+				 			 					  });
+				 			 					
+				 			  			}
+				 			  	 });
+				  });
 });
 
 //加载'table'组件

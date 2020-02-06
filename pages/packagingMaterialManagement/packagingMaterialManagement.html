@@ -289,31 +289,14 @@ var total;
       	 });
 		  layui.$('#searchs').on('click', function(){
 		     var data = form.val('example');
-		     alert(JSON.stringify(data)); 
+		     
 			 $.ajax({
 			  			url:'http://localhost:8089/pacpackaging/findWherepacpackaging',
 			  			type:'get',
 			  			async : true,
 						data:{"itemCode":data.itemCode,"itemName":data.itemName,"plannedPrices":data.plannedPrice,"specifications":data.specifications,"types":data.type,"status":data.status},
 			  			success:function(res){
-						
-							if(res==0){
-								laypage.render({
-								  elem: 'demo7'
-								  ,count: 0
-								  ,layout: [ 'prev', 'page', 'next','count']
-								  ,jump: function(obj){
-										//模拟渲染
-													 							      document.getElementById('demo').innerHTML = function(){
-													 							        var arr = []
-													 							     
-													 							        return arr.join('');
-													 							      }();
-										form.render("checkbox");	 
-								  }
-								});
-								return;
-								}
+
 			  				console.log(res);
 			  				var pacPack=res;
 			  				console.log(pacPack);

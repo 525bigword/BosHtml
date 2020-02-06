@@ -7,9 +7,10 @@ function user(){
 				success:function(data){
 					if(data=="SUCCESS"){
 						console.log(data);
-						for(var i=0;i<data.map.sybigmenus.bigmenus[0].length;i++){
+						men=data.map.syEmps.id;
+						/* for(var i=0;i<data.map.sybigmenus.bigmenus[0].length;i++){
 							men+="title:"+data.map.sybigmenus.bigmenus[0][i].bigmenus
-						}
+						} */
 						console.log(men);
 					}
 				}

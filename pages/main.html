@@ -201,12 +201,14 @@
 	
     
     <script type="text/javascript">
-		function user(){
+		/* function user(){
 					$.ajax({
 						url:url+"jurisdiction/parsetoken",
 						type:'get',
 						async:true,
 						success:function(data){
+							console.log(SystemMenu);
+							userid=data.map.syEmps.id;
 							var men="[{";
 							var id;
 								console.log(data);
@@ -238,7 +240,7 @@
 								console.log(men);
 						}
 					})
-				}
+				} */
 		$(function(){
 			$.ajaxSetup({
 				dataType: "json",

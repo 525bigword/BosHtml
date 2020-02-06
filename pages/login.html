@@ -139,6 +139,7 @@
 					if(data.stausEnum=='SUCCESS'){
 						$("#ts").html("&nbsp");
 						$.cookie("user", data.map);
+					
 						window.location.href="main.html";
 					}else{
 						$("#ts").text("账号或密码错误");
