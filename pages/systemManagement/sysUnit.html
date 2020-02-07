@@ -1,103 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>单位管理</title>
-<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../css/page.css">
-</head>
-<body>
-<!-- 外部整体 -->
-<div class="external">
-	<!-- 标题 -->
-	<p class="ptitle">单位管理</p>
-	<!-- 操作区域 -->
-	<div class="operation">
-		<!-- 向上间距 -->
-		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
-			<div class="layui-form-item">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>单位管理</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../css/page.css">
+	</head>
+	<body>
+		<!-- 外部整体 -->
+		<div class="external">
+			<!-- 标题 -->
+			<p class="ptitle">单位管理</p>
+			<!-- 操作区域 -->
+			<div class="operation">
+				<!-- 向上间距 -->
+				<div style="height: 10px;"></div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
 
-				<div class="layui-inline">
-				    <label class="layui-form-label">单位名称:</label>
-				    <div class="layui-input-block" style="width: 150px;">
-						<input type="text" name="unitname" placeholder="请输入单位名" autocomplete="off" class="layui-input">
-				    </div>
-			    </div>
+						<div class="layui-inline">
+							<label class="layui-form-label">单位名称:</label>
+							<div class="layui-input-block" style="width: 150px;">
+								<input type="text" name="unitname" placeholder="请输入单位名" autocomplete="off" class="layui-input">
+							</div>
+						</div>
 
-				<!-- 查询按钮组 -->
-			    <div class="layui-inline">
-					<button type="button"  onclick="initunit()" class="layui-btn btnQuery">
-						<i class="layui-icon">&#xe615;</i> 查询
-					</button>
+						<!-- 查询按钮组 -->
+						<div class="layui-inline">
+							<button type="button" onclick="initunit()" class="layui-btn btnQuery">
+								<i class="layui-icon">&#xe615;</i> 查询
+							</button>
 
-					<button type="button" class="layui-btn btnOther">
-						<i class="layui-icon">&#x1002;</i> 重置
-					</button>
+							<button type="button" class="layui-btn btnOther">
+								<i class="layui-icon">&#x1002;</i> 重置
+							</button>
 
-				</div>
+						</div>
+					</div>
+
+					<!-- 操作按扭组 -->
+					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+						<div class="layui-inline">
+							<button type="button" class="layui-btn layui-btn-small btnQuery" id="add">新增</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" id="edit">修改</button>
+							<button type="button" class="layui-btn layui-btn-small btnOther" onclick="del()" id="opDelete">删除</button>
+						</div>
+					</div>
+
+					<!-- 数据表格 -->
+					<table class="layui-table">
+						<colgroup>
+							<col width="50">
+							<col width="60">
+							<col>
+							<col>
+							<col>
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+								<th>序号</th>
+								<th>编号</th>
+								<th>单位名称</th>
+								<th>备注</th>
+								<th>操作人员</th>
+								<th>操作时间</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
 			</div>
-
-			<!-- 操作按扭组 -->
-			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
-				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="add">新增</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="edit">修改</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
-				</div>
-			</div>
-
-			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="60">
-				    <col >
-				    <col >
-				    <col >
-				    <col >
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="checkn" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>编号</th>
-				      	<th>单位名称</th>
-				      	<th>备注</th>
-					  	<th>操作人员</th>
-						<th>操作时间</th>
-				    </tr>
-			  	</thead>
-			  	<tbody id="tbody">
-				   
-			  	</tbody>
-			</table>
+			</form>
+			<center>
+				<div id="page"></div>
+			</center>
 		</div>
-		</form>
-		<center>
-			<div id="page"></div>
-		</center>
-	</div>
-</div>
-<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layer/layer.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
 		<script type="text/javascript" src="../js/xadmin.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
-<script type="text/javascript">
-	$.ajaxSetup({
-		dataType: "json",
-		cache: false,
-		async:true,
-		headers: {
-			"Authorization": 'bos' + $.cookie('user')
-		},
-		xhrFields: {
-			withCredentials: true
-		}
-		/* ,
+		<script type="text/javascript">
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async: true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
 	    complete: function(xhr) {
 			
 	        //token过期，则跳转到登录页面
@@ -105,138 +105,207 @@
 	            parent.location.href = baseURL + 'login.html';
 	        }
 	    } */
-	});
-	function jx(){
-		$.ajax({
-			url:url+"jurisdiction/parsetoken",
-			type:'get',
-			async:false,
-			success:function(data){
-					sunitid=data.map.syEmps.empunit;
-			}
-		});
-	}
-	var pagedata;
-	var pagedatacount;
-	var vue=[];
-	var sunitid=0;
-	function initunit() {
-		jx();
-		var unitname = $("input[name='unitname']").val();
-		$.ajax({
-			url: url + 'syUnitsController/findsyunitsbyparentid',
-			type: 'get',
-			data: {
-				"name": unitname,
-				"parentid": sunitid
-			},
-			dataType: 'json',
-			async: false,
-			success: function(data) {
-				var str
-				console.log(data)
-				pagedata = data;
-				pagedatacount = pagedata.length;
-				//console.log(JSON.parse(data.map));
-				//console.log(JSON.parse(str));
-				sx();
-			}
-		}) 
-	
-	}
-	function sx() {
-		layui.use(['laypage', 'layer'], function() {
-			var laypage = layui.laypage,
-				layer = layui.layer; //测试数据
-			var form = layui.form;
-			//调用分页
-			laypage.render({
-				elem: 'page',
-				first: '首页',
-				last: '尾页',
-				prev: '<em>上一页</em>',
-				next: '<em>下一页</em>',
-				limit: 10,
-				count: pagedatacount,
-				jump: function(obj) {
-					//模拟渲染
-					document.getElementById('tbody').innerHTML = function() {
-						vue = [];
-						var arr = [],
-							thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
-						layui.each(thisData, function(index, item) {
-	
-							 vue.push(item);
-							arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
-								' name="check" lay-skin="primary"></td><td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' +
-								item.name + '</td><td>' + item.remarks + '</td><td>' +item.operatorname +
-								'</td><td>'+item.operationTime+'</td></tr>'); 
-						});
-						return arr.join('');
-					}();
-					form.render();
-				}
 			});
-	
-		});
-	}
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-initunit();
-});
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+			function jx() {
+				$.ajax({
+					url: url + "jurisdiction/parsetoken",
+					type: 'get',
+					async: false,
+					success: function(data) {
+						sunitid = data.map.syEmps.empunit;
+					}
+				});
+			}
+			var pagedata;
+			var pagedatacount;
+			var vue = [];
+			var sunitid = 0;
+			var checkboxCount = 0;
+			function del(){
+				var ids = [];
+				var i = 0;
+				$("input:checkbox[name=check]:checked").each(function() {
+					console.log(this.id);
+					ids[i] = this.id;
+					i++;
+				});
+				console.log(ids);
+				$.ajax({
+					url: url + "syUnitsController/del",
+					type: 'post',
+					async: false,
+					data: {
+						"ids": ids
+					},
+					success: function(data) {
+						
+					}
+				})
+				initunit();
+			}
+			function initunit() {
+				jx();
+				var unitname = $("input[name='unitname']").val();
+				$.ajax({
+					url: url + 'syUnitsController/findsyunitsbyparentid',
+					type: 'get',
+					data: {
+						"name": unitname,
+						"parentid": sunitid
+					},
+					dataType: 'json',
+					async: true,
+					success: function(data) {
+						var str
+						console.log(data)
+						pagedata = data;
+						pagedatacount = pagedata.length;
+						//console.log(JSON.parse(data.map));
+						//console.log(JSON.parse(str));
+						sx();
+					}
+				})
 
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+			}
 
-$(function(){
-	
-	
-	//显示、隐藏剩余的查询条件
-	$('#btnMore').click(function(){
-		$("#hQuery").toggle();
-	});
+			function sx() {
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer; //测试数据
+					var form = layui.form;
+					//调用分页
+					laypage.render({
+						elem: 'page',
+						first: '首页',
+						last: '尾页',
+						prev: '<em>上一页</em>',
+						next: '<em>下一页</em>',
+						limit: 10,
+						count: pagedatacount,
+						jump: function(obj) {
+							//模拟渲染
+							document.getElementById('tbody').innerHTML = function() {
+								vue = [];
+								var arr = [],
+									thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
+								layui.each(thisData, function(index, item) {
 
-	//新增
-	$('#add').click(function(){
-		//页面层
-		layer.open({
-		  title: ['新增', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['490px', '500px'], //宽高
-		  content: 'sysUnit_add.html',
-		  end: function() {
-		  	initEmp();
-		  }
-		});
-	});
+									vue.push(item);
+									arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
+										' name="check" lay-skin="primary"></td><td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' +
+										item.name + '</td><td>' + item.remarks + '</td><td>' + item.operatorname +
+										'</td><td>' + item.operationTime + '</td></tr>');
+								});
+								return arr.join('');
+							}();
+							form.render();
+						}
+					});
 
-	//修改
-	$('#edit').click(function(){
-		//页面层
-		layer.open({
-			title: ['修改', 'color:#fff;background:#1da02b;'],
-			type: 2,
-			//skin: 'layui-layer-rim', //加上边框
-			area: ['490px', '290px'], //宽高
-			content: 'sysUnit_add.html'
-		});
-	});
-	
-});
+				});
+			}
+			
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				var form = layui.form;
+				form.on('checkbox(check)', function(data) {
+					checkboxCount = 0;
+					var bool = 1;
+					var child = $("input[name='check']");
+					for (var i = 0; i < child.length; i++) {
+						if (child[i].checked == false) {
+							$("input[name='checkn']").prop("checked", false);
+						} else {
+							checkboxCount++;
+						}
+					}
+					form.render();
+				});
+				form.on('checkbox(checkn)', function(data) {
+					var bool = 1;
+					var part = $("input[name='checkn']");
+					var child = $("input[name='check']");
+					$('input[name=check]').prop("checked", part.is(":checked"));
+					form.render();
+				});
+			});
+			//加载'table'组件
+			layui.use('table', function() {
+				var table = layui.table;
+			});
 
-</script>
+			//加载'laydate'时间组件
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#opTime' //指定元素
+				});
+			});
 
-</body>
+			$(function() {
+				initunit();
+
+				//显示、隐藏剩余的查询条件
+				$('#btnMore').click(function() {
+					$("#hQuery").toggle();
+				});
+
+				//新增
+				$('#add').click(function() {
+					//页面层
+					layer.open({
+						title: ['新增', 'color:#fff;background:#1da02b;'],
+						type: 2,
+						//skin: 'layui-layer-rim', //加上边框
+						area: ['490px', '500px'], //宽高
+						content: 'sysUnit_add.html',
+						end: function() {
+							initunit();
+						}
+					});
+				});
+
+				//修改
+				$('#edit').click(function() {
+					//页面层
+					if (checkboxCount < 1) {
+						layer.msg("请先选择需要修改的模块", {
+							icon: 2,
+							time: 800
+						})
+					}
+					if (checkboxCount > 1) {
+						layer.msg("只能选择一个模块", {
+							icon: 2,
+							time: 800
+						})
+					}
+					if (checkboxCount == 1) {
+						//页面层
+						layer.open({
+							title: ['修改', 'color:#fff;background:#1da02b;'],
+							type: 2,
+							//skin: 'layui-layer-rim', //加上边框
+							area: ['490px', '500px'], //宽高
+							content: 'sysUnit_edit.html',
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								var check=$("input[name='check']:checked").val();
+								iframe.child(vue[check]);
+							},
+							end: function() {
+								initunit();
+							}
+						});
+					}
+				});
+
+			});
+		</script>
+
+	</body>
 </html>
