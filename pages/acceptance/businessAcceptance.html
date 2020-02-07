@@ -193,7 +193,6 @@ layui.use(['table','form','laypage','element'], function(){
 		 	 });	 $.ajax({
 			  			url:'http://localhost:8089/pacpackaging/findAllAccBusinessAdmissibility',
 			  			type:'get',
-			  			dataType : 'json',
 			  			async : true,
 			  			success:function(res){
 			  				console.log(res);
@@ -212,7 +211,7 @@ layui.use(['table','form','laypage','element'], function(){
 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
 			 							        layui.each(thisData, function(index, item){
 			 										console.log('item'+item);
-			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.arriveCity+"</td><td>"+item.ReservationTime+"</td></tr>");
+			 							          arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.pro.produceName+"</td><td>"+item.reservationTime+"</td></tr>");
 			 							             });
 			 							        return arr.join('');
 			 							      }();
@@ -251,8 +250,8 @@ layui.use(['table','form','laypage','element'], function(){
 				 			 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
 				 			 							        layui.each(thisData, function(index, item){
 				 			 										console.log('item'+item);
-				 			 							      arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.arriveCity+"</td><td>"+item.ReservationTime+"</td></tr>");
-				 			 							                });
+				 			 							      arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.businessNoticeNo+"</td><td>"+item.customCode+"</td><td>"+item.customName+"</td><td>"+item.linkman+"</td><td>"+item.telPhone+"</td><td>"+item.pickupAddress+"</td><td>"+item.pickupAddress+"</td><td>"+item.arriveCity+"</td><td>"+item.pro.produceName+"</td><td>"+item.reservationTime+"</td></tr>");
+				 			 							                  });
 				 			 							        return arr.join('');
 				 			 							      }();
 				 			 					  form.render("checkbox");
@@ -293,7 +292,10 @@ $(function(){
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['930px', '450px'], //宽高
-		  content: 'businessAcceptance_add.html'
+		  content: 'businessAcceptance_add.html',
+		  end:function(){
+			  location.reload();
+		  }
 		});
 	});
 
