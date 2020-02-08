@@ -33,7 +33,7 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
+				    	<th><input type="checkbox" name="checkn" lay-filter="checkn" lay-skin="primary"></th>
 				    	<th>序号</th>
 				      	<th>物流序号</th>
 				      	<th>单位名称</th>
@@ -45,79 +45,115 @@
 					  	<th>类型</th>
 				    </tr>
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>WL1001</td>
-				      	<td>长沙分部</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>2017-10-19 14:31:31</td>
-				      	<td>2017-10-19 14:31:31</td>
-				      	<td>老王</td>
-				      	<td>类型</td>
-				    </tr>
-					<tr>
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<td>2</td>
-						<td>WL1001</td>
-						<td>长沙分部</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>老王</td>
-						<td>类型</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<td>3</td>
-						<td>WL1001</td>
-						<td>长沙分部</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>老王</td>
-						<td>类型</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<td>4</td>
-						<td>WL1001</td>
-						<td>长沙分部</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>老王</td>
-						<td>类型</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<td>5</td>
-						<td>WL1001</td>
-						<td>长沙分部</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-17 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>2017-10-19 14:31:31</td>
-						<td>老王</td>
-						<td>类型</td>
-					</tr>
+			  	<tbody id="demo">
+				    
 			  	</tbody>
 			</table>
+			<div id="demo7" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">     
+<script src="../js/jquery.cookie.js"></script>
+<script type="text/javascript">
 //加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
+$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async:true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+			    complete: function(xhr) {
+					
+			        //token过期，则跳转到登录页面
+			        if(xhr.responseJSON.code == 401){
+			            parent.location.href = baseURL + 'login.html';
+			        }
+			    } */
+			});
+layui.use(['table','form','laypage','element'], function(){
+	 var table = layui.table,
+	 form=layui.form,
+	 laypage=layui.laypage,
+	 element=layui.element
+	 var $ = layui.$;
+	 form.on('checkbox(checkn)', function(data){
+	    console.log(data.elem); //得到checkbox原始DOM对象
+	    console.log(data.elem.checked); //是否被选中，true或者false
+	    console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+	    console.log(data.othis); //得到美化后的DOM对象
+	    if(data.elem.checked){
+	 	   $('input[name=check]').prop("checked",true);
+	 	     
+	    }
+	    else{
+	 	   $('input[name=check]').prop("checked",false);
+	 	  
+	    }
+	   layui.form.render();
+	  });  
+	 	form.on('checkbox(check)', function(data){
+	 		var bool=1;
+	 	var child = $("input[name='check']");
+	 	for(var a=0;a<child.length;a++){
+	 		if(child[a].checked==false){
+	 			bool=2;
+	 			 $('input[name=checkn]').prop("checked",false);
+	 			   layui.form.render();
+	 			return;
+	 		}
+	 		
+	 	}	 if(bool==1){
+	 		 		 $('input[name=checkn]').prop("checked",true);
+	 		 	
+	 		 		 layui.form.render();
+	 }
+	 		 	
+	 		 	
+	 });
+	 var logisticsInt = $.cookie('logisticsInt');
+	 $.ajax({
+	  			url:'http://localhost:8089/log/findAllLogLogisticsDetailsByLogisticsInt',
+	  			type:'get',
+	  			dataType : 'json',
+	 				data:{"logisticsInt":logisticsInt},
+	  			async : true,
+	  			success:function(res){
+	  				console.log(res);
+	  				var pacPack=eval(res);
+	  				console.log(pacPack);
+	 					total=pacPack.length;
+	 					 //完整功能
+	 					  laypage.render({
+	 					    elem: 'demo7'
+	 					    ,count: total
+	 					    ,layout: [ 'prev', 'page', 'next','count']
+	 					    ,jump: function(obj){
+	 							 //模拟渲染
+	 							      document.getElementById('demo').innerHTML = function(){
+	 							        var arr = []
+	 							        ,thisData = pacPack.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+	 							        layui.each(thisData, function(index, item){
+	 										console.log('item'+item);
+	 							       arr.push("<tr><td><input lay-filter='check' type='checkbox' id='checkb' name='check' lay-skin='primary' value='"+item.id+"'/></td><td>"+item.id+"</td><td>"+item.logisticsInt+"</td><td>"+item.companyName+"</td><td>"+item.expectArrivalDate+"</td><td>"+item.actualArrivalDate+"</td><td>"+item.expectDepartureDate+"</td><td>"+item.actualDepartureDate+"</td><td>"+item.operationPerson+"</td><td>"+item.logisticsType+"</td></tr>");
+	 							              });
+	 							        return arr.join('');
+	 							      }();
+	 					  form.render("checkbox");
+	 								  form.render();
+	 				
+	 					    }
+	 					  });
+	 					
+	  			}
+	  	 });
 });
 
 //加载'table'模块
