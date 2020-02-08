@@ -3,7 +3,6 @@ var fyy;
 	var parentID=0;
    function child(d) {
 	   parentID=d;
-   	   console.log("ppp"+d);
 	      $.ajax({
 	      	url: url + 'basBasicArchivesEntryController/findBasBasicArchivesEntryByParentID',
 	      	type: 'post',
@@ -11,7 +10,6 @@ var fyy;
 	      	data: "parentID="+d,
 	      	success: function(data) {
 	      		var da = data.BasBasicArchivesEntry[0];
-				console.log(da);
 	      		fyy = da;
 	      		fyycount = da.length;
 	      		sxfy();

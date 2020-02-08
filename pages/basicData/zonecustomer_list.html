@@ -3,19 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>基础档案</title>
+<title>客户详情</title>
 <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
+<style>
+		th{
+			text-align: center;
+		}
+		td{
+			text-align: center;
+		}
+	</style>
 <body>
 <!-- 外部整体 -->
 <div class="external">
 	<!-- 操作按扭组 -->
 	<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 		<div class="layui-inline">
-			<button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增详细信息</button>
+			<button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增客户信息</button>
 			<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-			<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">作废</button>
+			<button type="button" class="layui-btn layui-btn-small btnOther" id="del">删除</button>
 		</div>
 	</div>
 
@@ -23,126 +31,149 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
-			
-
+		<form class="layui-form">
 			<!-- 数据表格 -->
 			<table class="layui-table">
 				<colgroup>
 				    <col width="50">
 				    <col width="60">
+				    <col width="100">
 				    <col width="120">
 				    <col width="90">
-				    <col width="90">
+				    <col width="160">
 				    <col width="100">
-				    <col width="100">
-				    <col width="170">
+				    <col width="110">
 				    <col>
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>档案名称</th>
-				      	<th>上级编码</th>
-				      	<th>封存标志</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
-					  	<th>备注</th>
+				    	<th id="checks"><input type="checkbox" lay-filter="checkn" name="checkn" lay-skin="primary"></th>
+				    	<th style="text-align: center;">序号</th>
+				      	<th style="text-align: center;">客户姓名</th>
+				      	<th style="text-align: center;">手机号码</th>
+				      	<th style="text-align: center;">城市</th>
+						<th style="text-align: center;">客户地址</th>
+					  	<th style="text-align: center;">操作人员</th>
+					  	<th style="text-align: center;">操作单位</th>
+					  	<th style="text-align: center;">操作时间</th>
 				    </tr> 
 			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>7</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
+			  	<tbody id="tbody">
+				    
 			  	</tbody>
 			</table>
+			<div id="demo1" style="text-align: center;"></div>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">     
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
+var fyy;
+	var fyycount;
+	var parentID="";
+   function child(d) {
+	   parentID=d;
+   	   console.log("ppp"+d);
+	      $.ajax({
+	      	url: url + 'basZoneCustomInfoController/findBasZoneCustomInfoByZoneCode',
+	      	type: 'post',
+	      	async: false,
+	      	data: "zoneCode="+d,
+	      	success: function(data) {
+	      		var da = data.BasZoneCustomInfo[0];
+				console.log(da);
+	      		fyy = da;
+	      		fyycount = da.length;
+	      		sxfy();
+	      	}
+	      });
+   }
+   function sxfy() {
+   	/* if(fyycount<5){
+   		$("#demo1").hide();
+   	} */
+   	layui.use(['laypage', 'layer', 'form'], function() {
+   		var laypage = layui.laypage,
+   			layer = layui.layer,
+   			form = layui.form;
+   		//调用分页
+   		laypage.render({
+   			elem: 'demo1',
+   			count: fyycount,
+   			layout: ['prev', 'page', 'next', 'count'],
+   			limit: 4,
+   			jump: function(obj) {
+   				//模拟渲染
+   				var page=$(".layui-laypage-em").next().html(); 
+   				var inde=4;
+   				console.log(page);
+   				document.getElementById('tbody').innerHTML = function() {
+   					var arr = [],
+   						thisData = fyy.concat()
+   						.splice(obj.curr * obj.limit - obj.limit,
+   							obj.limit);
+   					layui.each(thisData, function(index, item) {
+   						arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
+   							(page*4-inde) + '></td><td>' +
+   							(parseInt(index) + 1) + '</td><td>' +
+   							item.customName + '<input type="hidden" value=' + item.id + '></td><td>' +
+   							item.mobileNo + '</td><td>' +
+   							item.cityName + '</td><td>' +
+   							item.cstomAddress + '</td><td>' +
+   							item.syEmp.empName + '</td><td>' +
+   							item.syUnits.name + '</td><td>' +
+   							item.operationTime + '</td></tr>');
+   						console.log(page*4-inde);
+   						inde--;
+   						
+   					});
    
-});
+   					return arr.join('');
+   				}();
+   				form.render();
+   			},
+   
+   		});
+   
+   	});
+   	console.log(fyy);
+   	
+   }
+//加载'form'模块，使checkbox、select、radio初始化
+layui.use('form', function() {
+		var form = layui.form;
+		form.on('checkbox(checkn)', function(data) {
+			if (data.elem.checked) {
+				$('input[name=check]').prop("checked", true);
+			} else {
+				$('input[name=check]').prop("checked", false);
+			}
+			form.render();
+		});
+		form.on('checkbox(check)', function(data) {
+			var bool = 1;
+			var child = $("input[name='check']");
+			for (var a = 0; a < child.length; a++) {
+				if (child[a].checked == false) {
+					bool = 2;
+					$('input[name=checkn]').prop("checked", false);
+					layui.form.render();
+					return;
+				}
+	
+			}
+			if (bool == 1) {
+				$('input[name=checkn]').prop("checked", true);
+				layui.form.render();
+			}
+	
+	
+		});
+	});
 
 //加载'table'模块
 layui.use('table', function(){
@@ -150,7 +181,22 @@ layui.use('table', function(){
 });
 
 $(function(){
-
+	$.ajaxSetup({
+		dataType: "json",
+		cache: false,
+	    headers: {
+	        "Authorization": 'bos'+$.cookie('user')
+	    },
+	    xhrFields: {
+		    withCredentials: true
+	    } /* ,
+	    complete: function(xhr) {
+	        //token过期，则跳转到登录页面
+	        if(xhr.responseJSON.code == 401){
+	            parent.location.href = baseURL + 'login.html';
+	        }
+	    } */
+	}); 
 	//新增详细信息
 	$('#opDetailAdd').click(function(){
 		//页面层

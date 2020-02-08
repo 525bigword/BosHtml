@@ -49,7 +49,6 @@ var fyy;
 							"operationTime": operationTime
 						},
 						success: function(data) {
-							
 							fyy = data;
 							fyycount = data.length;
 							sxfy();
