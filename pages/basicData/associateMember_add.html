@@ -1,0 +1,191 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>关联小件员</title> 
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head> 
+<body>
+	<form class="layui-form">
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+		<tbody>
+		<tr>
+			<td class="layui-bg-gray" width="13%">取派人工号</td>
+			<td width="20%">
+				<select name="city" id="empNo" lay-filter="see1" lay-verify="required">
+					<option value="">请选择</option>
+				</select>
+			</td>
+			<td class="layui-bg-gray" width="13%">取派人姓名</td>
+			<td width="20%">
+				<input type="text" id="empName" readonly="readonly" name="title" placeholder="请输入取派人姓名" autocomplete="off" class="layui-input">
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray" width="13%">收派标准(公斤)</td>
+			<td width="20%">
+				<input type="text" id="kg" readonly="readonly" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
+			</td>
+			<td class="layui-bg-gray" width="13%">收派标准(长度)</td>
+			<td width="20%">
+				<input type="text" id="length" readonly="readonly" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray" width="13%">所属单位</td>
+			<td width="20%">
+				<select name="city" id="dw" lay-filter="see" lay-verify="required">
+					<option value="0">请选择</option>
+				</select>
+			</td>
+			<td class="layui-bg-gray" width="13%">收派时间</td>
+			<td width="20%">
+				<select name="city" id="spsj" lay-verify="required">
+					<option value="">请选择</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray" width="13%">类型</td>
+			<td width="20%">
+				<select name="city" id="type" lay-verify="required">
+					<option value="">请选择</option>
+					<option value="司机">司机</option>
+					<option value="小件员">小件员</option>
+				</select>
+			</td>
+			<td class="layui-bg-gray" width="13%"></td>
+			<td width="20%">
+				
+			</td>
+		</tr>
+		<tr>
+		<td colspan="4">
+			<button class="layui-btn" type="button" id="baocun" style="background: #1da02b;">确定</button>
+			<button type="button" id="quxiao" class="layui-btn layui-btn-primary">取消</button>
+		</td>
+		</tr>
+		</tbody>
+	</table>
+	</form>
+	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script type="text/text/javascript" src="../js/bos.js"></script>
+	<script type="text/javascript">
+		var id;
+		function child(d) {
+			if(d!=null){
+				id=d.id;
+				layui.use('form', function(){
+					var form=layui.form;
+					$("#empNo").val(d.empNo);
+					$("#dw").val(d.syUnits.id);
+					$("#type").val(d.type);
+					$("#spsj").append('<option value="'+d.basStandardTime.id+'">'+d.basStandardTime.timeName+'</option>');
+					$("#spsj").val(d.basStandardTime.id);
+					$("#empNo").prop("disabled","disabled");
+					form.render();
+				})
+				$("#empName").val(d.empName);
+				$("#kg").val(d.standardKg);
+				$("#length").val(d.standardLength);
+				
+			}
+		}
+		$(function(){
+			$.ajaxSetup({
+					dataType: "json",
+					cache: false,
+					headers: {
+						"Authorization": 'bos' + $.cookie('user')
+					},
+					xhrFields: {
+						withCredentials: true
+					}
+					/* ,
+			complete: function(xhr) {
+			    //token过期，则跳转到登录页面
+			    if(xhr.responseJSON.code == 401){
+			        parent.location.href = baseURL + 'login.html';
+			    }
+			} */
+				});
+				$.ajax({
+					url: 'http://localhost:8089/jurisdiction/parsetoken',
+					type: 'get',
+					header:{
+						"Authorization": 'bos'+$.cookie('user')
+					},
+					async: false,
+					dateType: 'json',
+					success: function(data) {
+						da=data;
+					}
+				});
+			$.ajax({
+				url: 'http://localhost:8089/syUnitsController/findSyUnits',
+				type: 'post',
+				async: false,
+				success: function(data) {
+					var gong=data.SyUnits[0];
+					for (var i = 0; i < gong.length; i++) {
+						$("#dw").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
+					}
+				}
+			});
+			$.ajax({
+				url: 'http://localhost:8089/basSubstituteController/findBasSubstitutes',
+				type: 'post',
+				async: false,
+				success: function(data) {
+					var gong = data.BasSubstitute[0];
+					for (var i = 0; i < gong.length; i++) {
+						$("#empNo").append('<option value="'+gong[i].empNo+'" emp="'+gong[i].empName+'" zipcode="'+gong[i].standardKg+'" code="'+gong[i].standardLength+'">'+gong[i].empNo+'</option>');
+					}
+				}
+			});
+		})
+		layui.use('form', function() {
+			var form=layui.form;
+			form.on('select(see)',function(data){
+				var Unit=$("#dw").val();
+				$("#spsj").html('');
+				console.log(Unit);
+				if(Unit!=0){
+					$.ajax({
+						url: 'http://localhost:8089/basStandarTimeController/findBasAssociateMemberByUId',
+						type: 'post',
+						async: false,
+						data:"id="+Unit,
+						success: function(data) {
+							var gong=data;
+							for (var i = 0; i < gong.length; i++) {
+								$("#spsj").append('<option value="'+gong[i].id+'">'+gong[i].timeName+'</option>');
+							}
+						}
+					});
+				}
+				form.render();
+			})
+			form.on('select(see1)',function(data){
+				$("#empName").val($('#empNo').find("option:selected").attr("emp"));
+				$("#kg").val($('#empNo').find("option:selected").attr("zipcode"));
+				$("#length").val($('#empNo').find("option:selected").attr("code"));
+				form.render();
+			})
+		});
+		
+		//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+		layui.use('element', function() {
+			var element = layui.element;
+		
+			//…
+		});
+	</script>
+</body> 
+
+</html>
+    
+
