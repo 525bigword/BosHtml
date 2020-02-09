@@ -6,13 +6,13 @@
 		<title>基础档案</title>
 		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 	</head>
-	
+
 	<body>
 		<div class="layui-form">
 			<table style="width: 98%;margin-left: 7px;">
 				<tr>
-					<td colspan="2" style="text-align: center;" >
-						<div class="layui-tab layui-tab-card" style="width: 100%;" >
+					<td colspan="2" style="text-align: center;">
+						<div class="layui-tab layui-tab-card" style="width: 100%;">
 							<ul class="layui-tab-title">
 								<li class="layui-this">定区信息</li>
 								<li>关联地址列表</li>
@@ -30,7 +30,9 @@
 											</td>
 											<td class="layui-bg-gray" width="13%">定区名称</td>
 											<td width="20%">
-												<input type="text" name="title" placeholder="请输入取派人姓名" autocomplete="off" class="layui-input">
+												<select name="city" id="qu" lay-filter="see2" lay-verify="required">
+													<option value="">请选择</option>
+												</select>
 											</td>
 										</tr>
 										<tr>
@@ -52,74 +54,51 @@
 											</td>
 											<td class="layui-bg-gray" width="13%"></td>
 											<td width="20%">
-												
+
 											</td>
 										</tr>
 										<tr height="56.25px">
-											<td class="layui-bg-gray" width="13%" ></td>
+											<td class="layui-bg-gray" width="13%"></td>
 											<td width="20%">
-												
+
 											</td>
 											<td class="layui-bg-gray" width="13%"></td>
 											<td width="20%">
-												
+
 											</td>
 										</tr>
 									</table>
 								</div>
 								<div class="layui-tab-item">
-									
+									<table border="1px" width="100%" height="230px">
+										<tr>
+											<td style="width: 100px;height: 40px;" align="right">城市&nbsp;&nbsp;</td>
+											<td><input type="text" style="width: 80px;" /></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<div style="margin-left: 15%;" id="test3" class="demo-transfer"></div>
+											</td>
+										</tr>
+									</table>
 								</div>
 								<div class="layui-tab-item">
-									<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+									<table border="1px" width="100%" height="230px">
 										<tr>
-											<td class="layui-bg-gray" width="13%">取派人工号</td>
-											<td width="20%">
-												<select name="city" id="empNo" lay-verify="required">
-													<option value="">请选择</option>
-												</select>
-											</td>
-											<td class="layui-bg-gray" width="13%">取派人姓名</td>
-											<td width="20%">
-												<input type="text" name="title" placeholder="请输入取派人姓名" autocomplete="off" class="layui-input">
-											</td>
+											<td style="width: 100px;height: 20px;" align="right"></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
 										</tr>
 										<tr>
-											<td class="layui-bg-gray" width="13%">收派标准(公斤)</td>
-											<td width="20%">
-												<input type="text" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
-											</td>
-											<td class="layui-bg-gray" width="13%">收派标准(长度)</td>
-											<td width="20%">
-												<input type="text" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
-											</td>
-										</tr>
-										<tr>
-											<td class="layui-bg-gray" width="13%">所属单位</td>
-											<td width="20%">
-												<select name="city" id="dw" lay-verify="required">
-													<option value="">请选择</option>
-												</select>
-											</td>
-											<td class="layui-bg-gray" width="13%">收派时间</td>
-											<td width="20%">
-												<select name="city" id="spsj" lay-verify="required">
-													<option value="">请选择</option>
-												</select>
-											</td>
-										</tr>
-										<tr>
-											<td class="layui-bg-gray" width="13%">类型</td>
-											<td width="20%">
-												<select name="city" id="spsj" lay-verify="required">
-													<option value="">请选择</option>
-													<option value="司机">司机</option>
-													<option value="小件员">小件员</option>
-												</select>
-											</td>
-											<td class="layui-bg-gray" width="13%"></td>
-											<td width="20%">
-												
+											<td colspan="6">
+												<div style="margin-left: 15%;" id="test4" class="demo-transfer"></div>
 											</td>
 										</tr>
 									</table>
@@ -129,7 +108,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td><button class="layui-btn" type="button" id="baocun" style="background: #1da02b;margin-left:70%;">确定</button></td>
+					<td><button class="layui-btn" lay-demotransferactive="getData" type="button" id="baocun" style="background: #1da02b;margin-left:70%;">确定</button></td>
 					<td><button type="button" id="quxiao" class="layui-btn layui-btn-primary" style="margin-left:10%;">取消</button></td>
 				</tr>
 			</table>
@@ -137,17 +116,103 @@
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript">
-			//加载'form'模块，使checkbox、select、radio初始化
-			layui.use('form', function() {
+			layui.use(['transfer', 'layer', 'util'], function() {
+				var $ = layui.$,
+					transfer = layui.transfer,
+					layer = layui.layer,
+					util = layui.util;
 
-			});
+				//模拟数据
+				var data2 = [{
+					"value": "1",
+					"title": "瓦罐汤"
+				}, {
+					"value": "2",
+					"title": "油酥饼"
+				}, {
+					"value": "3",
+					"title": "炸酱面"
+				}, {
+					"value": "5",
+					"title": "豆腐脑"
+				}, {
+					"value": "6",
+					"title": "驴打滚"
+				}, {
+					"value": "7",
+					"title": "北京烤鸭"
+				}, {
+					"value": "8",
+					"title": "烤冷面"
+				}, {
+					"value": "10",
+					"title": "肉夹馍"
+				}]
+				//初始右侧数据
+				transfer.render({
+					elem: '#test3',
+					data: data2,
+					height: 190,
+					id: 'keyAddress',
+					title: ['该定区未关联地址', '该定区已关联地址'],
+					value: ["1", "3", "5", "7", "9"]
+				})
+				transfer.render({
+					elem: '#test4',
+					data: data2,
+					height: 200,
+					id: 'yuan',
+					title: ['该定区未小件员', '该定区已关联小件员'],
+					value: ["1", "3", "5", "7", "9"]
+				})
+				util.event('lay-demoTransferActive', {
+					getData: function(othis) {
+						var getData = transfer.getData('keyAddress'); //获取右侧数据
+						var yuan = transfer.getData('yuan');
+						var aa = "";
+						var bb = [];
+						for (var i = 0; i < eval(getData).length; i++) {
+							if (i == eval(getData).length - 1) {
+								aa += eval(getData)[i].value;
+							} else {
+								aa += eval(getData)[i].value + ",";
+							}
+						}
+						for (var i = 0; i < eval(yuan).length; i++) {
+							bb.push(eval(yuan)[i].value);
+						}
+						console.log(aa);
+						console.log(turnNum(bb));
+					},
+					reload: function() {
+						//实例重载
+						transfer.reload('key123', {
+							title: ['文人', '喜欢的文人'],
+							value: ['2', '5', '9'],
+							showSearch: true
+						})
+					}
+				});
+				//加载'form'模块，使checkbox、select、radio初始化
+				layui.use('form', function() {
 
+				});
+				$(function() {
+
+				});
+			})
 			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 			layui.use('element', function() {
 				var element = layui.element;
 
 				//…
 			});
+			var turnNum = function(nums) {
+				for (let i = 0; i < nums.length; i++) {
+					nums[i] = parseInt(nums[i])
+				}
+				return nums;
+			}
 		</script>
 	</body>
 </html>
