@@ -187,7 +187,7 @@
 													item.syEmp.empName + '</td><td>' +
 													item.telPhone + '</td><td>' +
 													item.syUnits.name + '</td><td>' +
-													'<button type="button" onclick="ckkk(\'' +item.zoneCode+ '\')" class="layui-btn layui-btn-small btnQuery">查看客户信息</button></td></tr>');
+													'<button type="button" onclick="ckkk(\'' +item.zoneCode+ '\',\''+item.zoneName+'\')" class="layui-btn layui-btn-small btnQuery">查看客户信息</button></td></tr>');
 												inde--;
 											});
 						
@@ -199,7 +199,7 @@
 								
 							});
 						}
-						 function ckkk(code){
+						 function ckkk(code,cityName){
 							//页面层
 							layer.open({
 								title: ['列表', 'color:#fff;background:#1da02b;'],
@@ -210,7 +210,7 @@
 								success: function(layero, index) {
 									// 获取子页面的iframe
 									var iframe = window['layui-layer-iframe' + index];
-										iframe.child(code);
+										iframe.child(code,cityName);
 								},
 								end: function() {
 									window.location.reload();
@@ -259,7 +259,6 @@ $(function(){
 			dateType: 'json',
 			success: function(data) {
 				var da = data.BasZoneInfo[0];
-				console.log(da);
 				fyy = da;
 				fyycount = da.length;
 				sxfy();

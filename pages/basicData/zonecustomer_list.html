@@ -75,9 +75,10 @@
 var fyy;
 	var fyycount;
 	var parentID="";
-   function child(d) {
+	var cityName;
+   function child(d,cityName1) {
 	   parentID=d;
-   	   console.log("ppp"+d);
+	   cityName=cityName1;
 	      $.ajax({
 	      	url: url + 'basZoneCustomInfoController/findBasZoneCustomInfoByZoneCode',
 	      	type: 'post',
@@ -91,7 +92,7 @@ var fyy;
 	      		sxfy();
 	      	}
 	      });
-   }
+  }
    function sxfy() {
    	/* if(fyycount<5){
    		$("#demo1").hide();
@@ -120,7 +121,7 @@ var fyy;
    						arr.push('<tr><td><input type="checkbox" lay-filter="check" name="check" lay-skin="primary" value=' +
    							(page*4-inde) + '></td><td>' +
    							(parseInt(index) + 1) + '</td><td>' +
-   							item.customName + '<input type="hidden" value=' + item.id + '></td><td>' +
+   							item.customName + '<input type="hidden" value=' + item.id + '/></td><td>' +
    							item.mobileNo + '</td><td>' +
    							item.cityName + '</td><td>' +
    							item.cstomAddress + '</td><td>' +
@@ -204,26 +205,85 @@ $(function(){
 		  title: ['新增', 'color:#fff;background:#1da02b;'],
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '375px'], //宽高
-		  content: 'basicArchives_detail_add.html'
+		  area: ['650px', '317px'], //宽高
+		  content: 'zonecustomer_add.html',
+		  success: function(layero, index) {
+		  	// 获取子页面的iframe
+		  	var iframe = window['layui-layer-iframe' + index];
+		  	// 向子页面的全局函数child传参
+		  	iframe.child(parentID,cityName,null);
+		  },
+		  end: function() {
+		  	location.reload();
+		  }
 		});
 	});
 
 	//编辑
 	$('#opUpdate').click(function(){
+		var a = $("input[name=check]:checked").length;
+		if (a == 0 || a > 1||a==null) {
+			layer.msg('请选中一行', {
+				icon: 5,
+				time: 800
+			});
+			return;
+		}
+		var objects = $("input[name=check]:checked")[0].value;
+		var grade = fyy[objects];
 		//页面层
 		layer.open({
 		  title: ['编辑', 'color:#fff;background:#1da02b;'],
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '375px'], //宽高
-		  content: 'basicArchives_detail_add.html'
+		  area: ['650px', '317px'], //宽高
+		  content: 'zonecustomer_add.html',
+		  success: function(layero, index) {
+		  	// 获取子页面的iframe
+		  	var iframe = window['layui-layer-iframe' + index];
+		  	// 向子页面的全局函数child传参
+		  	iframe.child(parentID,cityName,grade);
+		  },
+		  end: function() {
+		  	location.reload();
+		  }
 		});
 	});
+	$("#del").click(function(){
+		var a = $("input[name=check]:checked").length;
+		if (a == 0 || a > 1||a==null) {
+			layer.msg('请选中一行', {
+				icon: 5,
+				time: 800
+			});
+			return;
+		}
+		var objects = $("input[name=check]:checked")[0].value;
+		var grade = fyy[objects];
+		//询问框
+		layer.confirm('确定是否删除？', {
+		  	btn: ['是','否'] //按钮
+		}, function(){
+			$.ajax({
+				url: url + 'basZoneCustomInfoController/delBasZoneCustomInfoById',
+				type: 'post',
+				async: false,
+				data: {
+					"customCode":grade.customCode
+				},
+				success: function(data) {
+						layer.msg('删除成功', {icon: 1,
+										time: 3000});
+						location.reload();
+				}
+			});
+		  
+		}, function(){
+		  	
+		});
+	})
 	
 });
-
 </script>
-
 </body>
 </html>

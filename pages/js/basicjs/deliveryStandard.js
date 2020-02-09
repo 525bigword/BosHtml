@@ -170,7 +170,7 @@ var fyy;
 						title: ['新增', 'color:#fff;background:#1da02b;'],
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
-						area: ['650px', '300px'], //宽高
+						area: ['650px', '295px'], //宽高
 						content: 'deliveryStandard_add.html',
 						end: function() {
 							location.reload();
@@ -202,7 +202,7 @@ var fyy;
 						title: ['编辑', 'color:#fff;background:#1da02b;'],
 						type: 2,
 						//skin: 'layui-layer-rim', //加上边框
-						area: ['650px', '270px'], //宽高
+						area: ['650px', '240px'], //宽高
 						content: 'deliveryStandard_update.html',
 						success: function(layero, index) {
 							// 获取子页面的iframe
