@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>客户信息</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<form class="layui-form">
+			<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+				<tbody>
+					<tr>
+						<td class="layui-bg-gray" width="15%">客户姓名</td>
+						<td width="35%" id="name"><input type="text" id="cusName" name="title" placeholder="请输入客户姓名" autocomplete="off"
+							 class="layui-input">
+						</td>
+						<td class="layui-bg-gray" width="15%">手机号码</td>
+						<td width="35%">
+							<input type="text" name="title" id="mobile" placeholder="请输入手机号码" autocomplete="off"
+							 class="layui-input">
+						</td>
+					</tr>
+					<tr>
+						<td class="layui-bg-gray">所在城市</td>
+						<td>
+							<input type="text" readonly="readonly" id="cityName" name="title" placeholder="请输入所在城市" autocomplete="off"
+							 class="layui-input">
+						</td>
+						<td class="layui-bg-gray"></td>
+						<td>
+							<!-- <select name="city" id="qu" lay-filter="see2" lay-verify="required">
+								<option value="">请选择</option>
+							</select> -->
+						</td>
+					</tr>
+					<tr>
+						<td class="layui-bg-gray">具体地址</td>
+						<td colspan="3"> 
+							<textarea name="desc" id="address" placeholder="请输入具体地址" class="layui-textarea" style="min-height: 75px;"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<button class="layui-btn " id="baocun" style="background: #1da02b;" type="button">确定</button>
+							<button type="button" id="quxiao" name="quxiao" class="layui-btn layui-btn-primary">取消</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			var da;
+			var id;
+			var name11;
+			var zoneCode;
+			function child(parentID,cName,d) {
+				zoneCode=parentID;
+				if (d != null) {
+					id = d.customCode;
+					name11=d.customName;
+					$("#cusName").val(d.customName);
+					$("#mobile").val(d.mobileNo);
+					$("#cityName").val(d.cityName);
+					$("#address").val(d.cstomAddress);
+				}else{
+					$("#cityName").val(cName);
+				}
+			}
+			$(function(){
+				$.ajaxSetup({
+						dataType: "json",
+						cache: false,
+						headers: {
+							"Authorization": 'bos' + $.cookie('user')
+						},
+						xhrFields: {
+							withCredentials: true
+						}
+						/* ,
+				complete: function(xhr) {
+				    //token过期，则跳转到登录页面
+				    if(xhr.responseJSON.code == 401){
+				        parent.location.href = baseURL + 'login.html';
+				    }
+				} */
+					});
+					$.ajax({
+						url: url+'jurisdiction/parsetoken',
+						type: 'get',
+						header:{
+							"Authorization": 'bos'+$.cookie('user')
+						},
+						async: false,
+						dateType: 'json',
+						success: function(data) {
+							da=data;
+							console.log(da);
+						}
+					});
+					$("#baocun").click(function(){
+						var cusName=$("#cusName").val();
+						var mobile=$("#mobile").val();
+						var cityName=$("#cityName").val();
+						var address=$("#address").val();
+						if(cusName==""||cusName==null||mobile==""||mobile==null||cityName==""||cityName==null||address==""||address==null){
+							layer.msg('请将信息补充完整', {
+								icon: 5,
+								time: 1000
+							});
+							return;
+						}
+						var regex=/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;
+						if(!regex.test(mobile)){
+							layer.msg('手机号不符合规则', {
+								icon: 5,
+								time: 1000
+							});
+							return;
+						}
+						if(id!=null&&id!=""){
+							$.ajax({
+								url: url+'basZoneCustomInfoController/upBasZoneCustomInfoById',
+								type: 'post',
+								async: false,
+								data: {
+									"customCode":id,
+									"customName": cusName,
+									"customName1":name11,
+									"mobileNo": mobile,
+									"cstomAddress":address
+								},
+								success: function(data) {
+									if(data==0){
+										layer.msg('客户姓名已存在', {
+											icon: 5,
+											time: 1000
+										});
+										return;
+									}
+									if(data==1){
+										var index = parent.layer.getFrameIndex(window.name);
+										parent.layer.close(index);
+									}
+										
+									
+								}
+							});
+						}else{
+							$.ajax({
+								url: url+'basZoneCustomInfoController/saveBasZoneCustomInfo',
+								type: 'post',
+								async: false,
+								data: {
+									"customName": cusName,
+									"mobileNo": mobile,
+									"cstomAddress":address,
+									"cityName":cityName,
+									"zoneCode":zoneCode,
+									"syUnits.id":da.map.syEmps.syUnits.id,
+									"syEmp.id":da.map.syEmps.id
+								},
+								success: function(data) {
+									if(data==0){
+										layer.msg('客户姓名已存在', {
+											icon: 5,
+											time: 1000
+										});
+										return;
+									}
+									if(data==1){
+										var index = parent.layer.getFrameIndex(window.name);
+										parent.layer.close(index);
+									}
+										
+									
+								}
+							});
+						}
+					})
+					$("#quxiao").click(function() {
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+					})
+			})
+			 layui.use('form', function() {})
+		</script>
+	</body>
+</html>
