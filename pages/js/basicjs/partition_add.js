@@ -36,7 +36,6 @@ var citys;
 						$("input:radio[value=" + d.sDInt + "]").prop('checked', 'true');
 						$("#fj").val(d.sortingCode);
 						$("#dq").val(d.zoneCode);
-						$("#dq").prop('disabled', 'disabled');
 						form.render();
 					})
 					$("#key").val(d.keyword);
@@ -114,7 +113,7 @@ var citys;
 					var end = $("#end").val();
 					var ds = $("input[type=radio]:checked").val();
 					if (shen == null || shen == "" || shi == null || shi == "" || qu == null || qu == "" || fj == null || fj == "" ||
-						dq == null || dq == "" || key == null || key == "" || start == null || start == "" || end == null || end ==
+						 key == null || key == "" || start == null || start == "" || end == null || end ==
 						"" || ds == null || ds == "") {
 						layer.msg('请将信息补充完整', {
 							icon: 5,
@@ -122,7 +121,6 @@ var citys;
 						});
 						return;
 					}
-					console.log(shen + shi + qu + start + fj + dq + key + end + ds);
 					if (id != null && id != "") {
 						$.ajax({
 							url: url + 'basPartitionController/upBasPartitionById',
@@ -136,7 +134,8 @@ var citys;
 								"keyword": key,
 								"startInt": start,
 								"terminateInt": end,
-								"sDInt": ds
+								"sDInt": ds,
+								"zoneCode":dq
 							},
 							success: function(data) {
 								var index = parent.layer.getFrameIndex(window.name);

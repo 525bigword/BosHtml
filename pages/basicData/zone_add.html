@@ -24,15 +24,11 @@
 										<tr>
 											<td class="layui-bg-gray" width="13%">定区编码</td>
 											<td width="20%">
-												<select name="city" id="empNo" lay-verify="required">
-													<option value="">请选择</option>
-												</select>
+												<input type="text" name="title" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
 											</td>
 											<td class="layui-bg-gray" width="13%">定区名称</td>
 											<td width="20%">
-												<select name="city" id="qu" lay-filter="see2" lay-verify="required">
-													<option value="">请选择</option>
-												</select>
+												<input type="text" name="title" placeholder="请输入定区名称" autocomplete="off" class="layui-input">
 											</td>
 										</tr>
 										<tr>
@@ -115,6 +111,8 @@
 		</div>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
 		<script type="text/javascript">
 			layui.use(['transfer', 'layer', 'util'], function() {
 				var $ = layui.$,
@@ -193,14 +191,43 @@
 						})
 					}
 				});
+				})
 				//加载'form'模块，使checkbox、select、radio初始化
 				layui.use('form', function() {
 
 				});
 				$(function() {
-
-				});
-			})
+						$.ajaxSetup({
+								dataType: "json",
+								cache: false,
+								headers: {
+									"Authorization": 'bos' + $.cookie('user')
+								},
+								xhrFields: {
+									withCredentials: true
+								}
+								/* ,
+						complete: function(xhr) {
+						    //token过期，则跳转到登录页面
+						    if(xhr.responseJSON.code == 401){
+						        parent.location.href = baseURL + 'login.html';
+						    }
+						} */
+							});
+							$.ajax({
+								url: url + 'syUnitsController/findSyUnits',
+								type: 'post',
+								async: false,
+								success: function(data) {
+									var gong=data.SyUnits[0];
+									console.log(gong);
+									for (var i = 0; i < gong.length; i++) {
+										$("#dw").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
+									}
+								}
+							});
+							
+					})
 			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 			layui.use('element', function() {
 				var element = layui.element;

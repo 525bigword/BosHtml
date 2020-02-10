@@ -91,7 +91,7 @@ var fyy;
 										item.syUnits.name + '</td><td>' +
 										item.operationTime + '</td><td>' +
 										(item.remarks!=null?item.remarks:"") + '</td><td>' +
-										(item.grade == 0 ? '<button type="button" class="layui-btn layui-btn-disabled">查看列表</button>' :
+										(item.grade == 0 ? '<button type="button" class="layui-btn layui-btn-disabled">查看列表</button></td></tr>' :
 											'<button type="button" onclick="ckk('+item.id+')" class="layui-btn layui-btn-small btnQuery">查看列表</button></td></tr>'));
 									console.log(page*4-inde);
 									inde--;

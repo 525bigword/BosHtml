@@ -187,7 +187,8 @@
 													item.syEmp.empName + '</td><td>' +
 													item.telPhone + '</td><td>' +
 													item.syUnits.name + '</td><td>' +
-													'<button type="button" onclick="ckkk(\'' +item.zoneCode+ '\',\''+item.zoneName+'\')" class="layui-btn layui-btn-small btnQuery">查看客户信息</button></td></tr>');
+													(item.stats==1?'<button type="button" class="layui-btn layui-btn-disabled">查看列表</button>':
+													'<button type="button" onclick="ckkk(\'' +item.zoneCode+ '\',\''+item.zoneName+'\')" class="layui-btn layui-btn-small btnQuery">查看客户信息</button></td></tr>'));
 												inde--;
 											});
 						

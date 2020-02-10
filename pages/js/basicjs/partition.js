@@ -142,7 +142,7 @@ $(function(){
 										(page*4-inde) + '></td><td>' +
 										(parseInt(index) + 1) + '</td><td>' +
 										item.sortingCode + '</td><td>' +
-										item.zoneCode + '</td><td>' +
+										(item.zoneCode==""?"未分配":item.zoneCode) + '</td><td>' +
 										item.province + '</td><td>' +
 										item.city + '</td><td>' +
 										item.county + '</td><td>' +
