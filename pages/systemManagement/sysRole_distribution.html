@@ -63,6 +63,7 @@
 				    } */
 			});
 			var permissions=[];
+			var par=[];
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
 				var form = layui.form;
@@ -138,11 +139,19 @@
 					$("#hQuery").toggle();
 				});
 				//新增
+				
 				$('#opAdd').click(function() {
+					let i=0;
+					$("input:checkbox[name=parent]:checked").each(function() {
+						par[i] = this.value;
+						i++;
+					});
+					//par=$("input[name='parent']:checked").val();
+					console.log(par);
 					$.ajax({
 						url: url + "jurisdiction/assignrolepermissions",
 						type: 'post',
-						data:{"menuid":permissions,"roleid":roleid},
+						data:{"menuid":par,"roleid":roleid},
 						success: function(data) {
 							
 							
