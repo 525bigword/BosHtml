@@ -24,21 +24,21 @@
 										<tr>
 											<td class="layui-bg-gray" width="13%">定区编码</td>
 											<td width="20%">
-												<input type="text" name="title" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
+												<input type="text" id="zoneCode" name="title" placeholder="请输入定区编码" autocomplete="off" class="layui-input">
 											</td>
 											<td class="layui-bg-gray" width="13%">定区名称</td>
 											<td width="20%">
-												<input type="text" name="title" placeholder="请输入定区名称" autocomplete="off" class="layui-input">
+												<input type="text" id="name" name="title" placeholder="请输入定区名称" autocomplete="off" class="layui-input">
 											</td>
 										</tr>
 										<tr>
 											<td class="layui-bg-gray" width="13%">定区负责人</td>
 											<td width="20%">
-												<input type="text" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
+												<input type="text" id="people" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
 											</td>
 											<td class="layui-bg-gray" width="13%">联系电话</td>
 											<td width="20%">
-												<input type="text" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
+												<input type="text" id="tel" name="title" placeholder="请输入收派标准" autocomplete="off" class="layui-input">
 											</td>
 										</tr>
 										<tr>
@@ -66,26 +66,9 @@
 									</table>
 								</div>
 								<div class="layui-tab-item">
-									<table border="1px" width="100%" height="230px">
+									<table width="100%" height="230px">
 										<tr>
-											<td style="width: 100px;height: 40px;" align="right">城市&nbsp;&nbsp;</td>
-											<td><input type="text" style="width: 80px;" /></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr>
-											<td colspan="6">
-												<div style="margin-left: 15%;" id="test3" class="demo-transfer"></div>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="layui-tab-item">
-									<table border="1px" width="100%" height="230px">
-										<tr>
-											<td style="width: 100px;height: 20px;" align="right"></td>
+											<td style="width: 100px;height: 1px;" align="right"></td>
 											<td></td>
 											<td></td>
 											<td></td>
@@ -95,6 +78,23 @@
 										<tr>
 											<td colspan="6">
 												<div style="margin-left: 15%;" id="test4" class="demo-transfer"></div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="layui-tab-item">
+									<table width="100%" height="230px">
+										<tr>
+											<td style="width: 100px;height: 1px;" align="right"></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<div style="margin-left: 15%;" id="test3" class="demo-transfer"></div>
 											</td>
 										</tr>
 									</table>
@@ -114,81 +114,134 @@
 		<script type="text/javascript" src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
 		<script type="text/javascript">
+			var id;
+			var data3=[];
+			var da3;
+			
+			var da4;
+			var data4=[];
+			var da;
+			var d3=[];
+			var d4=[];
+			function child(d) {
+				if(d!=null){
+					id=d.id;
+					console.log(d);
+					$("#zoneCode").val(d.zoneCode);
+					$("#name").val(d.zoneName);
+					$("#people").val(d.syEmp.empName);
+					$("#tel").val(d.telPhone);
+					layui.use('form', function(){
+					   var form=layui.form;
+					   $("#dw").val(d.syUnits.id);
+					   form.render();
+					});
+					$.ajax({
+						url: url + 'basAssociateMemberController/findBasAssociateMemberByZoneCode',
+						type: 'post',
+						data:{
+							"zoneCode":d.zoneCode
+						},
+						async: false,
+						success: function(data) {
+							da3=data;
+							console.log(data);
+						}
+					});
+					$.ajax({
+						url: url + 'basPartitionController/findBasPartitionByTerm',
+						type: 'post',
+						data:{
+							"city":d.zoneName
+						},
+						async: false,
+						success: function(data) {
+							da4=data;
+							console.log(data);
+						}
+					});
+					layui.use(['transfer', 'layer', 'util'], function() {
+						var $ = layui.$,
+							transfer = layui.transfer,
+							layer = layui.layer,
+							util = layui.util;
+						//模拟数据
+						
+						for (var i = 0; i < da3.length; i++) {
+							if(da3[i].zoneCode!=null&&da3[i].zoneCode!=""){
+								d3.push(da3[i].id);
+							}
+							data3.push({"value": da3[i].id,
+								"title": da3[i].empName});
+						}
+						for (var i = 0; i < da4.length; i++) {
+							if(da4[i].zoneCode!=null&&da4[i].zoneCode!=""){
+								d4.push(da4[i].id);
+							}
+							data4.push({"value": da4[i].id,
+								"title": da4[i].county});
+						}
+						//初始右侧数据
+						transfer.render({
+							elem: '#test4',
+							data: data4,
+							height: 220,
+							id: 'keyAddress',
+							title: ['该定区未关联地址', '该定区已关联地址'],
+							value: d4
+						})
+						transfer.render({
+							elem: '#test3',
+							data: data3,
+							height: 220,
+							id: 'yuan',
+							title: ['该定区未小件员', '该定区已关联小件员'],
+							value: d3
+						})
+						})
+				}
+			}
 			layui.use(['transfer', 'layer', 'util'], function() {
 				var $ = layui.$,
 					transfer = layui.transfer,
 					layer = layui.layer,
 					util = layui.util;
-
-				//模拟数据
-				var data2 = [{
-					"value": "1",
-					"title": "瓦罐汤"
-				}, {
-					"value": "2",
-					"title": "油酥饼"
-				}, {
-					"value": "3",
-					"title": "炸酱面"
-				}, {
-					"value": "5",
-					"title": "豆腐脑"
-				}, {
-					"value": "6",
-					"title": "驴打滚"
-				}, {
-					"value": "7",
-					"title": "北京烤鸭"
-				}, {
-					"value": "8",
-					"title": "烤冷面"
-				}, {
-					"value": "10",
-					"title": "肉夹馍"
-				}]
-				//初始右侧数据
-				transfer.render({
-					elem: '#test3',
-					data: data2,
-					height: 190,
-					id: 'keyAddress',
-					title: ['该定区未关联地址', '该定区已关联地址'],
-					value: ["1", "3", "5", "7", "9"]
-				})
-				transfer.render({
-					elem: '#test4',
-					data: data2,
-					height: 200,
-					id: 'yuan',
-					title: ['该定区未小件员', '该定区已关联小件员'],
-					value: ["1", "3", "5", "7", "9"]
-				})
 				util.event('lay-demoTransferActive', {
 					getData: function(othis) {
 						var getData = transfer.getData('keyAddress'); //获取右侧数据
 						var yuan = transfer.getData('yuan');
-						var aa = "";
+						var cc = [];
 						var bb = [];
 						for (var i = 0; i < eval(getData).length; i++) {
-							if (i == eval(getData).length - 1) {
-								aa += eval(getData)[i].value;
-							} else {
-								aa += eval(getData)[i].value + ",";
-							}
+							cc.push(eval(getData)[i].value);
 						}
 						for (var i = 0; i < eval(yuan).length; i++) {
 							bb.push(eval(yuan)[i].value);
 						}
-						console.log(aa);
-						console.log(turnNum(bb));
-					},
-					reload: function() {
-						//实例重载
-						transfer.reload('key123', {
-							title: ['文人', '喜欢的文人'],
-							value: ['2', '5', '9'],
-							showSearch: true
-						})
+						for (var i = 0; i < cc.length; i++) {
+							for (var j = 0; j < d4.length; j++) {
+								if(d4[j]==cc[i]){
+									d4.splice(j,1);
+									cc.splice(i,1);
+								}
+							}
+						}
+						for (var i = 0; i < bb.length; i++) {
+							for (var j = 0; j < d3.length; j++) {
+								if(d3[j]==bb[i]){
+									d3.splice(j,1);
+									bb.splice(i,1);
+								}
+							}
+						}
+						cc=[...new Set(cc)];
+						bb=[...new Set(bb)];
+						console.log(d3);//小件员本来有现已移除
+						console.log(d4);//地址本来有现已移除
+						console.log(bb);//小件员新增
+						console.log(cc);//地址新增
+						
+						
 					}
 				});
 				})
@@ -220,7 +273,6 @@
 								async: false,
 								success: function(data) {
 									var gong=data.SyUnits[0];
-									console.log(gong);
 									for (var i = 0; i < gong.length; i++) {
 										$("#dw").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
 									}
