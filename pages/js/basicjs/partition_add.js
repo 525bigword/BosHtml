@@ -161,8 +161,17 @@ var citys;
 								"zoneCode":dq
 							},
 							success: function(data) {
-								var index = parent.layer.getFrameIndex(window.name);
-								parent.layer.close(index);
+								if(data==0){
+									layer.msg('该区已存在', {
+										icon: 5,
+										time: 1000
+									});
+								}
+								if(data==1){
+									var index = parent.layer.getFrameIndex(window.name);
+									parent.layer.close(index);
+								}
+								
 							}
 						});
 					}

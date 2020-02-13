@@ -167,7 +167,8 @@ var id;
 									icon: 5,
 									time: 1000
 								});
-							}else{
+							}
+							if(data==1){
 								var index = parent.layer.getFrameIndex(window.name);
 								parent.layer.close(index);
 							}
