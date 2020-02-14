@@ -54,6 +54,9 @@ var fyy;
 				$("#chaxun").click(function() {
 					var city=$("#city").val();
 					var select=$("#select option:checked").text();
+					if(select=="请选择"){
+						select="";
+					}
 					var carid=$("#carid").val();
 					var carname=$("#carname").val();
 					var gong=$("#gong").val();
@@ -78,6 +81,8 @@ var fyy;
 				})
 				$("#rest").click(function() {
 					$(".layui-input").val("");
+					$("#city").val("请选择");
+					$("#select").val("请选择");
 				})
 			})
 			

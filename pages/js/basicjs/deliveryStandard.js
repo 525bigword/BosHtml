@@ -161,6 +161,7 @@ var fyy;
 				})
 				$("#rest").click(function() {
 					$(".layui-input").val("");
+					$("#status").val("");
 				})
 				//新增
 				$('#opAdd').click(function() {

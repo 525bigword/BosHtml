@@ -214,6 +214,7 @@ var citys;
 				});
 				$("#rest").click(function() {
 					$(".layui-input").val("");
+					$("#shen").val("");
 				})
 				$("#chaxun").click(function(){
 					var shen=$("#shen").val();
