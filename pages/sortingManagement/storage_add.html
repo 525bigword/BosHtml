@@ -11,10 +11,6 @@
 			<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 				<tbody>
 					<tr>
-						 <td class="layui-bg-gray" width="14%">入库交接单号</td>
-		      	<td width="20%">
-					<input type="text" name="title" placeholder="入库交接单号" autocomplete="off" class="layui-input" value="" disabled>
-		      	</td> 
 						<td class="layui-bg-gray" width="13%">接货时间</td>
 						<td width="20%">
 							<input type="text" name="time" placeholder="请输入接货时间" autocomplete="off" class="layui-input" value="" disabled>
@@ -24,20 +20,14 @@
 							<input type="text" name="empname" readonly="readonly" placeholder="请输入接货人" autocomplete="off" class="layui-input"
 							 value="">
 						</td>
-					</tr>
-					<tr>
 						<td class="layui-bg-gray">接收单位</td>
 						<td>
 							<input type="text" name="unit" placeholder="请输入接收单位" autocomplete="off" class="layui-input" value="">
 						</td>
-						<td class="layui-bg-gray">发货人</td>
-						<td>
-							<input type="text" name="fh" placeholder="请输入发货人" autocomplete="off" class="layui-input" value="">
-						</td>
-						<td class="layui-bg-gray">发货单位</td>
-						<td>
-							<input type="text" name="title" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="">
-						</td>
+					</tr>
+					<tr>
+						
+						
 					</tr>
 				</tbody>
 			</table>
@@ -52,7 +42,6 @@
 				<thead>
 					<tr>
 						<th>重量</th>
-						<th>关联出库交接单</th>
 						<th>状态</th>
 					</tr>
 				</thead>
@@ -61,9 +50,6 @@
 						
 						<td>
 							<input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
-						</td>
-						<td>
-							<input type="text" name="title" placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
 						</td>
 						<td>
 							<select name="city" lay-verify="required">
@@ -119,11 +105,11 @@
 				layui.form.render();
 
 			}
-			var acceptperson=0;
 			function add(){
 				var acceptDate=$("input[name='time']").val();
-				var acceptperson=$("input[name='empname']").val();
+				var acceptperson=$("input[name='empname']").val();//收货人
 				var acceptCompany=$("input[name='unit']").val();
+				var fh
 			}
 			function jx() {
 				$.ajax({
@@ -149,7 +135,8 @@
 					async: false,
 					success: function(data) {
 						console.log(data);
-						
+						$("input[name='empname']").val(data.map.syEmps.empName);
+						acceptperson=data.map.syEmps.id;
 					}
 				});
 			});

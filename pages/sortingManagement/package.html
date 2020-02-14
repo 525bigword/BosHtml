@@ -20,7 +20,7 @@
             <!-- 操作按扭组 -->
             <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
                 <div class="layui-inline">
-                    <button type="button" class="layui-btn layui-btn-small btnQuery" id="opSave">保存</button>
+                    <button type="button" class="layui-btn layui-btn-small btnQuery" id="add">新增合包</button>
                     <button type="button" class="layui-btn layui-btn-small btnQuery" id="opAddDetail">新增合包明细</button>
                     <button type="button" class="layui-btn layui-btn-small btnOther" id="opDeleteMenu">删除条目</button>
                 </div>
@@ -160,7 +160,22 @@
         });
 
     });
-
+	$(function(){
+		//新增
+		$('#add').click(function() {
+			//页面层
+			layer.open({
+				title: ['新增', 'color:#fff;background:#1da02b;'],
+				type: 2,
+				//skin: 'layui-layer-rim', //加上边框
+				area: ['1000px', '400px'], //宽高
+				content: 'package_add.html',
+				end: function() {
+					initunit();
+				}
+			});
+		});
+	})
 </script>
 
 </body>
