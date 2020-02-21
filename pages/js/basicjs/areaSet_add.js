@@ -118,6 +118,8 @@ var citys;
 							$("#jg").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
 							$("#cg").append('<option value="'+gong[i].id+'">'+gong[i].name+'</option>');
 						}
+						$("#jg").val("3");
+						$("#cg").val("3");
 					}
 				});
 				$("#baocun").click(function(){

@@ -61,7 +61,7 @@ var basicFileNumber;
 						return;
 					}
 					$.ajax({
-						url: url+'basDeliveryStandard/upBasDeliveryStandardByBasicFileNumber',
+						url: 'http://localhost:8089/basDeliveryStandard/upBasDeliveryStandardByBasicFileNumber',
 						type: 'post',
 						async: false,
 						data: {

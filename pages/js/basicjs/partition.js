@@ -142,7 +142,7 @@ $(function(){
 										(page*4-inde) + '></td><td>' +
 										(parseInt(index) + 1) + '</td><td>' +
 										item.sortingCode + '</td><td>' +
-										(item.zoneCode==""?"未分配":item.zoneCode) + '</td><td>' +
+										(item.zoneCode==""?"未分配":(item.zoneCode==null?"未分配":item.zoneCode)) + '</td><td>' +
 										item.province + '</td><td>' +
 										item.city + '</td><td>' +
 										item.county + '</td><td>' +
@@ -171,6 +171,7 @@ $(function(){
 	});
 	$("#rest").click(function() {
 		$(".layui-input").val("");
+		$("#shen").val("");
 	})
 	$("#chaxun").click(function(){
 		var shen=$("#shen").val();
@@ -259,6 +260,13 @@ $(function(){
 		}
 		var objects = $("input[name=check]:checked")[0].value;
 		var grade = fyy[objects];
+		if(grade.zoneCode!=""&&grade.zoneCode!=null){
+			layer.msg('该分区已被分配无法删除', {
+				icon: 5,
+				time: 800
+			});
+			return;
+		}
 		//询问框
 		layer.confirm('确定是否删除？', {
 		  	btn: ['是','否'] //按钮

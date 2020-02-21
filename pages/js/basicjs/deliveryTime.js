@@ -219,7 +219,7 @@ $(function(){
 		var objects = $("input[name=check]:checked")[0].value;
 		var grade = fyy[objects];
 		//询问框
-		layer.confirm('确定是否作废？', {
+		layer.confirm('确定是否删除？', {
 		  	btn: ['是','否'] //按钮
 		}, function(){
 			$.ajax({
