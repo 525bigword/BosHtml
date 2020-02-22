@@ -59,20 +59,20 @@
 						<td class="layui-bg-gray" width="10%">送达时限</td>
 						<td width="15%">
 							<!-- <input class="layui-input" type="text" name="title" placeholder="请输入送达时限" autocomplete="off"> -->
-							<input type="text"  readonly="readonly" name="date"  id="date" lay-verify="date" placeholder="yyyy-MM-dd"  class="layui-input" value="">
+							<input type="text"  readonly="readonly" name="date"  id="date" lay-verify="date" placeholder="yyyy-MM-dd"  class="layui-input date-item" value="">
 							
 						</td>
 						<td class="layui-bg-gray" width="10%">总票数</td>
 						<td width="15%">
-							<input type="text" name="ticketSum" placeholder="请输入总票数" autocomplete="off" class="layui-input" value="">
+							<input type="number" min="0" value="0" name="ticketSum" placeholder="请输入总票数" autocomplete="off" class="layui-input" value="">
 						</td>
 						<td class="layui-bg-gray" width="10%">总件数</td>
 						<td width="15%">
-							<input type="text" name="cargoSum" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
+							<input type="number" min="0" value="0" name="cargoSum" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
 						</td>
 						<td class="layui-bg-gray" width="10%">总重量</td>
 						<td width="15%">
-							<input type="text" name="weightSum" placeholder="请输入总重量" autocomplete="off" class="layui-input">
+							<input type="number" min="0" value="0" name="weightSum" placeholder="请输入总重量" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
 
@@ -80,7 +80,7 @@
 
 						<td class="layui-bg-gray" width="10%">总体积</td>
 						<td width="15%">
-							<input type="text" name="volumeSum" placeholder="请输入总体积" autocomplete="off" class="layui-input" value="">
+							<input type="number" min="0" value="0" name="volumeSum" placeholder="请输入总体积" autocomplete="off" class="layui-input" value="">
 						</td>
 						<td class="layui-bg-gray" width="10%">状态</td>
 						<td width="15%">
@@ -133,18 +133,18 @@
 					<tr >
 						<td><input type="text" name="wareName" placeholder="商品名" autocomplete="off" class="layui-input"></td>
 						<td><input type="text" name="destination" placeholder="到达地" autocomplete="off" class="layui-input"></td>
-						<td><input type="number" name="ticket" placeholder="票数" autocomplete="off" class="layui-input"></td>
-						<td><input type="number" name="cargoInt" placeholder="件数" autocomplete="off" class="layui-input"></td>
-						<td><input type="number" name="actualCargoInt" placeholder="实际件数" autocomplete="off" class="layui-input"></td>
-						<td><input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input"></td>
-						<td><input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input"></td>
-						<td><input type="text"  readonly="readonly" name="service"  id="date1" lay-verify="date" placeholder="yyyy-MM-dd"  class="layui-input"></td>
+						<td><input type="number"  min="0" name="ticket" placeholder="票数" autocomplete="off" value="0" class="layui-input"></td>
+						<td><input type="number" min="0" value="0" name="cargoInt" placeholder="件数" autocomplete="off" class="layui-input"></td>
+						<td><input type="number" min="0" value="0" name="actualCargoInt" placeholder="实际件数" autocomplete="off" class="layui-input"></td>
+						<td><input type="number" min="0" value="0" name="weight" placeholder="重量" autocomplete="off" class="layui-input"></td>
+						<td><input type="number" min="0" value="0" name="volume" placeholder="体积" autocomplete="off" class="layui-input"></td>
+						<td><input type="text"  readonly="readonly" name="service"  id="date1" lay-verify="date" placeholder="yyyy-MM-dd"  class="layui-input date-item"></td>
 						<td><input type="text" name="importantHints" placeholder="重要提示" autocomplete="off" class="layui-input"></td>
 						<td width="15%">
 							<select id="ask" lay-verify="required">
 								<option value="无">无</option>
 								<option value="禁航空铁路">禁航空铁路</option>
-								<option value="1">禁航空</option>
+								<option value="禁航空">禁航空</option>
 							</select>
 						</td>
 					</tr>
@@ -200,27 +200,32 @@
 					laydate = layui.laydate;
 
 				//日期
-				laydate.render({
+				/* laydate.render({
 					elem: '#date',
 					trigger: 'click'
-				});
+				}); */
 				//日期
+				date();
+			})
+			function date(){
+				var form = layui.form,
+					layer = layui.layer,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
 				lay('.date-item').each(function(){
 				  laydate.render({
 				    elem: this
 				    ,trigger: 'click'
 				  });
 				}); 
-				//$('.test-item').removeAttr('lay-key')
-			})
-			
+				$('.date-item').removeAttr('lay-key');
+			}
 			var userid = 0;
 
 			function jx() {
 				$.ajax({
 					url: url + "jurisdiction/parsetoken",
 					type: 'get',
-					async: false,
 					success: function(data) {
 						console.log(data);
 						$("input[name='user']").val(data.map.syEmps.empName);
@@ -237,14 +242,16 @@
 
 			});
 			$(function() {
+				
 				$('#opDeleteMenu').click(function() {
 					$('#bde tr:last-child').remove()
 				})
 				$('#opAddDetail').click(function() {
 					$('#bde').append(
-						"<tr><td><input type='text' name='title' placeholder='品名' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='到达地' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='票数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='件数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='实际件数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='重量' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='体积' autocomplete='off' class='layui-input'></td><td><input type='text'  readonly='readonly' name='service'   lay-verify='date' placeholder='yyyy-MM-dd'  class='layui-input  date-item'></td><td><input type='text' name='title' placeholder='配载要求' autocomplete='off' class='layui-input'></td><td width='15%'><select name='city' lay-verify='required'><option value='无'>无</option><option value='禁航空铁路'>禁航空铁路</option><option value='1'>禁航空</option></select></td></tr>"
+						"<tr><td><input type='text' name='title' placeholder='品名' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='到达地' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='票数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='件数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='实际件数' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='重量' autocomplete='off' class='layui-input'></td><td><input type='text' name='title' placeholder='体积' autocomplete='off' class='layui-input'></td><td><input type='text'  readonly='readonly' name='date'  id='date' lay-verify='date' placeholder='yyyy-MM-dd' class='layui-input date-item' value=''></td><td><input type='text' name='title' placeholder='配载要求' autocomplete='off' class='layui-input'></td><td width='15%'><select name='city' lay-verify='required'><option value='无'>无</option><option value='禁航空铁路'>禁航空铁路</option><option value='1'>禁航空</option></select></td></tr>"
 					)
 					layui.form.render();
+					date();
 				})
 				//新增
 				$('#add').click(function() {
@@ -261,10 +268,43 @@
 					sorPackage.ask=$("#ask option:selected").val();
 					console.log(sorPackage);
 					console.log($('#bde tr').length);
+					if(sorPackage.destination==''||sorPackage.packageperson==''||sorPackage.reckonDes==''||sorPackage.timeLimit==''){
+						alert("请将信息填写完整");
+						return
+					}
 					//合包明细
 					var sorPackageDetails=[];
-					for(var i=0;i<$('#bde tr').length;i++){
-						sorPackageDetail.wareName=$("input[name='wareName']").val();
+					console.log($('#bde tr').length);
+					var a = $('#bde').children("tr").children("td");
+					console.log("aaaaaa",$('#bde').children("tr").children("td").children("input")[0]);
+					console.log(a.children("select"));
+					console.log(a);
+					for(var i=0;i<a.length/10;i++){ 
+						console.log(a[(i * 10) + 0].html())
+						//sorPackageDetail.wareName=a[(i * 10) + 0].children("input").value
+						/* sorPackageDetail.destination=a[(i * 10) + 1].value
+						sorPackageDetail.wareName=a[(i * 10) + 0].value
+						sorPackageDetail.ticket=a[(i * 10) + 0].value
+						sorPackageDetail.actualCargoInt=a[(i * 10) + 0].value
+						sorPackageDetail.cargoInt=a[(i * 10) + 0].value
+						sorPackageDetail.weight=a[(i * 10) + 0].value
+						sorPackageDetail.volume=a[(i * 10) + 0].value
+						sorPackageDetail.service=a[(i * 10) + 0].value
+						sorPackageDetail.importantHints=a[(i * 10) + 0].value
+						sorPackageDetail.ask=a.children("select")[i].value */
+						console.log(sorPackageDetail);
+						/* for(var j=0;j<10;j++){
+							if(j % 9 === 0){
+								console.log(a.children("select")[i].value);
+							}else{
+								console.log(a[(i * 10) + j].value);
+							}
+							if()
+						} */
+						
+						
+						/* console.log(sorPackageDetail);
+						sorPackageDetail.wareName=$("input[name='wareName']")[i].val();
 						sorPackageDetail.destination=$("input[name='destination']").val();
 						sorPackageDetail.ticket=$("input[name='ticket']").val();
 						sorPackageDetail.actualCargoInt=$("input[name='actualCargoInt']").val();
@@ -274,8 +314,29 @@
 						sorPackageDetail.service=$("input[name='service']").val();
 						sorPackageDetail.importantHints=$("input[name='importantHints']").val();
 						sorPackageDetail.ask=$("#ask option:selected").val();
+						console.log(sorPackageDetail);
 						sorPackageDetails[i]=sorPackageDetail;
+						if(sorPackageDetails[i].wareName==''||sorPackageDetails[i].destination==''||sorPackageDetails[i].service==''){
+							alert('请将信息填写完整');
+							return
+						} */
 					}
+/* 					if(sorPackageDetails[sorPackageDetails.length-1].wareName==''||sorPackageDetails[sorPackageDetails.length-1].destination==''||sorPackageDetails[sorPackageDetails.length-1].service==''){
+						alert('请将信息填写完整');
+						return
+					} */
+					$.ajax({
+						url: url + "SorPackageController/add",
+						type: 'post',
+						headers:{
+							"Content-Type":"application/json"
+						},
+						data:JSON.stringify({"sorPackage":sorPackage,"sorPackageDetails":sorPackageDetails}),
+						success: function(data) {
+							console.log(data);
+							
+						}
+					});
 					console.log(sorPackageDetails);
 				});
 			})
@@ -319,7 +380,7 @@
 				   /** 配置要求
 				    * 
 				    * @pdOid 7207101f-cb74-4599-99bb-10e13fd7729c */
-				   ask:'',
+				   ask:'无',
 				   /** 输入类型
 				    * 
 				    * @pdOid e5e8c1d1-980a-4142-b0a2-efcd5a503593 */
@@ -358,11 +419,11 @@
 				/** 状态
 				 * 
 				 * @pdOid 264959b9-c53c-4c42-9618-77397e1128cd */
-				state: '',
+				state: '未拆包',
 				/** 配载要求
 				 * 
 				 * @pdOid 5254eeaf-36a0-4052-a8ec-b5dd32aac3cd */
-				ask: ''
+				ask: '无'
 			}
 		</script>
 
