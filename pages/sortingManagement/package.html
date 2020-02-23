@@ -271,7 +271,7 @@
 					if(sorPackage.destination==''||sorPackage.packageperson==''||sorPackage.reckonDes==''||sorPackage.timeLimit==''){
 						alert("请将信息填写完整");
 						return
-					}
+					} 
 					//合包明细
 					var sorPackageDetails=[];
 					console.log($('#bde tr').length);
@@ -279,52 +279,26 @@
 					console.log("aaaaaa",$('#bde').children("tr").children("td").children("input")[0]);
 					console.log(a.children("select"));
 					console.log(a);
-					for(var i=0;i<a.length/10;i++){ 
-						console.log(a[(i * 10) + 0].html())
-						//sorPackageDetail.wareName=a[(i * 10) + 0].children("input").value
-						/* sorPackageDetail.destination=a[(i * 10) + 1].value
-						sorPackageDetail.wareName=a[(i * 10) + 0].value
-						sorPackageDetail.ticket=a[(i * 10) + 0].value
-						sorPackageDetail.actualCargoInt=a[(i * 10) + 0].value
-						sorPackageDetail.cargoInt=a[(i * 10) + 0].value
-						sorPackageDetail.weight=a[(i * 10) + 0].value
-						sorPackageDetail.volume=a[(i * 10) + 0].value
-						sorPackageDetail.service=a[(i * 10) + 0].value
-						sorPackageDetail.importantHints=a[(i * 10) + 0].value
-						sorPackageDetail.ask=a.children("select")[i].value */
+					for(var i=0;i<a.length/10;i++){
+						console.log(a[(i * 10) + 0].children[0].value)
+						sorPackageDetail.wareName=a[(i * 10) + 0].children[0].value
+						sorPackageDetail.destination=a[(i * 10) + 1].children[0].value
+						sorPackageDetail.ticket=a[(i * 10) + 2].children[0].value
+						sorPackageDetail.actualCargoInt=a[(i * 10) + 3].children[0].value
+						sorPackageDetail.cargoInt=a[(i * 10) + 4].children[0].value
+						sorPackageDetail.weight=a[(i * 10) + 5].children[0].value
+						sorPackageDetail.volume=a[(i * 10) + 6].children[0].value
+						sorPackageDetail.service=a[(i * 10) + 7].children[0].value
+						sorPackageDetail.importantHints=a[(i * 10) + 8].children[0].value
+						sorPackageDetail.ask=a.children("select")[i].value
 						console.log(sorPackageDetail);
-						/* for(var j=0;j<10;j++){
-							if(j % 9 === 0){
-								console.log(a.children("select")[i].value);
-							}else{
-								console.log(a[(i * 10) + j].value);
-							}
-							if()
-						} */
-						
-						
-						/* console.log(sorPackageDetail);
-						sorPackageDetail.wareName=$("input[name='wareName']")[i].val();
-						sorPackageDetail.destination=$("input[name='destination']").val();
-						sorPackageDetail.ticket=$("input[name='ticket']").val();
-						sorPackageDetail.actualCargoInt=$("input[name='actualCargoInt']").val();
-						sorPackageDetail.cargoInt=$("input[name='cargoInt']").val();
-						sorPackageDetail.weight=$("input[name='weight']").val();
-						sorPackageDetail.volume=$("input[name='volume']").val();
-						sorPackageDetail.service=$("input[name='service']").val();
-						sorPackageDetail.importantHints=$("input[name='importantHints']").val();
-						sorPackageDetail.ask=$("#ask option:selected").val();
-						console.log(sorPackageDetail);
+						if(sorPackageDetail.wareName==""||sorPackageDetail.destination==""||sorPackageDetail.service==""||sorPackageDetail.importantHints==""){
+							alert("请将信息填写完整");
+							return;
+						}
 						sorPackageDetails[i]=sorPackageDetail;
-						if(sorPackageDetails[i].wareName==''||sorPackageDetails[i].destination==''||sorPackageDetails[i].service==''){
-							alert('请将信息填写完整');
-							return
-						} */
 					}
-/* 					if(sorPackageDetails[sorPackageDetails.length-1].wareName==''||sorPackageDetails[sorPackageDetails.length-1].destination==''||sorPackageDetails[sorPackageDetails.length-1].service==''){
-						alert('请将信息填写完整');
-						return
-					} */
+
 					$.ajax({
 						url: url + "SorPackageController/add",
 						type: 'post',
