@@ -50,7 +50,7 @@ var fyy;
 						elem: 'demo1',
 						count: fyycount,
 						layout: ['prev', 'page', 'next', 'count'],
-						limit: 4,
+						limit: 5,
 						jump: function(obj) {
 							//模拟渲染
 							var page=$(".layui-laypage-em").next().html(); 

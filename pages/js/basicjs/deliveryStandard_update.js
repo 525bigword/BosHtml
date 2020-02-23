@@ -1,7 +1,7 @@
 var basicFileNumber;
 			function child(d) {
 				basicFileNumber=d.basicFileNumber;
-				$("#name").text(d.minWeight + "-" + d.maxWeight + "公斤");
+				$("#name").text(d.name);
 				$("#minWeight").val(d.minWeight);
 				$("#maxWeight").val(d.maxWeight);
 				$("#empName").text(d.syEmp.empName);
