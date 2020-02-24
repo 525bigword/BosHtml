@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>合包</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<div class="layui-form">
+			<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">新增合包</li>
+				</ul>
+				<div class="layui-tab-content" style="height: 100px;">
+					<div class="layui-tab-item layui-show">
+						<table class="layui-table layui-form" style="width: 100%;margin: 1px auto;text-align: center;margin-top: 5px;">
+						    <tbody>
+						        <tr>
+						            <!-- <td class="layui-bg-gray" width="10%">合包号</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input">
+						            </td> -->
+						            <td class="layui-bg-gray" width="10%">合包人</td>
+						            <td width="15%">
+						                <input type="text" readonly="readonly" name="title" placeholder="请输入合包人" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">封签号</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入封签号" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">到达地</td>
+						            <td width="15%">
+						                <select name="city" lay-verify="required">
+						                    <option value=""></option>
+						                    <option value="0">北京</option>
+						                    <option value="1">上海</option>
+						                    <option value="2">广州</option>
+						                    <option value="3">深圳</option>
+						                    <option value="4">杭州</option>
+						                </select>
+						            </td>
+						        </tr>
+						
+						        <tr>
+						            <td class="layui-bg-gray" width="10%">计算到达地</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入计算到达地" autocomplete="off" class="layui-input">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">送达时限</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入送达时限" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">总票数</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入总票数" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">总件数</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
+						            </td>
+						        </tr>
+						
+						        <tr>
+						            <td class="layui-bg-gray" width="10%">总重量</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入总重量" autocomplete="off" class="layui-input">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">总体积</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入总体积" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">状态</td>
+						            <td width="15%">
+						                <input type="text" name="title" placeholder="请输入状态" autocomplete="off" class="layui-input" value="">
+						            </td>
+						            <td class="layui-bg-gray" width="10%">配载要求</td>
+						            <td width="15%">
+						                <select name="city" lay-verify="required">
+						                    <option value="无">无</option>
+						                    <option value="禁航空铁路">禁航空铁路</option>
+						                    <option value="1">禁航空</option>
+						                </select>
+						            </td>
+						        </tr>
+						    </tbody>
+							<tfoot>
+								<td colspan="8">
+									<button class="layui-btn" style="background: #1da02b;">确定</button>
+									<input type="button" name="close" class="layui-btn layui-btn-primary" value="取消" />
+								</td>
+							</tfoot>
+						</table>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layer/layer.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/xadmin.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async: true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+	    complete: function(xhr) {
+			
+	        //token过期，则跳转到登录页面
+	        if(xhr.responseJSON.code == 401){
+	            parent.location.href = baseURL + 'login.html';
+	        }
+	    } */
+			});
+			
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+
+			});
+
+			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+			layui.use('element', function() {
+				var element = layui.element;
+				$("input[name='close']").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				})
+				//…
+			});
+		</script>
+	</body>
+</html>

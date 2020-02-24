@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>栏目</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	</head>
+	<body>
+		<div class="layui-form">
+			<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">修改栏目</li>
+				</ul>
+				<div class="layui-tab-content" style="height: 100px;">
+					<div class="layui-tab-item layui-show">
+						<table id="smalla" style="display: block;" class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+							<tbody>
+								<tr>
+									<td class="layui-bg-gray" width="20%">单号</td>
+									<td colspan="3">
+										<input type="text" name="menuname" placeholder="请输入单号" readonly="readonly" autocomplete="off" class="layui-input">
+									</td>
+									
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray" width="20%">商品名</td>
+									<td width="30%">
+										<input type="text" name="menuname" placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">到达地</td>
+									<td>
+										<input type="text" name="menutype" placeholder="请输入到达地" autocomplete="off" class="layui-input">
+									</td>
+									
+								</tr>
+
+								<tr>
+									<td class="layui-bg-gray">实际件数</td>
+									<td width="30%">
+										<input type="text" name="menutype" placeholder="请输入实际件数" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">件数</td>
+									<td width="30%">
+										<input type="text" name="menuurl" placeholder="请输入件数" autocomplete="off" class="layui-input">
+									</td>
+									
+								</tr>
+								<tr>
+									<td class="layui-bg-gray">重量</td>
+									<td width="30%">
+										<input type="text" name="menuurl" placeholder="请输入重量" autocomplete="off" class="layui-input">
+									</td>
+									<td class="layui-bg-gray">体积</td>
+									<td width="30%">
+										<input type="text" name="menuurl" placeholder="请输入体积" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+								<tr>
+									<td class="layui-bg-gray">到达时限</td>
+									<td width="30%">
+										<input type="text"  readonly="readonly" name="date"  id="date" lay-verify="date" placeholder="yyyy-MM-dd"  class="layui-input date-item" value="">
+									</td>
+									<td class="layui-bg-gray">重要提示</td>
+									<td width="30%">
+										<input type="text" name="menuurl" placeholder="请输入重要提示" autocomplete="off" class="layui-input">
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+										<center><button class="layui-btn" id="smallbtn" onclick="update()" style="background: #1da02b;">确定</button>
+											<input type="button" name="close" value="取消" class="layui-btn layui-btn-primary" />
+											<span id="atext" style="color: red;"></span></center>
+										<input type="hidden" name="menusid" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		<div id="hiddend"></div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script src="../js/xadmin.js"></script>
+		<script src="../js/bos.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			var parentmenus;
+			var parentbigmenus;
+
+			$(function(){
+				
+			})
+			function child(){
+				
+			}
+			function update() {
+				$("#smallbtn").attr("onclick","");
+				var id = $("input[name='menusid']").val();
+				var menus = $("#sjlm option:selected").val();
+				var menuname = $("input[name='menuname']").val();
+				var menutype = $("input[name='menutype']").val();
+				var menuurl = $("input[name='menuurl']").val();
+				var bigmenus = $("#mk option:selected").val();
+				if (menuname != "" && menutype != "" && menuurl != "" && bigmenus > 0 && id > 0) {
+					$('#atext').text("");
+					$.ajax({
+						url: url + "jurisdiction/upmenus",
+						data: {
+							"id": id,
+							"parentID": menus,
+							"text": menuname,
+							"type": menutype,
+							"url": menuurl,
+							"bigmenus": bigmenus
+						},
+						type: 'post',
+						//async: true,
+						dataType:'json',
+						success: function(data) {
+							alert(data);
+							console.log(data);
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(index);
+							if(data=="success"){
+								
+							}
+							
+						}
+					})
+				} else {
+					$('#atext').text("请完善信息");
+				}
+			}
+
+			function child(data) {
+				console.log(data);
+				var form = layui.form;
+				parentbigmenus = data.bigmenus;
+				parentmenus = data.parentID;
+				$("input[name='menusid']").val(data.id);
+				$("input[name='menuname']").val(data.text);
+				$("input[name='menutype']").val(data.type);
+				$("input[name='menuurl']").val(data.url);
+				form.render();
+			}
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+				    complete: function(xhr) {
+				        //token过期，则跳转到登录页面
+				        if(xhr.responseJSON.code == 401){
+				            parent.location.href = baseURL + 'login.html';
+				        }
+				    } */
+			});
+			 layui.use('laydate', function(){
+				 var laydate = layui.laydate;
+				 //执行一个laydate实例
+				 laydate.render({
+				   elem: '#date' ,//指定元素
+				   trigger: 'click'
+				 });
+			 })
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+				
+				
+				var form = layui.form;
+				
+				
+				
+				//加载栏目
+				$.ajax({
+					url: 'http://localhost:8089/jurisdiction/loadmenus',
+					//headers:{"appId":"appId","appKey":"appId","Content-Type":"text/plain;charset=UTF-8"},
+					type: 'get',
+					dataType: 'json',
+					async: true,
+					success: function(data) {
+						var loadmenus = data.SyMenusBypParentidTozero[0];
+						for (var i = 0; i < loadmenus.length; i++) {
+							/* $('#qx').append('<option value="0">请选择</option>'); */
+							$('#sjlm').append('<option value="' + loadmenus[i].id + '">' + loadmenus[i].text + '</option>');
+						}
+						$('#sjlm').val(parentmenus);
+						form.render();
+					}
+				})
+				//加载模块
+				$.ajax({
+					url: url + 'jurisdiction/loadoptions',
+					type: 'get',
+					dataType: 'json',
+					headers: {
+						'Authorization': 'bos' + $.cookie('user')
+					},
+					async: true,
+					success: function(data) {
+						var loadoption = data.bigmenus[0];
+						console.log(loadoption);
+						for (var i = 0; i < loadoption.length; i++) {
+							$('#mk').append('<option value="' + loadoption[i].id + '">' + loadoption[i].bigmenus + '</option>');
+						}
+						$('#mk').val(parentbigmenus);
+						form.render();
+					}
+				})
+				form.render();
+				//加载属性
+				//console.log(parentvalue)
+
+
+			});
+			//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+			layui.use('element', function() {
+				var element = layui.element;
+				$("input[name='close']").click(function() {
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				})
+				function close(){
+					var element1 = layui.element;
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				}
+				//…
+			});
+		</script>
+	</body>
+</html>

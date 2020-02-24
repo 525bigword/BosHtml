@@ -160,6 +160,9 @@ var SystemMenu = [{
 			title: '合包',
 			href: 'sortingManagement/package.html'
 		},{
+			title: '合包列表',
+			href: 'sortingManagement/package_list.html'
+		},{
 			title: '拆包',
 			href: 'sortingManagement/unpacking.html'
 		},{
