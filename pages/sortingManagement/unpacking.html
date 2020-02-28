@@ -57,7 +57,7 @@
 					<!-- 操作按扭组 -->
 					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 						<div class="layui-inline">
-							<button type="button" class="layui-btn layui-btn-small btnQuery" id="opaAdd">拆包</button>
+							<button type="button" class="layui-btn layui-btn-small btnQuery" onclick="chai()" id="opaAdd">拆包</button>
 						</div>
 					</div>
 
@@ -151,6 +151,7 @@
 						"destination":destination
 					},
 					success(data) {
+						
 						console.log(data);
 						 pagedata = data;
 						pagedatacount = pagedata.length;
@@ -159,8 +160,26 @@
 					}
 				})
 			}
+			function chai(){
+				var ids=[];
+				var a = $("input[name='check']:checked");
+				for(let i=0;i<a.length;i++){
+					ids[i]=a[i].id;
+				}
+				console.log(ids)
+				$.ajax({
+					url:url+"SorPackageController/unpacking",
+					data:{
+						"packaging":ids
+					},
+					type:'post',
+					success(data) {
+						query();
+						layui.form.render();
+					}
+				})
+			}
 			function detail(e){
-				
 				console.log(e);
 				 //页面层
 				layer.open({
