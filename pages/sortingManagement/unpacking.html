@@ -47,13 +47,8 @@
 							<button type="button" class="layui-btn btnOther">
 								<i class="layui-icon">&#x1002;</i> 重置
 							</button>
-
 						</div>
-
 					</div>
-
-
-
 					<!-- 操作按扭组 -->
 					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 						<div class="layui-inline">
@@ -160,6 +155,18 @@
 					}
 				})
 			}
+			var userid = 0;
+			function jx() {
+				$.ajax({
+					url: url + "jurisdiction/parsetoken",
+					type: 'get',
+					success: function(data) {
+						console.log(data);
+						$("input[name='user']").val(data.map.syEmps.empName);
+						userid = data.map.syEmps.id;
+					}
+				});
+			}
 			function chai(){
 				var ids=[];
 				var a = $("input[name='check']:checked");
@@ -170,7 +177,8 @@
 				$.ajax({
 					url:url+"SorPackageController/unpacking",
 					data:{
-						"packaging":ids
+						"packaging":ids,
+						"person":userid
 					},
 					type:'post',
 					success(data) {
@@ -277,6 +285,7 @@
 			//加载'table'组件
 			layui.use('table', function() {
 				var table = layui.table;
+				jx();
 				query();
 			});
 
