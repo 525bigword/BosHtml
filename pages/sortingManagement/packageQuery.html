@@ -56,7 +56,10 @@
 					<!-- 操作按扭组 -->
 					<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 						<div class="layui-inline">
-							<button type="button" class="layui-btn layui-btn-small btnQuery" onclick="excl()" id="opExport">导出</button>
+							<button type="button" lay-submit="" onclick="excl()" class="layui-btn layui-btn-small btnQuery layui-btn-warm" id="exportExcel"
+							 name="exportExcel">
+								<i class="layui-icon"></i>导出Excel</button>
+							<!-- <button type="button" class="layui-btn layui-btn-small btnQuery" onclick="excl()" id="opExport">导出</button> -->
 						</div>
 					</div>
 
@@ -108,10 +111,12 @@
 		</div>
 		</div>
 		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layui_exts/excel.js"></script>
 		<script type="text/javascript" src="../../layer/layer.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../js/bos.js"></script>
 		<script type="text/javascript" src="../js/xadmin.js"></script>
+
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			$.ajaxSetup({
@@ -135,23 +140,8 @@
 			});
 
 			function excl() {
-				console.log(JSON.stringify(pagedata));
-				console.log(JSON.stringify({
-					"vue": pagedata
-				}))
-				$.ajax({
-					url: url + "ExcelDownload",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					data: JSON.stringify({
-						"vue": pagedata
-					}),
-					type: 'post',
-					success(data) {
-
-					}
-				})
+				pagedata.unshift({id: '合包号',sealInt: '封签号', packagepersonname: '操作人', destination: '到达地', ticketSum: '总票数', cargoSum: '总件数', weightSum: '总重量', volumeSum: '总体积', state: '状态',ask: '配载要求'});
+				LAY_EXCEL.exportExcel(pagedata, '合包查询'+getingDatea()+'.xlsx', 'xlsx');
 			}
 			//加载'form'模块，使checkbox、select、radio初始化
 			layui.use('form', function() {
@@ -277,6 +267,9 @@
 				});
 
 			});
+			/* layui.use(['jquery', 'excel', 'layer'], function() {
+						
+					}) */
 		</script>
 
 	</body>
