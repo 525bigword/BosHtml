@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>入库详情</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../css/page.css">
+	</head>
+	<style>
+		td{
+			text-align: center;
+		}
+	</style>
+	<body>
+		<!-- 外部整体 -->
+		<div class="external">
+			<!-- 操作区域 -->
+			<div class="operation">
+				<!-- 向上间距 -->
+				<form class="layui-form" action="">
+					<!-- 数据表格 -->
+					<table class="layui-table">
+						<!-- <colgroup>
+					<col width="50">
+					<col width="150">
+					<col width="60">
+					<col width="180">
+					<col width="130">
+					<col width="110">
+					<col width="150">
+					<col width="110">
+					<col width="110">
+					<col>
+				</colgroup> -->
+						<thead>
+							<tr >
+								<th style="text-align: center;">单号</th>
+								<th style="text-align: center;">商品名</th>
+								<th style="text-align: center;">到达地</th>
+								<th style="text-align: center;">票数</th>
+								<th style="text-align: center;">件数</th>
+								<th style="text-align: center;">重量</th>
+								<th style="text-align: center;">体积</th>
+								<th style="text-align: center;">到达时限</th>
+								<th style="text-align: center;">重要提示</th>
+							</tr>
+						</thead>
+						<tbody id="tbd">
+
+						</tbody>
+					
+					</table>
+
+			</div>
+			</form>
+		</div>
+		</div>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../layer/layer.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/bos.js"></script>
+		<script type="text/javascript" src="../js/xadmin.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript">
+			$.ajaxSetup({
+				dataType: "json",
+				cache: false,
+				async: true,
+				headers: {
+					"Authorization": 'bos' + $.cookie('user')
+				},
+				xhrFields: {
+					withCredentials: true
+				}
+				/* ,
+	    complete: function(xhr) {
+			
+	        //token过期，则跳转到登录页面
+	        if(xhr.responseJSON.code == 401){
+	            parent.location.href = baseURL + 'login.html';
+	        }
+	    } */
+			});
+			var pagedata;
+			var pagedatacount;
+			function child(packageing) {
+				console.log(packageing);
+				$.ajax({
+					url:url+"SorStorageController/queryDetail",
+					type:'get',
+					data:{"packageing":packageing},
+					success(data) {
+						console.log(data);
+						pagedata = data;
+						pagedatacount = pagedata.length;
+						sx();
+					}
+				})
+			}
+			function sx() {
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer; //测试数据
+					var form = layui.form;
+					//调用分页
+					laypage.render({
+						elem: 'page',
+						first: '首页',
+						last: '尾页',
+						prev: '<em>上一页</em>',
+						next: '<em>下一页</em>',
+						limit: 10,
+						count: pagedatacount,
+						jump: function(obj) {
+							//模拟渲染
+							document.getElementById('tbd').innerHTML = function() {
+								var arr = [],
+									thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
+								layui.each(thisData, function(index, item) {
+									 arr.push('<tr><td>'+item.id+'</td><td>'+item.wareName+'</td>'+
+												'<td>'+item.destination+'</td><td>'+item.ticket+'</td>'+
+												'<td>'+item.cargoInt+'</td><td>'+item.weight+'</td>'+
+												'<td>'+item.volume+'</td><td>'+item.service+'</td><td>'+item.importantHints+'</td></tr>'); 
+								});
+								return arr.join('');
+							}();
+							form.render();
+						}
+					});
+			
+				});
+			}
+			//加载'form'模块，使checkbox、select、radio初始化
+			layui.use('form', function() {
+
+			});
+
+			//加载'table'模块
+			layui.use('table', function() {
+				var table = layui.table;
+			});
+		</script>
+
+	</body>
+</html>
