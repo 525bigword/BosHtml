@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>盘库新增</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+
+<body>
+    <!-- 外部整体 -->
+    <div class="external">
+        <!-- 标题 -->
+        <p class="ptitle">盘库新增</p>
+        <!-- 操作区域 -->
+        <div class="operation">
+            <!-- 向上间距 -->
+            <div style="height: 10px;"></div>
+            <form action="">
+                <!-- 操作按扭组 -->
+                <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-small btnQuery" id="add">新增入库交接单</button>
+                        <button type="button" class="layui-btn layui-btn-small btnQuery" id="opAddDetail">新增入库交接单明细</button>
+                        <button type="button" class="layui-btn layui-btn-small btnOther" id="opDeleteMenu">删除条目</button>
+                    </div>
+                </div>
+            </form>
+            <!-- 数据表格 -->
+
+        </div>
+
+        <table class="layui-table layui-form" style="width: 100%;margin: 1px auto;text-align: center;margin-top: 5px;">
+            <tbody>
+                <tr>
+                    <!-- <td class="layui-bg-gray" width="10%">合包号</td>
+                <td width="15%">
+                    <input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input">
+                </td> -->
+                    <td class="layui-bg-gray" width="10%">接货人</td>
+                    <td width="15%">
+                        <label id="user"></label>
+                        <!-- <input type="text" name="" placeholder="请输入接货人" autocomplete="off" class="layui-input" value=""> -->
+                    </td>
+                    <!-- <td class="layui-bg-gray" width="10%">封签号</td>
+						<td width="15%">
+							<input type="text" name="fqh" placeholder="请输入封签号" autocomplete="off" class="layui-input" value="">
+						</td> -->
+                    <td class="layui-bg-gray" width="10%">到达地</td>
+                    <td width="15%">
+                        <label id="ddd"></label>
+                        <!-- <input type="text" name="ddd" placeholder="请输入到达地" autocomplete="off" class="layui-input" value=""> -->
+                    </td>
+                    <td class="layui-bg-gray" width="10%">计算到达地</td>
+                    <td width="15%">
+                        <label id="ReckonDes"></label>
+                        <!-- <input type="text" name="ReckonDes" placeholder="请输入计算到达地" autocomplete="off" class="layui-input"> -->
+                    </td>
+                    <td class="layui-bg-gray" width="10%">送达时限</td>
+                    <td width="15%">
+                        <label id="date"></label>
+                        <!-- <input class="layui-input" type="text" name="title" placeholder="请输入送达时限" autocomplete="off"> -->
+                        <!-- <input type="text" readonly="readonly" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" class="layui-input date-item" value=""> -->
+
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td class="layui-bg-gray" width="10%">总票数</td>
+                    <td width="15%">
+                        <label id="ticketSum"></label>
+                        <!-- <input type="number" readonly="readonly" min="0" value="0" name="ticketSum" placeholder="请输入总票数" autocomplete="off" class="layui-input" value=""> -->
+                    </td>
+                    <td class="layui-bg-gray" width="10%">*总件数*</td>
+                    <td width="15%">
+                        <!-- <label id="cargoSum"></label> -->
+                        <input type="number" min="0" value="0" name="cargoSum" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
+                    </td>
+                    <td class="layui-bg-gray" width="10%">总重量</td>
+                    <td width="15%">
+                        <label id="weightSum"></label>
+                        <!-- <input type="number" readonly="readonly" min="0" value="0" name="weightSum" placeholder="请输入总重量" autocomplete="off" class="layui-input"> -->
+                    </td>
+                    <td class="layui-bg-gray" width="10%">总体积</td>
+                    <td width="15%">
+                        <label id="volumeSum"></label>
+                        <!-- <input type="number" readonly="readonly" min="0" value="0" name="volumeSum" placeholder="请输入总体积" autocomplete="off" class="layui-input" value=""> -->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="layui-bg-gray" width="10%">状态</td>
+                    <td width="15%">
+                        <label id="state"></label>
+                    </td>
+                    <td class="layui-bg-gray" width="10%">配载要求</td>
+                    <td width="15%">
+                        <label id="ask"></label>
+
+                    </td>
+                    <td class="layui-bg-gray" width="10%">合包号</td>
+                    <td colspan="3">
+                        <select id="packing" name="search_type" lay-filter="search_type" lay-verify="required">
+								<option value="">请选择</option>
+							</select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table layui-form" style="width: 100%;margin: 1px auto;text-align: center;margin-top: 5px;">
+            <!-- <colgroup>
+					<col width="300">
+					<col width="200">
+					<col width="140">
+					<col width="90">
+					<col width="90">
+					<col width="90">
+					<col width="90">
+					<col width="210">
+					<col width="90">
+					<col>
+					
+				</colgroup> -->
+            <thead>
+                <tr>
+
+                    <th style="text-align: center;">商品名</th>
+                    <th style="text-align: center;">到达地</th>
+                    <th style="text-align: center;">票数</th>
+                    <th style="text-align: center;">件数</th>
+                    <!-- <th>实际件数</th> -->
+                    <th style="text-align: center;">重量</th>
+                    <th style="text-align: center;">体积</th>
+                    <th style="text-align: center;">到达时限</th>
+                    <th style="text-align: center;">重要提示</th>
+                    <th style="text-align: center;">配载要求</th>
+                </tr>
+            </thead>
+            <tbody id="bde">
+
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <script type="text/javascript" src="../../custom/jquery.min.js"></script>
+    <script type="text/javascript" src="../../layer/layer.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/bos.js"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            dataType: "json",
+            cache: false,
+            async: true,
+            headers: {
+                "Authorization": 'bos' + $.cookie('user')
+            },
+            xhrFields: {
+                withCredentials: true
+            }
+            /* ,
+	    complete: function(xhr) {
+			
+	        //token过期，则跳转到登录页面
+	        if(xhr.responseJSON.code == 401){
+	            parent.location.href = baseURL + 'login.html';
+	        }
+	    } */
+        });
+        var da = [];
+
+        function queryunpacking() {
+            $.ajax({
+                url: url + "SorPackageController/queryunpacking",
+                type: 'get',
+                success(data) {
+                    da = data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#packing").append('<option value=' + i + '>' + data[i].id + '</option>');
+                    }
+                    layui.form.render();
+                }
+            })
+        }
+        //加载'form'模块，使checkbox、select、radio初始化
+        layui.use(['form', 'laydate'], function() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+            form.on('select(search_type)', function(data) {
+                console.log(data.value); //得到被选中的值
+                console.log(da);
+                $.ajax({
+                    url: url + "SorPackageDetailController/query/" + da[data.value].id,
+                    type: 'get',
+                    success(data) {
+                        console.log(data);
+                        $("#bde").html();
+                        for (var i = 0; i < data.length; i++) {
+                            $("#bde").append('<tr><td><label id="wareName">' + data[i].wareName + '</lable></td><td><label id="destination">' + data[i].destination + '</label></td>' +
+                                '<td><label id="ticket">' + data[i].ticket + '</label></td><td><label id="cargoInt">' + data[i].cargoInt + '</label></td>' +
+                                '<td><label id="weight">' + data[i].weight + '</label></td><td><label id="volume">' + data[i].volume + '</label></td>' +
+                                '<td><label id="service">' + data[i].service + '</label></td><td><label id="importantHints">' + data[i].importantHints + '</label></td>' +
+                                '<td width="15%"><label id="ask">' + data[i].ask + '</label></td></tr>');
+                        }
+                    }
+                })
+                $('#user').text(da[data.value].packagepersonname);
+                $("#ddd").text(da[data.value].destination);
+                $('#ReckonDes').text(da[data.value].reckonDes);
+                $('#date').text(da[data.value].timeLimit);
+                $('#ticketSum').text(da[data.value].ticketSum);
+                $("input[name='cargoSum']").val(da[data.value].cargoSum);
+                $('#weightSum').text(da[data.value].weightSum);
+                $('#volumeSum').text(da[data.value].volumeSum);
+                $("#state").text(da[data.value].state);
+                $("#ask").text(da[data.value].ask);
+            });
+            //日期
+            /* laydate.render({
+            	elem: '#date',
+            	trigger: 'click'
+            }); */
+            //日期
+            date();
+
+        })
+
+        function date() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+            lay('.date-item').each(function() {
+                laydate.render({
+                    elem: this,
+                    trigger: 'click'
+                });
+            });
+            $('.date-item').removeAttr('lay-key');
+        }
+
+        var userid = 0;
+        var AcceptCompany = "";
+
+        function jx() {
+            $.ajax({
+                url: url + "jurisdiction/parsetoken",
+                type: 'get',
+                success: function(data) {
+                    console.log(data);
+                    // $("input[name='user']").val(data.map.syEmps.empName);
+                    userid = data.map.syEmps.id;
+                    AcceptCompany = data.map.syEmps.syUnits.name;
+                }
+            });
+        }
+        $(function() {
+            var form = layui.form;
+            jx();
+            queryunpacking();
+            //显示、隐藏剩余的查询条件
+            $('#btnMore').click(function() {
+                $("#hQuery").toggle();
+            });
+
+
+        });
+
+        $(function() {})
+    </script>
+</body>
+
+</html>
