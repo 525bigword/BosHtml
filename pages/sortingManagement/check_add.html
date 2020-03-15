@@ -22,9 +22,7 @@
                 <!-- 操作按扭组 -->
                 <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
                     <div class="layui-inline">
-                        <button type="button" class="layui-btn layui-btn-small btnQuery" id="add">新增入库交接单</button>
-                        <button type="button" class="layui-btn layui-btn-small btnQuery" id="opAddDetail">新增入库交接单明细</button>
-                        <button type="button" class="layui-btn layui-btn-small btnOther" id="opDeleteMenu">删除条目</button>
+                        <button type="button" onclick='add()' class="layui-btn layui-btn-small btnQuery">新增入库交接单</button>
                     </div>
                 </div>
             </form>
@@ -135,7 +133,7 @@
                     <!-- <th>实际件数</th> -->
                     <th style="text-align: center;">重量</th>
                     <th style="text-align: center;">体积</th>
-                    <th style="text-align: center;">到达时限</th>
+                    <th style="text-align: center;">合包号</th>
                     <th style="text-align: center;">重要提示</th>
                     <th style="text-align: center;">配载要求</th>
                 </tr>
@@ -172,6 +170,26 @@
 	        }
 	    } */
         });
+
+        function add() {
+            var packging = $("#packing option:selected").text()
+            var cargoSum = $("input[name='cargoSum']").val()
+                //userid  AcceptCompany
+            console.log(packging)
+            $.ajax({
+                url: url + "SorCheckBound/add",
+                type: 'post',
+                data: {
+                    "packging": packging,
+                    "cargoSum": cargoSum,
+                    "checkPerson": username,
+                    "checkCompany": AcceptCompany
+                },
+                success(data) {
+
+                }
+            })
+        }
         var da = [];
 
         function queryunpacking() {
@@ -194,8 +212,8 @@
                 layedit = layui.layedit,
                 laydate = layui.laydate;
             form.on('select(search_type)', function(data) {
-                console.log(data.value); //得到被选中的值
-                console.log(da);
+                // console.log(data.value); //得到被选中的值
+                //console.log(da);
                 $.ajax({
                     url: url + "SorPackageDetailController/query/" + da[data.value].id,
                     type: 'get',
@@ -206,7 +224,7 @@
                             $("#bde").append('<tr><td><label id="wareName">' + data[i].wareName + '</lable></td><td><label id="destination">' + data[i].destination + '</label></td>' +
                                 '<td><label id="ticket">' + data[i].ticket + '</label></td><td><label id="cargoInt">' + data[i].cargoInt + '</label></td>' +
                                 '<td><label id="weight">' + data[i].weight + '</label></td><td><label id="volume">' + data[i].volume + '</label></td>' +
-                                '<td><label id="service">' + data[i].service + '</label></td><td><label id="importantHints">' + data[i].importantHints + '</label></td>' +
+                                '<td><label id="service">' + data[i].packging + '</label></td><td><label id="importantHints">' + data[i].importantHints + '</label></td>' +
                                 '<td width="15%"><label id="ask">' + data[i].ask + '</label></td></tr>');
                         }
                     }
@@ -247,6 +265,7 @@
         }
 
         var userid = 0;
+        var username = "";
         var AcceptCompany = "";
 
         function jx() {
@@ -257,6 +276,7 @@
                     console.log(data);
                     // $("input[name='user']").val(data.map.syEmps.empName);
                     userid = data.map.syEmps.id;
+                    username = data.map.syEmps.empName;
                     AcceptCompany = data.map.syEmps.syUnits.name;
                 }
             });

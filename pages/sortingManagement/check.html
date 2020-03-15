@@ -24,20 +24,20 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">盘点单号:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+                            <input type="text" name="id" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">操作单位:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="请输入代理公司" autocomplete="off" class="layui-input">
+                            <input type="text" name="checkCompany" placeholder="请输入操作单位" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <!-- 查询按钮组 -->
                     <div class="layui-inline">
-                        <button type="button" class="layui-btn btnQuery">
+                        <button type="button" onclick="query()" class="layui-btn btnQuery">
                         <i class="layui-icon">&#xe615;</i> 查询
                     </button>
 
@@ -56,16 +56,16 @@
                 <div id="hQuery" style="display: none;">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">盘点人:</label>
+                            <label class="layui-form-label">盘点时间:</label>
                             <div class="layui-input-block" style="width: 150px;">
-                                <input type="text" name="title" placeholder="请输入起止时间" autocomplete="off" class="layui-input">
+                                <input type="text" name="checkDate" placeholder="请输入起止时间" autocomplete="off" readonly="readonly" class="layui-input date-item">
                             </div>
                         </div>
 
                         <div class="layui-inline">
-                            <label class="layui-form-label">盘点时间:</label>
+                            <label class="layui-form-label">盘点人:</label>
                             <div class="layui-input-block" style="width: 150px;">
-                                <input type="text" name="title" placeholder="请输入录入人" autocomplete="off" class="layui-input">
+                                <input type="text" name="checkPerson" placeholder="请输入录入人" autocomplete="off" class="layui-input ">
                             </div>
                         </div>
 
@@ -100,7 +100,6 @@
                             <th><input type="checkbox" name="check" lay-skin="primary"></th>
                             <th>序号</th>
                             <th>盘库单号</th>
-                            <th>扫描设备号</th>
                             <th>总件数</th>
                             <th>盘库人</th>
                             <th>盘库时间</th>
@@ -108,24 +107,15 @@
                             <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="checkbox" name="check" lay-skin="primary"></td>
-                            <td>1</td>
-                            <td>PKD1001</td>
-                            <td>SMSB1001</td>
-                            <td>10</td>
-                            <td>老王</td>
-                            <td>2017-11-11 11:11:11</td>
-                            <td>长沙分部</td>
-                            <th>
-                                <button id="opDetailed" type="button" class="layui-btn layui-btn-small btnQuery">明细数据</button>
-                            </th>
-                        </tr>
+                    <tbody id="tbd">
+
                     </tbody>
                 </table>
         </div>
         </form>
+        <center>
+            <div id="page"></div>
+        </center>
     </div>
     </div>
     <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -154,6 +144,69 @@
 	        }
 	    } */
         });
+
+        function query() {
+            var id = $("input[name='id']").val();
+            var checkCompany = $("input[name='checkCompany']").val();
+            var checkPerson = $("input[name='checkPerson']").val();
+            var checkDate = $("input[name='checkDate']").val();
+            $.ajax({
+                url: url + "SorCheckBound/query",
+                type: 'get',
+                data: {
+                    id,
+                    checkCompany,
+                    checkPerson,
+                    checkDate
+                },
+                success(data) {
+                    $("#tbd").html();
+                    console.log(data);
+                    pagedata = data;
+                    pagedatacount = pagedata.length;
+                    sx();
+                }
+            })
+        }
+
+        function sx() {
+            layui.use(['laypage', 'layer'], function() {
+                var laypage = layui.laypage,
+                    layer = layui.layer; //测试数据
+                var form = layui.form;
+                //调用分页
+                laypage.render({
+                    elem: 'page',
+                    first: '首页',
+                    last: '尾页',
+                    prev: '<em>上一页</em>',
+                    next: '<em>下一页</em>',
+                    limit: 10,
+                    count: pagedatacount,
+                    jump: function(obj) {
+                        //模拟渲染
+                        document.getElementById('tbd').innerHTML = function() {
+                            vue = [];
+                            var arr = [],
+                                thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
+                            layui.each(thisData, function(index, item) {
+
+                                vue.push(item);
+                                arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
+                                    ' name="check" lay-skin="primary"></td>' +
+                                    '<td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' + item.cargoSum + '</td>' +
+                                    '<td>' + item.checkPerson + '</td><td>' + item.checkDate + '</td>' +
+                                    '<td>' + item.checkCompany + '</td>' +
+                                    '<td><button type="button" onclick="detail(/' + (item.id) + '/)" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button></td></tr>');
+                            });
+                            return arr.join('');
+                        }();
+                        form.render();
+                    }
+                });
+
+            });
+        }
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function() {
 
@@ -162,8 +215,36 @@
         //加载'table'组件
         layui.use('table', function() {
             var table = layui.table;
+            query()
         });
+        layui.use(['form', 'laydate'], function() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
 
+            //日期
+            /* laydate.render({
+            	elem: '#date',
+            	trigger: 'click'
+            }); */
+            //日期
+            date();
+        })
+
+        function date() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+            lay('.date-item').each(function() {
+                laydate.render({
+                    elem: this,
+                    trigger: 'click'
+                });
+            });
+            $('.date-item').removeAttr('lay-key');
+        }
         //加载'laydate'时间组件
         layui.use('laydate', function() {
             var laydate = layui.laydate;
