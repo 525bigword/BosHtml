@@ -28,7 +28,7 @@
             <form class="layui-form" action="">
                 <!-- 数据表格 -->
                 <table class="layui-table">
-                    <colgroup>
+                    <!-- <colgroup>
                         <col width="50">
                         <col width="60">
                         <col width="100">
@@ -40,37 +40,20 @@
                         <col width="110">
                         <col width="80">
                         <col>
-                    </colgroup>
+                    </colgroup> -->
                     <thead>
                         <tr>
-                            <th><input type="checkbox" name="check" lay-skin="primary"></th>
                             <th>序号</th>
                             <th>工作单号</th>
                             <th>合包号</th>
-                            <th>件数</th>
                             <th>重量</th>
                             <th>体积</th>
-                            <th>类型</th>
                             <th>方向</th>
                             <th>入库人</th>
                             <th>入库时间</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="checkbox" name="check" lay-skin="primary"></td>
-                            <td>1</td>
-                            <td>GZD1001</td>
-                            <td>HB001</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>电子产品</td>
-                            <td>方向方向</td>
-                            <td>老王</td>
-                            <td>2017:11:11 11:11:11</td>
-                        </tr>
-
+                    <tbody id="tbd">
                     </tbody>
                 </table>
         </div>
@@ -116,65 +99,25 @@
         var pagedatacount;
         var vue = [];
 
-        function query() {
-            let id = $("input[name='id']").val();
-            let destination = $("input[name='destination']").val();
+        function child(e) {
             $.ajax({
-                url: url + "SorPackageController/query",
+                url: url + "SorCheckBoundDetail/query",
                 type: 'get',
                 data: {
-                    "id": id,
-                    "destination": destination
+                    "packing": e
                 },
                 success(data) {
                     console.log(data);
-                    // pagedata = data;
-                    // pagedatacount = pagedata.length;
-                    // $("#len").text("数量：" + pagedatacount + "条")
-                    // sx();
+                    $("#tbd").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        $("#tbd").append('<tr><td>' + (i + 1) + '</td><td>' + (data[i].id) + '</td><td>' + (data[i].packging) + '</td>' +
+                            '<td>' + data[i].weight + '</td><td>' + data[i].volume + '</td><td>' + data[i].direction + '</td><td>' + data[i].storagePerson + '</td><td>' + data[i].storageDate + '</td></tr>')
+                    }
                 }
             })
         }
 
-        function sx() {
-            layui.use(['laypage', 'layer'], function() {
-                var laypage = layui.laypage,
-                    layer = layui.layer; //测试数据
-                var form = layui.form;
-                //调用分页
-                laypage.render({
-                    elem: 'page',
-                    first: '首页',
-                    last: '尾页',
-                    prev: '<em>上一页</em>',
-                    next: '<em>下一页</em>',
-                    limit: 10,
-                    count: pagedatacount,
-                    jump: function(obj) {
-                        //模拟渲染
-                        document.getElementById('tbd').innerHTML = function() {
-                            vue = [];
-                            var arr = [],
-                                thisData = pagedata.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
-                            layui.each(thisData, function(index, item) {
 
-                                vue.push(item);
-                                arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
-                                    ' name="check" lay-skin="primary"></td>' +
-                                    '<td>' + item.id + '</td><td>' + item.packagepersonname + '</td><td>' + item.sealInt + '</td>' +
-                                    '<td>' + item.destination + '</td><td>' + item.timeLimit + '</td>' +
-                                    '<td>' + item.ticketSum + '</td><td>' + item.cargoSum + '</td><td>' + item.weightSum + '</td>' +
-                                    '<td>' + item.volumeSum + '</td><td>' + item.ask + '</td>' +
-                                    '<td><button type="button" onclick="detail(/' + (item.id) + '/)" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button></td></tr>');
-                            });
-                            return arr.join('');
-                        }();
-                        form.render();
-                    }
-                });
-
-            });
-        }
         $(function() {
 
             //新增详细信息

@@ -197,7 +197,7 @@
                                     '<td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' + item.cargoSum + '</td>' +
                                     '<td>' + item.checkPerson + '</td><td>' + item.checkDate + '</td>' +
                                     '<td>' + item.checkCompany + '</td>' +
-                                    '<td><button type="button" onclick="detail(/' + (item.id) + '/)" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button></td></tr>');
+                                    '<td><button type="button" onclick="detail(/' + (item.packging) + '/)" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button></td></tr>');
                             });
                             return arr.join('');
                         }();
@@ -205,6 +205,22 @@
                     }
                 });
 
+            });
+        }
+
+        function detail(e) {
+            layer.open({
+                title: ['修改', 'color:#fff;background:#1da02b;'],
+                type: 2,
+                //skin: 'layui-layer-rim', //加上边框
+                area: ['800px', '340px'], //宽高
+                content: 'check_list.html',
+                success: function(layero, index) {
+                    // 获取子页面的iframe
+                    var iframe = window['layui-layer-iframe' + index];
+                    // 向子页面的全局函数child传参
+                    iframe.child(e);
+                }
             });
         }
         //加载'form'模块，使checkbox、select、radio初始化
