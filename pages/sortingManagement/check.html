@@ -77,24 +77,13 @@
                 <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
                     <div class="layui-inline">
                         <button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
-                        <button type="button" class="layui-btn layui-btn-small btnOther" id="opEdit">修改</button>
-                        <button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
+                        <button type="button" class="layui-btn layui-btn-small btnOther" onclick="del()" id="opDelete">删除</button>
                     </div>
                 </div>
 
                 <!-- 数据表格 -->
                 <table class="layui-table">
-                    <colgroup>
-                        <col width="50">
-                        <col width="60">
-                        <col width="150">
-                        <col width="180">
-                        <col width="130">
-                        <col width="110">
-                        <col width="200">
-                        <col width="110">
-                        <col>
-                    </colgroup>
+
                     <thead>
                         <tr>
                             <th><input type="checkbox" name="check" lay-skin="primary"></th>
@@ -144,6 +133,33 @@
 	        }
 	    } */
         });
+        //删除
+        function del() {
+            var packgings = [];
+            var a = $("input[name='check']:checked");
+            if (a.length > 0) {
+                for (let i = 0; i < a.length; i++) {
+                    packgings[i] = a[i].id;
+                }
+                $.ajax({
+                    url: url + "SorCheckBound/del",
+                    type: 'post',
+                    data: {
+                        packgings
+                    },
+                    success(data) {
+                        if (data === "OK") {
+                            query();
+                        }
+                    }
+                })
+            } else {
+                layer.msg("请先选择需要修改的模块", {
+                    icon: 2,
+                    time: 800
+                })
+            }
+        }
 
         function query() {
             var id = $("input[name='id']").val();
@@ -192,7 +208,7 @@
                             layui.each(thisData, function(index, item) {
 
                                 vue.push(item);
-                                arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.id) + ' value=' + index +
+                                arr.push('<tr><td><input type="checkbox" lay-filter="check" id=' + (item.packging) + ' value=' + index +
                                     ' name="check" lay-skin="primary"></td>' +
                                     '<td>' + (index + 1) + '</td><td>' + item.id + '</td><td>' + item.cargoSum + '</td>' +
                                     '<td>' + item.checkPerson + '</td><td>' + item.checkDate + '</td>' +
@@ -285,7 +301,10 @@
                     type: 2,
                     //skin: 'layui-layer-rim', //加上边框
                     area: ['1000px', '500px'], //宽高
-                    content: 'check_add.html'
+                    content: 'check_add.html',
+                    end: function() {
+                        query();
+                    }
                 });
             });
 
